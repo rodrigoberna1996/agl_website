@@ -7,7 +7,22 @@
     >
         <div class="logo-container">
             <a href="/" class="logo" aria-label="AGL Legaspi home">
-                AGL Legaspi
+                <img
+                    src="/branding/LOGO-AGL.png"
+                    alt=""
+                    width="1024"
+                    height="336"
+                    class="logo-img logo-img--full"
+                    decoding="async"
+                />
+                <img
+                    src="/branding/FLAMA.png"
+                    alt=""
+                    width="804"
+                    height="392"
+                    class="logo-img logo-img--mark"
+                    decoding="async"
+                />
             </a>
         </div>
 
@@ -88,6 +103,35 @@
         justify-content: space-between;
         font-size: var(--text-base);
         font-weight: 500;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        line-height: 0;
+        color: inherit;
+    }
+
+    .logo-img {
+        height: auto;
+        width: auto;
+        max-height: calc(var(--h-menu-bar) - 1.25rem);
+        max-width: min(14rem, 42vw);
+        object-fit: contain;
+    }
+
+    .logo-img--mark {
+        display: none;
+        max-width: 3.25rem;
+        max-height: calc(var(--h-menu-bar) - 1rem);
+    }
+
+    .scrolled .logo-img {
+        max-height: calc(var(--h-menu-bar-scrolled) - 0.875rem);
+    }
+
+    .scrolled .logo-img--mark {
+        max-height: calc(var(--h-menu-bar-scrolled) - 0.75rem);
     }
 
     .hamburger {
@@ -191,6 +235,14 @@
     @media screen and (max-width: 64rem) {
         .header {
             padding-inline: var(--px-16);
+        }
+
+        .logo-img--full {
+            display: none;
+        }
+
+        .logo-img--mark {
+            display: block;
         }
 
         .desktop-cta {
