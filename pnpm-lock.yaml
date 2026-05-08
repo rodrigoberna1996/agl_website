@@ -21,8 +21,8 @@ importers:
         specifier: ^0.34.5
         version: 0.34.5
       swiper:
-        specifier: ^11.2.10
-        version: 11.2.10
+        specifier: ^12.1.4
+        version: 12.1.4
 
 packages:
 
@@ -1333,8 +1333,8 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
-  swiper@11.2.10:
-    resolution: {integrity: sha512-RMeVUUjTQH+6N3ckimK93oxz6Sn5la4aDlgPzB+rBrG/smPdCTicXyhxa+woIpopz+jewEloiEE3lKo1h9w2YQ==}
+  swiper@12.1.4:
+    resolution: {integrity: sha512-bihiwoKMOQwW8FfdUbo1DgkVH25E+4ZELIq0oopL1KTKBteLuaTMi/wwFjMxtlhTkk45k3XQ89D1Fvv0spSqBA==}
     engines: {node: '>= 4.7.0'}
 
   tiny-inflate@1.0.3:
@@ -3155,7 +3155,7 @@ snapshots:
       picocolors: 1.1.1
       sax: 1.6.0
 
-  swiper@11.2.10: {}
+  swiper@12.1.4: {}
 
   tiny-inflate@1.0.3: {}
 
