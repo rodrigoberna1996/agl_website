@@ -52,7 +52,7 @@ export default defineConfig({
         `img-src 'self' https://res.cloudinary.com/dellp9a4z/${wpOrigin ? ` ${wpOrigin}` : ""} data:`,
         `media-src 'self' https://res.cloudinary.com/dellp9a4z/${wpOrigin ? ` ${wpOrigin}` : ""}`,
         "font-src 'self' data:",
-        "frame-src 'self' https://www.google.com/",
+        "frame-src 'self' https://www.google.com https://maps.google.com",
         "worker-src 'self'",
         "manifest-src 'none'",
         "form-action 'self'",
