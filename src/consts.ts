@@ -1,8 +1,8 @@
 import type { Site, Socials } from './types';
 
 export const SITE: Site = {
-  COMPANY_NAME: 'One Space Away',
-  LEGAL_NAME: 'One Space Away Interiors, LLC',
+  COMPANY_NAME: 'AGL Legaspi',
+  LEGAL_NAME: 'AGL Legaspi Interiors, LLC',
   TITLE: 'Home, just the way you like.',
   DESCRIPTION: 'Discover the joy of living in a space that feels truly yours.',
   CANONICAL_URL: import.meta.env.DEV

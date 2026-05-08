@@ -1,5 +1,13 @@
 ---
-const faqItems = [
+import { getFaqItems } from "@lib/wordpress";
+
+type FaqItem = {
+  id: number;
+  question: string;
+  answer: string;
+};
+
+const staticFaqItems: FaqItem[] = [
   {
     id: 1,
     question: 'What services do you offer?',
@@ -61,6 +69,16 @@ const faqItems = [
       "It's simple — just give us a call or shoot us an email. We'll set up your initial consultation, get to know your ideas, and kick off the journey to creating a space that feels just right.",
   },
 ];
+
+const wpFaqItems = await getFaqItems();
+
+const faqItems: FaqItem[] = wpFaqItems
+  ? wpFaqItems.map((item) => ({
+      id: item.id,
+      question: item.title.rendered,
+      answer: item.content.rendered.replace(/<[^>]+>/g, "").trim(),
+    }))
+  : staticFaqItems;
 ---
 
 <section id="faq" class="faq">

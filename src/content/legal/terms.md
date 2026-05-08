@@ -6,18 +6,18 @@ lastUpdated: '07-04-2025'
 > **Note:** This is just an example Terms of Service for a portfolio website
 > built with Astro and hosted on Cloudflare. The license part still applies.
 
-Welcome to One Space Away Interiors, LLC.  
+Welcome to AGL Legaspi Interiors, LLC.  
 These Terms of Service outline the rules and regulations for the use of One
 Space Away Interiors, LLC's website.
 
-**One Space Away Interiors, LLC** is located at:
+**AGL Legaspi Interiors, LLC** is located at:
 
 **456 Camden Drive, Suite 300  
 Beverly Hills, CA 90210  
 California (CA), United States**
 
 By accessing this website, we assume you accept these Terms of Service in full.
-Do not continue to use One Space Away Interiors, LLC's website if you do not
+Do not continue to use AGL Legaspi Interiors, LLC's website if you do not
 accept all of the terms stated on this page.
 
 The following terminology applies to these Terms of Service, the Privacy
@@ -25,7 +25,7 @@ Statement, and the Disclaimer Notice, as well as any or all agreements:
 
 - **"Client", "You", "Your"** refer to you, the person accessing this website
   and accepting the Company's Terms of Service.
-- **"The Company", "Ourselves", "We", "Our", "Us"** refer to One Space Away
+- **"The Company", "Ourselves", "We", "Our", "Us"** refer to AGL Legaspi
   Interiors, LLC.
 - **"Party", "Parties", or "Us"** refer to both the Client and ourselves, or
   either the Client or ourselves.
@@ -41,7 +41,7 @@ are taken as interchangeable and therefore as referring to the same.
 
 ## Cookies
 
-We employ the use of cookies. By using One Space Away Interiors, LLC's website
+We employ the use of cookies. By using AGL Legaspi Interiors, LLC's website
 you consent to the use of cookies in accordance with our Privacy Policy.
 
 Most modern interactive websites use cookies to enable us to retrieve user
@@ -51,7 +51,7 @@ partners may also use cookies.
 
 ## License
 
-Unless otherwise stated, One Space Away Interiors, LLC and/or its licensors own
+Unless otherwise stated, AGL Legaspi Interiors, LLC and/or its licensors own
 the intellectual property rights for all material on our website. All
 intellectual property rights are reserved. You may view and/or print pages from
 [one-space-away-html.pages.dev](https://one-space-away-html.pages.dev/) for your
@@ -65,7 +65,7 @@ You must not:
   [one-space-away-html.pages.dev](https://one-space-away-html.pages.dev/)
 - Reproduce, duplicate, or copy material from
   [one-space-away-html.pages.dev](https://one-space-away-html.pages.dev/)
-- Redistribute content from One Space Away Interiors, LLC (unless content is
+- Redistribute content from AGL Legaspi Interiors, LLC (unless content is
   specifically made for redistribution)
 
 ## User Comments
@@ -73,12 +73,12 @@ You must not:
 This Agreement shall begin on the date hereof.
 
 Certain parts of this website offer the opportunity for users to post and
-exchange opinions, information, material, and data ("Comments"). One Space Away
+exchange opinions, information, material, and data ("Comments"). AGL Legaspi
 Interiors, LLC does not screen, edit, publish, or review Comments prior to their
 appearance on the website, and Comments do not reflect the views or opinions of
-One Space Away Interiors, LLC, its agents, or affiliates. Comments reflect the
+AGL Legaspi Interiors, LLC, its agents, or affiliates. Comments reflect the
 view and opinion of the person who posts such view or opinion. To the extent
-permitted by applicable laws, One Space Away Interiors, LLC shall not be
+permitted by applicable laws, AGL Legaspi Interiors, LLC shall not be
 responsible or liable for the Comments or for any loss, cost, liability,
 damages, or expenses caused and/or suffered as a result of any use of, posting
 of, or appearance of the Comments on this website.
@@ -99,7 +99,7 @@ You warrant and represent that:
 - The Comments will not be used to solicit or promote business or custom or
   present commercial activities or unlawful activity.
 
-You hereby grant to One Space Away Interiors, LLC a non-exclusive, royalty-free
+You hereby grant to AGL Legaspi Interiors, LLC a non-exclusive, royalty-free
 license to use, reproduce, edit, and authorize others to use, reproduce, and
 edit any of your Comments in any and all forms, formats, or media.
 
@@ -154,7 +154,7 @@ Approved organizations may hyperlink to our website as follows:
   that makes sense within the context and format of content on the linking
   party's site.
 
-No use of One Space Away Interiors, LLC's logo or other artwork will be allowed
+No use of AGL Legaspi Interiors, LLC's logo or other artwork will be allowed
 for linking without a trademark license agreement.
 
 ## Iframes

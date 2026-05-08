@@ -5,6 +5,12 @@ import { SITE } from "./src/consts";
 import sitemap from "@astrojs/sitemap";
 import favicons from "astro-favicons";
 
+// WordPress domain extracted from the env var (e.g. "https://cms.tu-dominio.com").
+// Add it to the CSP so the browser allows loading images from WordPress.
+const wpOrigin = process.env.WORDPRESS_API_URL
+  ? new URL(process.env.WORDPRESS_API_URL).origin
+  : null;
+
 // https://astro.build/config
 export default defineConfig({
   site: SITE.CANONICAL_URL,
@@ -41,8 +47,8 @@ export default defineConfig({
         "object-src 'self'",
         "connect-src 'self'",
         "base-uri 'self'",
-        "img-src 'self' https://res.cloudinary.com/dellp9a4z/ data:",
-        "media-src 'self' https://res.cloudinary.com/dellp9a4z/",
+        `img-src 'self' https://res.cloudinary.com/dellp9a4z/${wpOrigin ? ` ${wpOrigin}` : ""} data:`,
+        `media-src 'self' https://res.cloudinary.com/dellp9a4z/${wpOrigin ? ` ${wpOrigin}` : ""}`,
         "font-src 'self' data:",
         "frame-src 'self' https://www.google.com/",
         "worker-src 'self'",

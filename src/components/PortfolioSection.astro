@@ -5,8 +5,26 @@ import before1Image from "/src/assets/images/before1.png";
 import after1Image from "/src/assets/images/after1.png";
 import before2Image from "/src/assets/images/before2.png";
 import after2Image from "/src/assets/images/after2.png";
+import { getPortfolioProjects } from "@lib/wordpress";
 
-const projects = [
+type ProjectImage = {
+    src: ImageMetadata | string;
+    alt: string;
+};
+
+type Project = {
+    id: number;
+    images: {
+        before: ProjectImage;
+        after: ProjectImage;
+    };
+    info: {
+        challenge: { title: string; text: string };
+        result: { title: string; text: string };
+    };
+};
+
+const staticProjects: Project[] = [
     {
         id: 1,
         images: {
@@ -54,6 +72,34 @@ const projects = [
         },
     },
 ];
+
+const wpProjects = await getPortfolioProjects();
+
+const projects: Project[] = wpProjects
+    ? wpProjects.map((p) => ({
+          id: p.id,
+          images: {
+              before: {
+                  src: p.acf.before_image ? p.acf.before_image.url : "",
+                  alt: p.acf.before_image ? p.acf.before_image.alt : "",
+              },
+              after: {
+                  src: p.acf.after_image ? p.acf.after_image.url : "",
+                  alt: p.acf.after_image ? p.acf.after_image.alt : "",
+              },
+          },
+          info: {
+              challenge: {
+                  title: p.acf.challenge_title || "Client's Challenge",
+                  text: p.acf.challenge_text,
+              },
+              result: {
+                  title: p.acf.result_title || "Result",
+                  text: p.acf.result_text,
+              },
+          },
+      }))
+    : staticProjects;
 ---
 
 <section id="portfolio" class="portfolio">
@@ -65,21 +111,46 @@ const projects = [
                 projects.map((project) => (
                     <div class="swiper-slide">
                         <div class="project-image">
-                            <Image
-                                class="image before"
-                                src={project.images.before.src}
-                                alt={project.images.before.alt}
-                                width={800}
-                                aria-hidden="true"
-                            />
-                            <Image
-                                class="image after active"
-                                src={project.images.after.src}
-                                alt={project.images.after.alt}
-                                width={1144}
-                                height={800}
-                                aria-hidden="false"
-                            />
+                            {typeof project.images.before.src === "string" ? (
+                                <img
+                                    class="image before"
+                                    src={project.images.before.src}
+                                    alt={project.images.before.alt}
+                                    width="800"
+                                    loading="lazy"
+                                    decoding="async"
+                                    aria-hidden="true"
+                                />
+                            ) : (
+                                <Image
+                                    class="image before"
+                                    src={project.images.before.src}
+                                    alt={project.images.before.alt}
+                                    width={800}
+                                    aria-hidden="true"
+                                />
+                            )}
+                            {typeof project.images.after.src === "string" ? (
+                                <img
+                                    class="image after active"
+                                    src={project.images.after.src}
+                                    alt={project.images.after.alt}
+                                    width="1144"
+                                    height="800"
+                                    loading="lazy"
+                                    decoding="async"
+                                    aria-hidden="false"
+                                />
+                            ) : (
+                                <Image
+                                    class="image after active"
+                                    src={project.images.after.src}
+                                    alt={project.images.after.alt}
+                                    width={1144}
+                                    height={800}
+                                    aria-hidden="false"
+                                />
+                            )}
                         </div>
                         <div class="project-info">
                             <div class="info-section">

@@ -1,6 +1,6 @@
-# One Space Away - Interior Design Template
+# AGL Legaspi - Interior Design Template
 
-**One Space Away** is single-page template built for interior designers, architects, and home stylists.
+**AGL Legaspi** is single-page template built for interior designers, architects, and home stylists.
 
 <img width="1910" height="915" alt="PageSpeed Insights" src="https://github.com/user-attachments/assets/8b3bd9cf-6e91-4624-bda5-aa5cf71e950b" />
 

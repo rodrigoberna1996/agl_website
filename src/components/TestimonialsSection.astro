@@ -3,8 +3,24 @@ import BaseSwiper from "./BaseSwiper.astro";
 import { Image } from "astro:assets";
 import sarahJohnsonImage from "/src/assets/images/sarah-johnson.jpg";
 import emmaImage from "/src/assets/images/emma.jpg";
+import { getTestimonials } from "@lib/wordpress";
 
-const testimonials = [
+type Testimonial = {
+    id: number;
+    type: "image" | "video";
+    client: {
+        name: string;
+        location: string;
+        image?: ImageMetadata | string;
+    };
+    content?: string;
+    video?: {
+        src: string;
+        poster?: string;
+    };
+};
+
+const staticTestimonials: Testimonial[] = [
     {
         id: 1,
         type: "image",
@@ -14,7 +30,7 @@ const testimonials = [
             image: sarahJohnsonImage,
         },
         content:
-            "Working with One Space Away transformed not just our home, but how we live in it. Their attention to detail and understanding of our needs was exceptional.",
+            "Working with AGL Legaspi transformed not just our home, but how we live in it. Their attention to detail and understanding of our needs was exceptional.",
     },
     {
         id: 2,
@@ -40,6 +56,27 @@ const testimonials = [
         },
     },
 ];
+
+const wpTestimonials = await getTestimonials();
+
+const testimonials: Testimonial[] = wpTestimonials
+    ? wpTestimonials.map((t) => ({
+          id: t.id,
+          type: t.acf.testimonial_type || "image",
+          client: {
+              name: t.acf.client_name,
+              location: t.acf.client_location,
+              image: t.acf.client_image ? t.acf.client_image.url : undefined,
+          },
+          content: t.acf.testimonial_content || undefined,
+          video: t.acf.video_url
+              ? {
+                    src: t.acf.video_url,
+                    poster: t.acf.video_poster || undefined,
+                }
+              : undefined,
+      }))
+    : staticTestimonials;
 ---
 
 <section id="testimonials" class="testimonials">
@@ -55,18 +92,42 @@ const testimonials = [
                             {testimonial.type === "image" ? (
                                 <>
                                     <div class="testimonial-header">
-                                        <div class="testimonial-image">
-                                            <Image
-                                                class="media"
-                                                src={
-                                                    testimonial.client
-                                                        .image as ImageMetadata
-                                                }
-                                                alt={testimonial.client.name}
-                                                width={160}
-                                                height={160}
-                                            />
-                                        </div>
+                                        {testimonial.client.image && (
+                                            <div class="testimonial-image">
+                                                {typeof testimonial.client
+                                                    .image === "string" ? (
+                                                    <img
+                                                        class="media"
+                                                        src={
+                                                            testimonial.client
+                                                                .image
+                                                        }
+                                                        alt={
+                                                            testimonial.client
+                                                                .name
+                                                        }
+                                                        width="160"
+                                                        height="160"
+                                                        loading="lazy"
+                                                        decoding="async"
+                                                    />
+                                                ) : (
+                                                    <Image
+                                                        class="media"
+                                                        src={
+                                                            testimonial.client
+                                                                .image as ImageMetadata
+                                                        }
+                                                        alt={
+                                                            testimonial.client
+                                                                .name
+                                                        }
+                                                        width={160}
+                                                        height={160}
+                                                    />
+                                                )}
+                                            </div>
+                                        )}
                                         <div class="client-info">
                                             <cite class="client-name">
                                                 {testimonial.client.name}

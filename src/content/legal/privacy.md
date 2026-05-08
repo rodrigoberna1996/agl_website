@@ -8,14 +8,14 @@ lastUpdated: '07-04-2025'
 
 ## Your Privacy Is Important To Us
 
-**One Space Away Interiors, LLC** is located at:
+**AGL Legaspi Interiors, LLC** is located at:
 
-One Space Away Interiors, LLC  
+AGL Legaspi Interiors, LLC  
 456 Camden Drive, Suite 300  
 Beverly Hills, CA 90210  
 United States
 
-It is One Space Away Interiors, LLC's policy to respect your privacy regarding
+It is AGL Legaspi Interiors, LLC's policy to respect your privacy regarding
 any information we may collect while operating our website. This Privacy Policy
 applies to
 [one-space-away-html.pages.dev](https://one-space-away-html.pages.dev/)
@@ -60,42 +60,42 @@ policies, or practices of any third-party sites, products, or services.
 
 ## 3. Protection of Certain Personally-Identifying Information
 
-One Space Away Interiors, LLC discloses potentially personally-identifying
+AGL Legaspi Interiors, LLC discloses potentially personally-identifying
 information only to those employees, contractors, and affiliated organizations
 that:
 
-- **(i)** Need to know that information in order to process it on One Space Away
+- **(i)** Need to know that information in order to process it on AGL Legaspi
   Interiors, LLC's behalf or to provide services available on our website.
 - **(ii)** Have agreed not to disclose it to others.
 
 Some of those employees, contractors, and affiliated organizations may be
 located outside of your home country; by using our website, you consent to the
-transfer of such information to them. One Space Away Interiors, LLC will not
+transfer of such information to them. AGL Legaspi Interiors, LLC will not
 rent or sell potentially personally-identifying information to anyone. Other
 than to its employees, contractors, and affiliated organizations, as described
-above, One Space Away Interiors, LLC discloses potentially
+above, AGL Legaspi Interiors, LLC discloses potentially
 personally-identifying information only in response to a subpoena, court order,
 or other governmental request, or when we believe in good faith that disclosure
-is reasonably necessary to protect the property or rights of One Space Away
+is reasonably necessary to protect the property or rights of AGL Legaspi
 Interiors, LLC, third parties, or the public at large.
 
 If you are a registered user of
 [one-space-away-html.pages.dev](https://one-space-away-html.pages.dev/) and have
 supplied your email address, we may occasionally send you an email to tell you
 about new features, solicit your feedback, or keep you updated on what's going
-on with One Space Away Interiors, LLC and our products. We primarily use our
+on with AGL Legaspi Interiors, LLC and our products. We primarily use our
 blog to communicate this type of information, so we expect these emails to be
 minimal. If you send us a request (for example, via a support email or through
 one of our feedback mechanisms), we reserve the right to publish it to help
 clarify or respond to your request or to support other users.
 
-One Space Away Interiors, LLC takes all measures reasonably necessary to protect
+AGL Legaspi Interiors, LLC takes all measures reasonably necessary to protect
 against the unauthorized access, use, alteration, or destruction of potentially
 personally-identifying information.
 
 ## 4. Cookies
 
-To enhance and perfect your online experience, One Space Away Interiors, LLC
+To enhance and perfect your online experience, AGL Legaspi Interiors, LLC
 uses "Cookies" and similar technologies to display personalized content, provide
 appropriate advertising, and store your preferences on your computer.
 
@@ -113,7 +113,7 @@ acknowledge and agree to our use of cookies.
 
 ## 5. Privacy Policy Changes
 
-Although most changes are likely to be minor, One Space Away Interiors, LLC may
+Although most changes are likely to be minor, AGL Legaspi Interiors, LLC may
 change its Privacy Policy from time to time at our sole discretion. We encourage
 you to check this page frequently for any changes. Your continued use of the
 site after any change in this Privacy Policy will constitute your acceptance of
