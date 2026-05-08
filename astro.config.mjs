@@ -17,7 +17,9 @@ export default defineConfig({
   output: "static",
 
   build: {
-    inlineStylesheets: "always",
+    // Evita que cada ruta inyecte <style> inline distintos, lo que
+    // rompe con CSP al navegar con ClientRouter entre páginas.
+    inlineStylesheets: "never",
   },
 
   fonts: [
