@@ -1,116 +1,65 @@
 ---
-import { SITE } from '@consts';
+import { CONTACT_LOCATIONS, SITE, toTelHref } from '@consts';
+
+type Props = {
+  pageLayout?: boolean;
+};
+
+const { pageLayout = false } = Astro.props;
 ---
 
-<section id="contact" class="contact">
+<section
+  id="contact"
+  class:list={['contact', { 'contact--page': pageLayout }]}
+  aria-label="Contacto"
+>
   <div class="section-container contact-container">
-    <div class="contact-top">
-      <div class="contact-top-left">
-        <span class="section-tag">CONTACT US</span>
-        <h2 class="section-title">
-          Let's create a space that feels truly yours.
-        </h2>
-      </div>
+    <header class="contact-header">
+      <span class="section-tag">CONTACTO</span>
+      <h2 class="section-title contact-heading">
+        Solicita nuestro catálogo de aceites y lubricantes
+      </h2>
+    </header>
 
-      <address class="contact-top-right contact-info">
-        <div>
-          <div class="contact-icon">
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-            >
-              <path
-                d="M24 21h-24v-18h24v18zm-23-16.477v15.477h22v-15.477l-10.999 10-11.001-10zm21.089-.523h-20.176l10.088 9.171 10.088-9.171z"
-              ></path>
-            </svg>
-            <div class="contact-icon-s">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm3.445 17.827c-3.684 1.684-9.401-9.43-5.8-11.308l1.053-.519 1.746 3.409-1.042.513c-1.095.587 1.185 5.04 2.305 4.497l1.032-.505 1.76 3.397-1.054.516z"
-                ></path>
-              </svg>
-            </div>
-          </div>
-          <h3 class="contact-subtitle">Say hello</h3>
-          <div class="contact-details">
-            <a href=`mailto:${SITE.EMAIL}` class="contact-detail contact-email"
-              >{SITE.EMAIL}</a
-            >
-            <a href=`tel:${SITE.TELEPHONE}` class="contact-detail contact-phone"
-              >{SITE.TELEPHONE}</a
-            >
-          </div>
-        </div>
-        <div>
-          <div class="contact-icon">
-            <svg
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-            >
-              <path
-                d="M12 10c-1.104 0-2-.896-2-2s.896-2 2-2 2 .896 2 2-.896 2-2 2m0-5c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3m-7 2.602c0-3.517 3.271-6.602 7-6.602s7 3.085 7 6.602c0 3.455-2.563 7.543-7 14.527-4.489-7.073-7-11.072-7-14.527m7-7.602c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602"
-              ></path>
-            </svg>
-          </div>
-          <h3 class="contact-subtitle">Location</h3>
-          <a
-            class="contact-detail"
-            href=`https://maps.google.com/?q=${SITE.ADDRESS}`
-            class="contact-address">{SITE.ADDRESS}</a
-          >
-        </div>
-      </address>
-    </div>
-    <div class="contact-bottom">
-      <form class="contact-form" action="">
-        <div class="contact-form-fields">
+    <div class="contact-split">
+      <div class="contact-split__form">
+        <form class="contact-form" action="">
+          <div class="contact-form-fields">
           <div class="form-group">
-            <label class="form-label" for="name">Name</label>
+            <label class="form-label" for="contact-name">Nombre</label>
             <input
               class="form-input"
-              id="name"
+              id="contact-name"
+              name="name"
               type="text"
-              placeholder="Enter your name"
+              placeholder="Su nombre"
               required
             />
           </div>
           <div class="form-group">
-            <label class="form-label" for="email">Email</label>
+            <label class="form-label" for="contact-email-field">Correo electrónico</label>
             <input
               class="form-input"
-              id="email"
+              id="contact-email-field"
+              name="email"
               type="email"
-              placeholder="Enter your email"
+              placeholder="correo@ejemplo.com"
               required
             />
           </div>
           <div class="form-group message-group">
-            <label class="form-label" for="message">Message</label>
+            <label class="form-label" for="contact-message">Mensaje</label>
             <textarea
               class="form-input form-textarea"
-              id="message"
-              placeholder="Enter your message"
+              id="contact-message"
+              name="message"
+              placeholder="Cuéntenos qué producto o servicio necesita"
               rows="4"
               required></textarea>
           </div>
-        </div>
-        <div class="form-submit">
-          <button type="submit" class="btn btn--primary">SEND MESSAGE</button>
+          </div>
+          <div class="form-submit">
+          <button type="submit" class="btn btn--primary">Enviar mensaje</button>
           <div class="contact-terms">
             <span class="contact-terms-icon">
               <svg
@@ -124,28 +73,76 @@ import { SITE } from '@consts';
                 ></path><path d="M12 8h.01"></path></svg
               >
             </span>
-            All the fields are required. By sending the form you agree to the
-            <a class="text-link" href="legal/terms">Terms & Conditions</a> and
-            <a class="text-link" href="legal/privacy">Privacy Policy</a>.
+            Todos los campos son obligatorios. Al enviar el formulario acepta los
+            <a class="text-link" href="/legal/terms">términos y condiciones</a>
+            y el
+            <a class="text-link" href="/legal/privacy">aviso de privacidad</a>.
           </div>
-        </div>
-        <div id="form-feedback" class="form-feedback" hidden>
-          <p>Thank you! Your Message has been sent</p>
-        </div>
-      </form>
-
-      <div class="contact-map">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d52871.78694097431!2d-118.44073380549868!3d34.0826707144581!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2bc04d6d147ab%3A0xd6c7c379fd081ed1!2sBeverly%20Hills%2C%20CA%2C%20USA!5e0!3m2!1sen!2spl!4v1743960669502!5m2!1sen!2spl"
-          title="Map showing location of Beverly Hills, California, USA"
-          width="600"
-          height="450"
-          style="border:0;"
-          allowfullscreen=""
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <div id="form-feedback" class="form-feedback" hidden>
+            <p>¡Gracias! Su mensaje ha sido enviado.</p>
+          </div>
+        </form>
       </div>
+
+      <aside class="contact-split__channels" aria-label="Correo y teléfonos">
+        <h3 class="contact-channels-title">Escríbanos o llámenos</h3>
+        <address class="contact-channels-address">
+          <a href={`mailto:${SITE.EMAIL}`} class="contact-detail contact-email"
+            >{SITE.EMAIL}</a
+          >
+          <div class="contact-channels-grid">
+            {
+              CONTACT_LOCATIONS.map(loc => (
+                <div class="contact-channel">
+                  <p class="contact-channel__label">{loc.title}</p>
+                  <ul class="contact-channel__phones">
+                    {loc.phones.map(phone => (
+                      <li>
+                        <a href={toTelHref(phone)} class="contact-detail contact-phone">
+                          {phone}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            }
+          </div>
+        </address>
+      </aside>
     </div>
+
+    <section
+      class="contact-branches"
+      aria-labelledby="contact-branches-heading"
+    >
+      <p class="section-tag contact-branches-tag" id="contact-branches-heading">
+        SUCURSALES
+      </p>
+      <ul class="contact-branches__list">
+        {
+          CONTACT_LOCATIONS.map(loc => (
+            <li class="contact-branch">
+              <h4 class="contact-branch__title">{loc.title}</h4>
+              <p class="contact-branch__address">{loc.address}</p>
+              <div class="contact-branch__map">
+                <iframe
+                  src={loc.embedSrc}
+                  title={`Mapa: ${loc.title}`}
+                  width="600"
+                  height="360"
+                  style="border:0;"
+                  allowfullscreen=""
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                />
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </div>
 </section>
 
@@ -154,29 +151,129 @@ import { SITE } from '@consts';
     display: grid;
   }
 
+  .contact--page {
+    padding-top: calc(var(--h-menu-bar) + var(--px-64));
+  }
+
   .section-container.contact-container {
     display: grid;
-    grid-template-rows: auto auto;
+    gap: var(--px-48);
   }
 
-  .contact-top,
-  .contact-bottom {
-    gap: var(--px-32);
+  .contact-header {
+    max-width: 44rem;
   }
 
-  .contact-top {
+  .contact-header .section-tag {
+    margin-bottom: var(--px-16);
+  }
+
+  .contact-heading {
+    margin-bottom: 0;
+  }
+
+  .contact-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: var(--px-40) var(--px-56);
+    align-items: start;
+  }
+
+  .contact-split__form,
+  .contact-split__channels {
+    min-width: 0;
+  }
+
+  .contact-channels-title {
+    font-size: var(--text-xl);
+    font-weight: 500;
+    margin: 0 0 var(--px-16);
+    line-height: 1.3;
+  }
+
+  .contact-channels-address {
+    font-style: normal;
+    margin: 0;
+  }
+
+  .contact-channels-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: var(--px-20) var(--px-28);
+    margin-top: var(--px-16);
   }
 
-  .contact-bottom {
+  .contact-channel__label {
+    margin: 0 0 var(--px-8);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .contact-channel__phones {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--px-4);
+  }
+
+  .contact-channel__phones .contact-detail {
+    display: inline-block;
+  }
+
+  .contact-branches {
+    padding-top: var(--px-48);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .contact-branches-tag {
+    margin-bottom: var(--px-28);
+  }
+
+  .contact-branches__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--px-36) var(--px-48);
+    align-items: start;
   }
 
-  .contact-top-left,
-  .contact-form {
-    margin-right: var(--px-48);
+  .contact-branch {
+    display: flex;
+    flex-direction: column;
+    gap: var(--px-12);
+    min-width: 0;
+  }
+
+  .contact-branch__title {
+    margin: 0;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+
+  .contact-branch__address {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: 1.6;
+    opacity: 0.8;
+  }
+
+  .contact-branch__map {
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  .contact-branch__map iframe {
+    display: block;
+    width: 100%;
+    height: 14rem;
+    min-height: 14rem;
   }
 
   .contact-form-fields {
@@ -216,29 +313,6 @@ import { SITE } from '@consts';
     grid-column: 1 / -1;
   }
 
-  .contact-info {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--px-24);
-    font-style: normal;
-    margin-bottom: var(--px-56);
-  }
-
-  .contact-info > div {
-    position: relative;
-    padding-left: var(--px-24);
-  }
-
-  .contact-info > div::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 1px;
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-
   .form-submit {
     display: flex;
     gap: var(--px-16);
@@ -251,17 +325,6 @@ import { SITE } from '@consts';
     color: #006600;
     font-weight: 500;
     animation: var(--transition-long);
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-5px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 
   .contact-terms {
@@ -278,14 +341,7 @@ import { SITE } from '@consts';
     stroke-linejoin: round;
   }
 
-  .contact-subtitle {
-    font-size: var(--text-xl);
-    margin-bottom: var(--px-12);
-    font-weight: 500;
-  }
-
   .contact-detail {
-    display: block;
     opacity: 0.8;
     font-size: var(--text-sm);
     transition: opacity var(--transition-short);
@@ -296,35 +352,8 @@ import { SITE } from '@consts';
   }
 
   .contact-email {
-    margin-bottom: var(--px-6);
-  }
-
-  .contact-icon {
-    position: relative;
-    display: inline-grid;
-    margin-bottom: 1.375rem;
-  }
-
-  .contact-icon svg:first-of-type {
-    width: var(--px-48);
-  }
-
-  .contact-icon-s {
-    position: absolute;
-    display: grid;
-    top: -15%;
-    right: -55%;
-  }
-
-  .contact-map {
-    width: 100%;
-    height: 100%;
-  }
-
-  .contact-map iframe {
-    width: 100%;
-    height: 100%;
-    min-height: 28.125rem;
+    display: inline-block;
+    margin-bottom: 0;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -337,15 +366,10 @@ import { SITE } from '@consts';
     }
   }
 
-  @media (max-width: 72.5rem) {
-    .contact-form {
-      margin-right: 0;
-    }
-  }
-
   @media (max-width: 66.5rem) {
-    .contact-top {
+    .contact-split {
       grid-template-columns: 1fr;
+      gap: var(--px-40);
     }
 
     .contact-form-fields {
@@ -358,24 +382,37 @@ import { SITE } from '@consts';
     }
   }
 
-  @media (max-width: 48rem) {
-    .contact-bottom {
+  @media (max-width: 40rem) {
+    .contact-channels-grid {
       grid-template-columns: 1fr;
-    }
-
-    .form-submit {
-      grid-template-columns: 1fr;
-    }
-
-    .contact-map iframe {
-      min-height: 18.75rem;
     }
   }
 
-  @media (max-width: 35rem) {
-    .contact-info {
+  @media (max-width: 56rem) {
+    .contact-branches__list {
       grid-template-columns: 1fr;
       gap: var(--px-32);
+    }
+
+    .contact-branch__map iframe {
+      height: 13rem;
+      min-height: 13rem;
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .section-container.contact-container {
+      gap: var(--px-40);
+    }
+
+    .contact-branches {
+      padding-top: var(--px-36);
+    }
+  }
+
+  @media screen and (max-width: 48rem) {
+    .contact--page {
+      padding-top: calc(var(--h-menu-bar) + var(--px-48));
     }
   }
 </style>
@@ -396,7 +433,7 @@ import { SITE } from '@consts';
 
       submitButton.disabled = true;
       const originalText = submitButton.textContent;
-      submitButton.textContent = 'SENDING...';
+      submitButton.textContent = 'Enviando…';
 
       await new Promise(resolve => setTimeout(resolve, 1500));
 

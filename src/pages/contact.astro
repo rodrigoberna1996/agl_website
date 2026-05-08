@@ -1,0 +1,13 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ContactUsSection from '@components/ContactUsSection.astro';
+import { SITE } from '@consts';
+
+const pageTitle = `Contacto | ${SITE.COMPANY_NAME}`;
+const pageDescription =
+  'Escríbanos o llámenos. Atención en Ciudad de México y Cuernavaca. Distribución de lubricantes Total ELF.';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <ContactUsSection pageLayout />
+</BaseLayout>

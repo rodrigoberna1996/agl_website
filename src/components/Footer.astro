@@ -1,245 +1,203 @@
 ---
-import { SITE, SOCIALS } from "@consts";
-import socialIcons from "@assets/socialIcons";
+import { CONTACT_LOCATIONS, SITE, toTelHref } from "@consts";
 
 const currentYear = new Date().getFullYear();
+
+const phonesCdmx =
+  CONTACT_LOCATIONS.find((l) => l.id === "cdmx")?.phones ?? [];
+const phonesMorelos =
+  CONTACT_LOCATIONS.find((l) => l.id === "morelos")?.phones ?? [];
 ---
 
 <footer class="main-footer">
-    <div class="section-container footer footer-primary">
-        <div class="footer-brand">
-            <a href="/" class="headline logo" aria-label="AGL Legaspi home">
-                AGL Legaspi
-            </a>
-            <p class="site-description">{SITE.DESCRIPTION}</p>
-
-            <address class="footer-nav-list contact-info">
-                <p class="phone">
-                    <span class="label">T.</span>
-                    <a href=`tel:${SITE.TELEPHONE}`>{SITE.TELEPHONE}</a>
-                </p>
-                <p class="email">
-                    <span class="label">E.</span>
-                    <a href=`mailto:${SITE.EMAIL}`>{SITE.EMAIL}</a>
-                </p>
-            </address>
+    <div class="section-container footer-grid">
+        <div class="footer-col">
+            <h2 class="footer-heading">Marcas que distribuimos</h2>
+            <ul class="footer-list">
+                <li>TotalEnergies®</li>
+                <li>ELF®</li>
+            </ul>
         </div>
 
-        <nav class="footer-navigation" aria-label="Footer navigation">
-            <div class="footer-nav-section">
-                <h2 class="headline footer-heading">Company</h2>
-                <ul class="footer-nav-list">
-                    <li>
-                        <a href="#hero" class="footer-link">Home</a>
-                    </li>
-                    <li>
-                        <a href="#about" class="footer-link">About</a>
-                    </li>
-                    <li>
-                        <a href="#how-it-works" class="footer-link"
-                            >How it Works</a
-                        >
-                    </li>
-                    <li>
-                        <a href="#portfolio" class="footer-link">Portfolio</a>
-                    </li>
-                    <li>
-                        <a href="#contact" class="footer-link">Contact</a>
-                    </li>
-                </ul>
-            </div>
+        <div class="footer-col">
+            <h2 class="footer-heading">Estados de cobertura</h2>
+            <ul class="footer-list">
+                <li>CDMX</li>
+                <li>Estado de México</li>
+                <li>Morelos</li>
+                <li>Oaxaca</li>
+            </ul>
+        </div>
 
-            <div class="footer-nav-section">
-                <h2 class="headline footer-heading">Social Media</h2>
-                <ul class="footer-nav-list social-links-list">
+        <div class="footer-col">
+            <h2 class="footer-heading">Segmentos y soluciones</h2>
+            <ul class="footer-list">
+                <li>Lubricantes Industriales</li>
+                <li>Lubricantes para Motocicletas</li>
+                <li>Lubricantes automotrices</li>
+                <li>
+                    Lubricantes para Motor a Diésel y servicio pesado
+                </li>
+                <li>Lubricantes para Maquinaria de Construcción</li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h2 class="footer-heading">Contacto</h2>
+            <div class="footer-contact-group">
+                <p class="footer-contact-region">CDMX</p>
+                <ul class="footer-list footer-list--contact">
                     {
-                        SOCIALS.map((social) => (
-                            <>
-                                <li class="social-item">
-                                    <a
-                                        href={social.HREF}
-                                        aria-label={social.LABEL}
-                                        class="footer-link social-link"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        <Fragment
-                                            set:html={socialIcons[social.ICON]}
-                                        />
-                                        {social.NAME}
-                                    </a>
-                                </li>
-                            </>
+                        phonesCdmx.map((phone) => (
+                            <li>
+                                <a
+                                    href={toTelHref(phone)}
+                                    class="footer-link"
+                                >
+                                    {phone}
+                                </a>
+                            </li>
                         ))
                     }
                 </ul>
             </div>
-
-            <div class="footer-nav-section">
-                <h2 class="headline footer-heading">Legal & Press</h2>
-                <ul class="footer-nav-list">
-                    <li>
-                        <a href="legal/privacy" class="footer-link"
-                            >Privacy Policy</a
-                        >
-                    </li>
-                    <li>
-                        <a href="legal/terms" class="footer-link"
-                            >Terms & Conditions</a
-                        >
-                    </li>
-                    <li>
-                        <a href="/sitemap-index.xml" class="footer-link"
-                            >SiteMap</a
-                        >
-                    </li>
+            <div class="footer-contact-group">
+                <p class="footer-contact-region">Cuernavaca</p>
+                <ul class="footer-list footer-list--contact">
+                    {
+                        phonesMorelos.map((phone) => (
+                            <li>
+                                <a
+                                    href={toTelHref(phone)}
+                                    class="footer-link"
+                                >
+                                    {phone}
+                                </a>
+                            </li>
+                        ))
+                    }
                 </ul>
             </div>
-        </nav>
+        </div>
     </div>
 
-    <div class="footer footer-secondary">
-        <div class="copyright">
-            <p>&copy; {SITE.COMPANY_NAME} {currentYear}.</p>
-        </div>
-        <div class="location">
-            <p>Based in Beverly Hills, California.</p>
+    <div class="footer-bottom">
+        <div class="section-container footer-bottom-inner">
+            <p class="footer-copyright">
+                &copy; {SITE.COMPANY_NAME} {currentYear}.
+            </p>
         </div>
     </div>
 </footer>
 
 <style>
-    a {
-        transition: all var(--transition-short);
-    }
-
-    a:active {
-        color: var(--color-text-primary);
-    }
-
     .main-footer {
-        background-color: var(--color-background);
-        padding-block: var(--px-112) var(--px-28);
+        --footer-bg: #2c3444;
+        --footer-heading-color: #ffffff;
+        --footer-text: rgba(255, 255, 255, 0.72);
+        --footer-text-muted: rgba(255, 255, 255, 0.55);
+
+        background-color: var(--footer-bg);
+        padding-block: var(--px-80) 0;
         padding-inline: var(--px-64);
-        color: var(--color-text-dark);
+        color: var(--footer-text);
         font-size: var(--text-sm);
     }
 
-    .footer {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .headline {
-        color: var(--color-text-primary);
-    }
-
-    .main-footer p {
-        opacity: 1;
-    }
-
-    .footer-primary {
-        margin-bottom: var(--px-112);
-    }
-
-    .logo {
-        display: inline-block;
-        margin-bottom: var(--px-28);
-        font-size: var(--text-xl);
-        font-weight: 700;
-    }
-
-    .site-description {
-        margin-bottom: var(--px-32);
-    }
-
-    .footer-navigation {
+    .footer-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        justify-content: space-between;
-        width: 100%;
-        margin-left: 16%;
-        gap: var(--px-96);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: var(--px-40) var(--px-32);
+        padding-bottom: var(--px-80);
     }
 
     .footer-heading {
-        margin-bottom: var(--px-16);
-        font-size: var(--text-lg);
+        margin: 0 0 var(--px-16);
+        font-size: var(--text-base);
+        font-weight: 600;
         letter-spacing: -0.02em;
-        font-weight: 500;
-        text-wrap: nowrap;
+        line-height: 1.35;
+        color: var(--footer-heading-color);
     }
 
-    .footer-nav-list {
-        display: inline-flex;
-        flex-direction: column;
-        font-size: var(--text-sm);
-        gap: var(--px-8);
-        text-wrap: nowrap;
-    }
-
-    .social-link {
+    .footer-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
         display: flex;
-        align-items: center;
-        gap: var(--px-6);
+        flex-direction: column;
+        gap: var(--px-10);
+        line-height: 1.5;
+        color: var(--footer-text);
     }
 
-    .social-link :global(svg) {
-        height: var(--px-18);
+    .footer-list--contact {
+        gap: var(--px-8);
     }
 
-    .contact-info {
-        font-style: normal;
+    .footer-contact-group {
+        margin-bottom: var(--px-24);
     }
 
-    .footer-secondary {
-        font-weight: 500;
+    .footer-contact-group:last-child {
+        margin-bottom: 0;
+    }
+
+    .footer-contact-region {
+        margin: 0 0 var(--px-10);
+        font-size: var(--text-sm);
+        font-weight: 600;
+        color: var(--footer-text);
+    }
+
+    .footer-link {
+        color: inherit;
+        text-decoration: none;
+        transition: color var(--transition-short);
+    }
+
+    .footer-link:active {
+        color: var(--footer-heading-color);
     }
 
     @media (hover: hover) and (pointer: fine) {
-        a:hover {
-            color: var(--color-text-primary);
+        .footer-link:hover {
+            color: var(--footer-heading-color);
         }
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        padding-block: var(--px-28);
+    }
+
+    .footer-bottom-inner {
+        display: flex;
+        align-items: center;
+    }
+
+    .footer-copyright {
+        margin: 0;
+        font-size: var(--text-xs);
+        color: var(--footer-text-muted);
     }
 
     @media screen and (max-width: 64rem) {
         .main-footer {
-            padding-top: var(--px-80);
             padding-inline: var(--px-28);
+            padding-block-start: var(--px-64);
         }
 
-        .footer {
-            flex-wrap: wrap;
-            gap: var(--px-48);
-        }
-
-        .footer-navigation {
-            margin-left: 0;
-            width: auto;
-        }
-
-        .footer-primary {
-            margin-bottom: var(--px-80);
+        .footer-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            padding-bottom: var(--px-64);
+            gap: var(--px-36) var(--px-28);
         }
     }
 
-    @media screen and (max-width: 37.5rem) {
-        .main-footer {
-            padding-top: var(--px-64);
-        }
-
-        .footer-navigation {
+    @media screen and (max-width: 40rem) {
+        .footer-grid {
             grid-template-columns: 1fr;
-            width: 100%;
-            gap: var(--px-28);
-        }
-
-        .footer-secondary {
-            gap: var(--px-6) var(--px-48);
-        }
-
-        .footer-primary {
-            margin-bottom: var(--px-48);
         }
     }
 </style>

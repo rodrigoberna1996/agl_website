@@ -32,40 +32,57 @@
                     <a href="/" class="nav-link">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#about" class="nav-link">Quiénes Somos</a>
+                    <a href="/about" class="nav-link">Quiénes Somos</a>
                 </li>
                 <li class="nav-item">
                     <a href="#portfolio" class="nav-link">Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#contact" class="nav-link">Contacto</a>
+                    <a href="/contact" class="nav-link">Contacto</a>
                 </li>
             </ul>
 
-            <a href="#contact" class="nav-link btns--secondary mobile-cta">
-                <span class="btn--secondary btn--secondary-unhovered"
-                    >Let's work together</span
-                >
-                <span
-                    class="btn--secondary btn--secondary-hovered"
+            <a
+                href="/#portfolio"
+                class="nav-link header-search-cta header-search-cta--mobile"
+                aria-label="Ver productos"
+            >
+                <svg
+                    class="header-search-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
                     aria-hidden="true"
                 >
-                    Let's work together
-                </span>
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                </svg>
             </a>
         </div>
 
-        <!-- Desktop CTA -->
-        <a href="#contact" class="btns--secondary desktop-cta">
-            <span class="btn--secondary btn--secondary-unhovered"
-                >Let's work together</span
-            >
-            <span
-                class="btn--secondary btn--secondary-hovered"
+        <a
+            href="/#portfolio"
+            class="header-search-cta header-search-cta--desktop"
+            aria-label="Ver productos"
+        >
+            <svg
+                class="header-search-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
                 aria-hidden="true"
             >
-                Let's work together
-            </span>
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+            </svg>
         </a>
 
         <button
@@ -163,7 +180,7 @@
         margin-inline: var(--px-16);
     }
 
-    .nav-link:not(.mobile-cta) {
+    .nav-link {
         display: flex;
         opacity: 0.65;
         transition: all var(--transition-short);
@@ -174,24 +191,40 @@
         transform: scale(0.98);
     }
 
-    .desktop-cta {
-        display: inline-block;
+    .header-search-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: inherit;
+        line-height: 0;
+        opacity: 0.65;
+        transition: opacity var(--transition-short);
+        padding: var(--px-8);
+        margin: calc(var(--px-8) * -1);
+        border-radius: var(--px-4);
+        text-decoration: none;
     }
 
-    .mobile-cta {
+    .header-search-cta:active {
+        opacity: 1;
+    }
+
+    .header-search-cta:focus-visible {
+        outline: 3px solid var(--color-focus);
+        outline-offset: var(--px-2);
+    }
+
+    .header-search-icon {
+        width: 1.375rem;
+        height: 1.375rem;
+    }
+
+    .header-search-cta--desktop {
+        display: inline-flex;
+    }
+
+    .header-search-cta--mobile {
         display: none;
-    }
-
-    .btn--secondary {
-        border-bottom: var(--px-2) solid currentColor;
-    }
-
-    .btn--secondary-unhovered {
-        display: block;
-    }
-
-    .btn--secondary-hovered {
-        display: block;
     }
 
     .scrolled {
@@ -230,6 +263,10 @@
         .nav-link:hover {
             opacity: 1;
         }
+
+        .header-search-cta:hover {
+            opacity: 1;
+        }
     }
 
     @media screen and (max-width: 64rem) {
@@ -245,16 +282,12 @@
             display: block;
         }
 
-        .desktop-cta {
+        .header-search-cta--desktop {
             display: none;
         }
 
-        .mobile-cta {
-            display: inline-block;
-        }
-
-        .btn--secondary {
-            font-size: var(--text-2xl);
+        .header-search-cta--mobile {
+            display: inline-flex;
         }
 
         .hamburger {
@@ -292,8 +325,13 @@
             margin: 0;
         }
 
-        .nav-link:not(.mobile-cta) {
+        .nav-link:not(.header-search-cta) {
             font-size: var(--text-2xl);
+        }
+
+        .header-search-cta--mobile .header-search-icon {
+            width: 1.625rem;
+            height: 1.625rem;
         }
 
         .hamburger.active .hamburger-line:nth-child(1) {
@@ -362,12 +400,9 @@
             }
         };
 
-        // Event delegation for nav links
         navContent.addEventListener("click", (e) => {
-            const target = e.target as HTMLElement;
-            if (target.classList.contains("nav-link")) {
-                closeMenu();
-            }
+            const el = (e.target as HTMLElement).closest(".nav-link");
+            if (el) closeMenu();
         });
 
         hamburger.addEventListener("click", toggleMenu);
