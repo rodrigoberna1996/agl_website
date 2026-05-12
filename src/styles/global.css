@@ -216,3 +216,33 @@ p {
     margin-bottom: var(--px-32);
   }
 }
+
+/* #portfolio: sin padding horizontal en todos los anchos (los `section { padding }`
+   en media queries usan shorthand y anulaban solo `padding-inline` del componente). */
+section#portfolio {
+  padding-inline: 0;
+  padding-block: var(--px-96);
+}
+
+@media screen and (max-width: 64rem) {
+  section#portfolio {
+    padding-inline: 0;
+    padding-block: var(--px-80);
+  }
+}
+
+@media screen and (max-width: 42.188rem) {
+  section#portfolio {
+    padding-inline: 0;
+    padding-block: var(--px-64);
+  }
+}
+
+/* Sin max-width centrado: el carrusel usa todo el ancho del viewport (el section ya no tiene padding lateral). */
+#portfolio .section-container {
+  max-width: none;
+  width: 100%;
+  margin-inline: 0;
+  box-sizing: border-box;
+}
+

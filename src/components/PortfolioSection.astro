@@ -1,11 +1,17 @@
 ---
 import BaseSwiper from "./BaseSwiper.astro";
 import { Image } from "astro:assets";
-import before1Image from "/src/assets/images/before1.png";
+import type { ImageMetadata } from "astro";
 import after1Image from "/src/assets/images/after1.png";
-import before2Image from "/src/assets/images/before2.png";
 import after2Image from "/src/assets/images/after2.png";
 import { getPortfolioProjects } from "@lib/wordpress";
+
+interface Props {
+    /** Oculta la etiqueta PORTFOLIO y el título (p. ej. cuando va encima del hero). */
+    hideSectionHeading?: boolean;
+}
+
+const { hideSectionHeading = false } = Astro.props;
 
 type ProjectImage = {
     src: ImageMetadata | string;
@@ -15,7 +21,6 @@ type ProjectImage = {
 type Project = {
     id: number;
     images: {
-        before: ProjectImage;
         after: ProjectImage;
     };
     info: {
@@ -24,14 +29,54 @@ type Project = {
     };
 };
 
-const staticProjects: Project[] = [
+const catalogGlob = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/images/catalog/*.{jpeg,jpg}",
+    { eager: true },
+);
+
+function fileNameFromPath(path: string): string {
+    const parts = path.split("/");
+    return parts[parts.length - 1] ?? path;
+}
+
+function catalogPathSortKey(path: string): number {
+    const name = fileNameFromPath(path);
+    const match = name.match(/(\d+)/);
+    return match ? parseInt(match[1], 10) : 9999;
+}
+
+const catalogEntries = Object.entries(catalogGlob).sort(
+    ([pathA], [pathB]) =>
+        catalogPathSortKey(pathA) - catalogPathSortKey(pathB) ||
+        pathA.localeCompare(pathB),
+);
+
+const catalogProjects: Project[] = catalogEntries.map(
+    ([path, mod], index) => ({
+        id: index + 1,
+        images: {
+            after: {
+                src: mod.default,
+                alt: `Producto del catálogo AGL — ${fileNameFromPath(path)}`,
+            },
+        },
+        info: {
+            challenge: {
+                title: "Producto",
+                text: "Consulte disponibilidad, medidas y acabados con nuestro equipo de ventas.",
+            },
+            result: {
+                title: "Catálogo",
+                text: "Referencia de nuestro catálogo. Deslice para ver más productos.",
+            },
+        },
+    }),
+);
+
+const fallbackProjects: Project[] = [
     {
         id: 1,
         images: {
-            before: {
-                src: before1Image,
-                alt: "Unfinished, under renovation with construction tools, exposed wiring, and partially installed marble-patterned tiles.",
-            },
             after: {
                 src: after1Image,
                 alt: "A modern, open-concept living space with a wooden table, chairs, and a metal staircase. The room is lit by ceiling lights and natural sunlight from large windows.",
@@ -51,10 +96,6 @@ const staticProjects: Project[] = [
     {
         id: 2,
         images: {
-            before: {
-                src: before2Image,
-                alt: "An older kitchen with white cabinets, beige tile flooring, and white appliances.",
-            },
             after: {
                 src: after2Image,
                 alt: "A modern kitchen with dark wood cabinets, stainless steel appliances, and a stone backsplash.",
@@ -73,16 +114,15 @@ const staticProjects: Project[] = [
     },
 ];
 
+const staticProjects: Project[] =
+    catalogProjects.length > 0 ? catalogProjects : fallbackProjects;
+
 const wpProjects = await getPortfolioProjects();
 
 const projects: Project[] = wpProjects
     ? wpProjects.map((p) => ({
           id: p.id,
           images: {
-              before: {
-                  src: p.acf.before_image ? p.acf.before_image.url : "",
-                  alt: p.acf.before_image ? p.acf.before_image.alt : "",
-              },
               after: {
                   src: p.acf.after_image ? p.acf.after_image.url : "",
                   alt: p.acf.after_image ? p.acf.after_image.alt : "",
@@ -104,51 +144,38 @@ const projects: Project[] = wpProjects
 
 <section id="portfolio" class="portfolio">
     <div class="section-container">
-        <span class="section-tag">PORTFOLIO</span>
-        <h2 class="section-title">See the transformation.</h2>
-        <BaseSwiper sliderName="portfolio" beforeAfter>
+        {
+            !hideSectionHeading && (
+                <>
+                    <span class="section-tag">PORTFOLIO</span>
+                    <h2 class="section-title">See the transformation.</h2>
+                </>
+            )
+        }
+        <BaseSwiper sliderName="portfolio" navigation={false}>
             {
-                projects.map((project) => (
+                projects.map((project, index) => (
                     <div class="swiper-slide">
                         <div class="project-image">
-                            {typeof project.images.before.src === "string" ? (
-                                <img
-                                    class="image before"
-                                    src={project.images.before.src}
-                                    alt={project.images.before.alt}
-                                    width="800"
-                                    loading="lazy"
-                                    decoding="async"
-                                    aria-hidden="true"
-                                />
-                            ) : (
-                                <Image
-                                    class="image before"
-                                    src={project.images.before.src}
-                                    alt={project.images.before.alt}
-                                    width={800}
-                                    aria-hidden="true"
-                                />
-                            )}
                             {typeof project.images.after.src === "string" ? (
                                 <img
-                                    class="image after active"
+                                    class="image"
                                     src={project.images.after.src}
                                     alt={project.images.after.alt}
                                     width="1144"
                                     height="800"
-                                    loading="lazy"
+                                    loading={index === 0 ? "eager" : "lazy"}
                                     decoding="async"
-                                    aria-hidden="false"
                                 />
                             ) : (
                                 <Image
-                                    class="image after active"
+                                    class="image"
                                     src={project.images.after.src}
                                     alt={project.images.after.alt}
                                     width={1144}
                                     height={800}
-                                    aria-hidden="false"
+                                    loading={index === 0 ? "eager" : "lazy"}
+                                    decoding="async"
                                 />
                             )}
                         </div>
@@ -178,15 +205,16 @@ const projects: Project[] = wpProjects
 </section>
 
 <style>
+    /* Sin flechas: sin padding lateral extra en el swiper */
     :global(.portfolio-swiper) {
-        padding-inline: var(--px-64);
+        padding-inline: 0;
         position: relative;
     }
 
     .swiper-slide {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: var(--px-64);
+        gap: clamp(var(--px-32), 4vw, var(--px-64));
         opacity: 0;
         transform: scale(0.75);
         transition: all var(--transition-long);
@@ -216,12 +244,6 @@ const projects: Project[] = wpProjects
         width: 100%;
         height: 100%;
         object-fit: cover;
-        opacity: 0;
-        transition: opacity var(--transition-long);
-    }
-
-    .image.active {
-        opacity: 1;
     }
 
     .project-info {
@@ -262,10 +284,6 @@ const projects: Project[] = wpProjects
     }
 
     @media screen and (max-width: 55rem) {
-        :global(.portfolio-swiper) {
-            padding-inline: 0;
-        }
-
         .swiper-slide {
             grid-template-columns: 1fr;
             gap: var(--px-32);
@@ -279,58 +297,14 @@ const projects: Project[] = wpProjects
     function initPortfolioSlider() {
         const portfolioSwiper = initSwiper("portfolio", {
             spaceBetween: 30,
-            navigation: {
-                nextEl: ".portfolio-next",
-                prevEl: ".portfolio-prev",
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
             },
             pagination: {
                 el: ".portfolio-pagination",
                 clickable: true,
             },
-        });
-
-        const updateSlideView = (view: string, slide: HTMLElement) => {
-            const images = slide.querySelectorAll(".image");
-
-            images.forEach((img) => {
-                if (img.classList.contains(view)) {
-                    img.classList.add("active");
-                    img.setAttribute("aria-hidden", "false");
-                } else {
-                    img.classList.remove("active");
-                    img.setAttribute("aria-hidden", "true");
-                }
-            });
-        };
-
-        document.addEventListener("click", (e) => {
-            const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(
-                ".toggle-btn",
-            );
-            if (!btn) return;
-
-            document
-                .querySelector(".toggle-btn.active")
-                ?.classList.remove("active");
-            btn.classList.add("active");
-
-            const view = btn.dataset.view;
-            const currentSlide =
-                portfolioSwiper.slides[portfolioSwiper.activeIndex];
-            if (currentSlide && view) updateSlideView(view, currentSlide);
-        });
-
-        portfolioSwiper.on("slideChangeTransitionStart", () => {
-            const activeSlide =
-                portfolioSwiper.slides[portfolioSwiper.activeIndex];
-            if (activeSlide) updateSlideView("after", activeSlide);
-
-            document
-                .querySelector(".toggle-btn.active")
-                ?.classList.remove("active");
-            document
-                .querySelector('.toggle-btn[data-view="after"]')
-                ?.classList.add("active");
         });
 
         return () => {

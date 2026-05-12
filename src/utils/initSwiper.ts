@@ -1,10 +1,10 @@
 import Swiper from "swiper";
-import { Navigation, Pagination, Keyboard } from "swiper/modules";
+import { Autoplay, Navigation, Pagination, Keyboard } from "swiper/modules";
 import type { SwiperOptions } from "swiper/types";
 
 export function initSwiper(sliderName: string, swiperConfig: SwiperOptions) {
   return new Swiper(`.${sliderName}-swiper`, {
-    modules: [Navigation, Pagination, Keyboard],
+    modules: [Navigation, Pagination, Keyboard, Autoplay],
     observer: true,
     observeParents: true,
     speed: 700,
