@@ -29,50 +29,6 @@ type Project = {
     };
 };
 
-const catalogGlob = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/assets/images/catalog/*.{jpeg,jpg}",
-    { eager: true },
-);
-
-function fileNameFromPath(path: string): string {
-    const parts = path.split("/");
-    return parts[parts.length - 1] ?? path;
-}
-
-function catalogPathSortKey(path: string): number {
-    const name = fileNameFromPath(path);
-    const match = name.match(/(\d+)/);
-    return match ? parseInt(match[1], 10) : 9999;
-}
-
-const catalogEntries = Object.entries(catalogGlob).sort(
-    ([pathA], [pathB]) =>
-        catalogPathSortKey(pathA) - catalogPathSortKey(pathB) ||
-        pathA.localeCompare(pathB),
-);
-
-const catalogProjects: Project[] = catalogEntries.map(
-    ([path, mod], index) => ({
-        id: index + 1,
-        images: {
-            after: {
-                src: mod.default,
-                alt: `Producto del catálogo AGL — ${fileNameFromPath(path)}`,
-            },
-        },
-        info: {
-            challenge: {
-                title: "Producto",
-                text: "Consulte disponibilidad, medidas y acabados con nuestro equipo de ventas.",
-            },
-            result: {
-                title: "Catálogo",
-                text: "Referencia de nuestro catálogo. Deslice para ver más productos.",
-            },
-        },
-    }),
-);
-
 const fallbackProjects: Project[] = [
     {
         id: 1,
@@ -114,8 +70,7 @@ const fallbackProjects: Project[] = [
     },
 ];
 
-const staticProjects: Project[] =
-    catalogProjects.length > 0 ? catalogProjects : fallbackProjects;
+const staticProjects: Project[] = fallbackProjects;
 
 const wpProjects = await getPortfolioProjects();
 

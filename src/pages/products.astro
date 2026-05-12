@@ -1,0 +1,13 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ProductList from "@components/ProductList.astro";
+import { SITE } from "@consts";
+
+const pageTitle = `Productos | ${SITE.COMPANY_NAME}`;
+const pageDescription =
+    "Catálogo de productos AGL Legaspi: aceites, lubricantes y referencias de nuestra línea.";
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+    <ProductList />
+</BaseLayout>

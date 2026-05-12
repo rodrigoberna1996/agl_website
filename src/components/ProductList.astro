@@ -1,0 +1,125 @@
+---
+import { Image } from "astro:assets";
+import { getCatalogItems } from "@lib/catalog";
+
+const items = getCatalogItems();
+---
+
+<section class="product-list-section" aria-labelledby="product-list-heading">
+    <div class="section-container">
+        <h1 id="product-list-heading" class="section-title product-list-title">
+            Catálogo de productos
+        </h1>
+        <p class="product-list-intro">
+            Referencias disponibles. Para cotización o ficha técnica, contáctenos.
+        </p>
+
+        {
+            items.length === 0 ? (
+                <p class="product-list-empty">
+                    No hay imágenes en el catálogo por el momento.
+                </p>
+            ) : (
+                <ul class="product-list">
+                    {items.map((item) => (
+                        <li class="product-list__item">
+                            <figure class="product-card">
+                                <div class="product-card__media">
+                                    <Image
+                                        class="product-card__image"
+                                        src={item.image}
+                                        alt={`Producto AGL — ${item.fileName}`}
+                                        width={item.image.width}
+                                        height={item.image.height}
+                                        loading="lazy"
+                                        decoding="async"
+                                        sizes="(max-width: 42rem) 100vw, (max-width: 64rem) 50vw, 25vw"
+                                    />
+                                </div>
+                                <figcaption class="product-card__caption">
+                                    {item.fileName.replace(/\.(jpe?g)$/i, "")}
+                                </figcaption>
+                            </figure>
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+    </div>
+</section>
+
+<style>
+    .product-list-section {
+        padding-block: var(--px-80) var(--px-96);
+    }
+
+    .product-list-title {
+        margin-bottom: var(--px-24);
+    }
+
+    .product-list-intro {
+        max-width: 40rem;
+        margin-bottom: var(--px-48);
+        font-size: var(--text-lg);
+    }
+
+    .product-list-empty {
+        opacity: 0.75;
+    }
+
+    .product-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--px-32);
+    }
+
+    .product-card {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--px-12);
+        height: 100%;
+    }
+
+    .product-card__media {
+        position: relative;
+        aspect-ratio: 1;
+        overflow: hidden;
+        border-radius: var(--px-4);
+        background: rgba(0, 0, 0, 0.06);
+    }
+
+    .product-card__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .product-card__caption {
+        font-size: var(--text-sm);
+        font-weight: 500;
+        line-height: 1.4;
+        word-break: break-word;
+    }
+
+    @media screen and (max-width: 64rem) {
+        .product-list {
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--px-24);
+        }
+    }
+
+    @media screen and (max-width: 42.188rem) {
+        .product-list-section {
+            padding-block: var(--px-64) var(--px-80);
+        }
+
+        .product-list {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
