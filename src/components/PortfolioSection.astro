@@ -4,10 +4,11 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import after1Image from "/src/assets/images/after1.png";
 import after2Image from "/src/assets/images/after2.png";
+import agl43HeroImage from "/src/assets/images/catalog/agl_43.jpeg";
 import { getPortfolioProjects } from "@lib/wordpress";
 
 interface Props {
-    /** Oculta la etiqueta PORTFOLIO y el título (p. ej. cuando va encima del hero). */
+    /** Oculta la etiqueta PORTFOLIO y el título (p. ej. cuando va encima del bloque de video). */
     hideSectionHeading?: boolean;
 }
 
@@ -27,6 +28,27 @@ type Project = {
         challenge: { title: string; text: string };
         result: { title: string; text: string };
     };
+};
+
+/** Primera vista del carrusel `#hero`: referencia de producto AGL. */
+const heroSpotlight: Project = {
+    id: 0,
+    images: {
+        after: {
+            src: agl43HeroImage,
+            alt: "Producto AGL Legaspi — referencia de catálogo",
+        },
+    },
+    info: {
+        challenge: {
+            title: "AGL Legaspi",
+            text: "Aceites y lubricantes con respaldo profesional. Distribución Total ELF y soluciones de lubricación.",
+        },
+        result: {
+            title: "Cobertura",
+            text: "CDMX, Estado de México, Morelos y más. Consulte disponibilidad con nuestro equipo.",
+        },
+    },
 };
 
 const fallbackProjects: Project[] = [
@@ -70,34 +92,39 @@ const fallbackProjects: Project[] = [
     },
 ];
 
-const staticProjects: Project[] = fallbackProjects;
+const staticProjects: Project[] = [heroSpotlight, ...fallbackProjects];
 
 const wpProjects = await getPortfolioProjects();
 
-const projects: Project[] = wpProjects
-    ? wpProjects.map((p) => ({
-          id: p.id,
-          images: {
-              after: {
-                  src: p.acf.after_image ? p.acf.after_image.url : "",
-                  alt: p.acf.after_image ? p.acf.after_image.alt : "",
+const wpMapped: Project[] | null =
+    wpProjects && wpProjects.length > 0
+        ? wpProjects.map((p) => ({
+              id: p.id,
+              images: {
+                  after: {
+                      src: p.acf.after_image ? p.acf.after_image.url : "",
+                      alt: p.acf.after_image ? p.acf.after_image.alt : "",
+                  },
               },
-          },
-          info: {
-              challenge: {
-                  title: p.acf.challenge_title || "Client's Challenge",
-                  text: p.acf.challenge_text,
+              info: {
+                  challenge: {
+                      title: p.acf.challenge_title || "Client's Challenge",
+                      text: p.acf.challenge_text,
+                  },
+                  result: {
+                      title: p.acf.result_title || "Result",
+                      text: p.acf.result_text,
+                  },
               },
-              result: {
-                  title: p.acf.result_title || "Result",
-                  text: p.acf.result_text,
-              },
-          },
-      }))
+          }))
+        : null;
+
+const projects: Project[] = wpMapped
+    ? [heroSpotlight, ...wpMapped]
     : staticProjects;
 ---
 
-<section id="portfolio" class="portfolio">
+<section id="hero" class="portfolio">
     <div class="section-container">
         {
             !hideSectionHeading && (
@@ -133,6 +160,25 @@ const projects: Project[] = wpProjects
                                     decoding="async"
                                 />
                             )}
+                            {/* Overlay de texto visible solo en móvil */}
+                            <div class="project-info-overlay" aria-hidden="true">
+                                <div class="info-section">
+                                    <h3 class="section-subtitle info-title">
+                                        {project.info.challenge.title}
+                                    </h3>
+                                    <p class="info-text">
+                                        {project.info.challenge.text}
+                                    </p>
+                                </div>
+                                <div class="info-section">
+                                    <h3 class="section-subtitle info-title">
+                                        {project.info.result.title}
+                                    </h3>
+                                    <p class="info-text">
+                                        {project.info.result.text}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                         <div class="project-info">
                             <div class="info-section">
@@ -161,18 +207,44 @@ const projects: Project[] = wpProjects
 
 <style>
     /* Sin flechas: sin padding lateral extra en el swiper */
-    :global(.portfolio-swiper) {
+    :global(#hero.portfolio .portfolio-showcase) {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    /* Swiper necesita height explícito (no solo min-height) para que
+       height:100% en wrapper/slides resuelva. Usamos viewport units directas. */
+    :global(#hero.portfolio .portfolio-swiper) {
+        width: 100%;
         padding-inline: 0;
         position: relative;
+        height: calc(65vh - 6rem);
+        height: calc(65svh - 6rem);
+    }
+
+    :global(#hero.portfolio .portfolio-swiper .swiper-wrapper) {
+        height: 100%;
+        align-items: stretch;
+    }
+
+    :global(#hero.portfolio .portfolio-swiper .swiper-slide) {
+        height: 100%;
+        box-sizing: border-box;
     }
 
     .swiper-slide {
         display: grid;
         grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        align-items: stretch;
         gap: clamp(var(--px-32), 4vw, var(--px-64));
         opacity: 0;
         transform: scale(0.75);
         transition: all var(--transition-long);
+        height: 100%;
+        box-sizing: border-box;
     }
 
     .swiper-slide-active {
@@ -188,60 +260,108 @@ const projects: Project[] = wpProjects
 
     .project-image {
         position: relative;
-        min-height: 25rem;
+        height: 100%;
         overflow: hidden;
     }
 
     .image {
         position: absolute;
-        top: 0;
-        left: 0;
+        inset: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center;
+    }
+
+    /* Overlay: solo visible en móvil */
+    .project-info-overlay {
+        display: none;
     }
 
     .project-info {
+        min-height: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        gap: var(--px-32);
+        gap: var(--px-24);
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-inline: var(--px-32);
+        box-sizing: border-box;
     }
 
     .info-section {
         display: flex;
         flex-direction: column;
-        gap: var(--px-16);
+        gap: var(--px-12);
+        flex-shrink: 0;
+    }
+
+    .info-text {
+        margin: 0;
+        overflow-wrap: anywhere;
     }
 
     .info-title {
         margin-bottom: 0;
     }
 
-    .view-details {
-        display: inline-flex;
-        font-weight: 500;
-        margin-top: auto;
-    }
-
-    .btn--secondary {
-        border-bottom: var(--px-2) solid currentColor;
-    }
-
-    .btn--secondary-hovered {
-        display: block;
-    }
-
     @media screen and (max-width: 64rem) {
         .swiper-slide {
             gap: var(--px-32);
         }
+
+        .project-info {
+            padding-inline: var(--px-24);
+        }
     }
 
     @media screen and (max-width: 55rem) {
+        /* En móvil el slide es solo imagen a pantalla completa */
         .swiper-slide {
             grid-template-columns: 1fr;
-            gap: var(--px-32);
+            grid-template-rows: 1fr;
+            gap: 0;
+            height: 100%;
+        }
+
+        /* La columna de texto del desktop se oculta */
+        .project-info {
+            display: none;
+        }
+
+        /* El overlay aparece superpuesto sobre la imagen */
+        .project-info-overlay {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            gap: var(--px-12);
+            position: absolute;
+            inset: 0;
+            padding: var(--px-24) var(--px-20);
+            background: linear-gradient(
+                to top,
+                rgba(0, 0, 0, 0.72) 0%,
+                rgba(0, 0, 0, 0.28) 55%,
+                transparent 100%
+            );
+            color: #fff;
+            box-sizing: border-box;
+        }
+
+        .project-info-overlay .info-title {
+            color: #fff;
+            margin-bottom: 0;
+        }
+
+        .project-info-overlay .info-text {
+            opacity: 0.88;
+            font-size: var(--text-sm);
+            line-height: 1.5;
+        }
+
+        .project-info-overlay .info-section {
+            gap: var(--px-4);
         }
     }
 </style>
@@ -251,6 +371,7 @@ const projects: Project[] = wpProjects
 
     function initPortfolioSlider() {
         const portfolioSwiper = initSwiper("portfolio", {
+            autoHeight: false,
             spaceBetween: 30,
             autoplay: {
                 delay: 5000,

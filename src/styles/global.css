@@ -217,32 +217,43 @@ p {
   }
 }
 
-/* #portfolio: sin padding horizontal en todos los anchos (los `section { padding }`
-   en media queries usan shorthand y anulaban solo `padding-inline` del componente). */
-section#portfolio {
+/* #hero (carrusel superior): sin padding horizontal; respeta navbar fijo; alto mínimo ~65% viewport útil. */
+section#hero.portfolio {
   padding-inline: 0;
-  padding-block: var(--px-96);
+  padding-top: var(--h-menu-bar);
+  padding-bottom: clamp(var(--px-24), 3svh, var(--px-48));
+  min-height: calc(65vh + var(--h-menu-bar));
+  min-height: calc(65svh + var(--h-menu-bar));
+  scroll-margin-top: var(--h-menu-bar);
+  display: flex;
+  flex-direction: column;
 }
 
 @media screen and (max-width: 64rem) {
-  section#portfolio {
+  section#hero.portfolio {
     padding-inline: 0;
-    padding-block: var(--px-80);
+    padding-top: var(--h-menu-bar);
+    padding-bottom: clamp(var(--px-24), 3svh, var(--px-40));
   }
 }
 
 @media screen and (max-width: 42.188rem) {
-  section#portfolio {
+  section#hero.portfolio {
     padding-inline: 0;
-    padding-block: var(--px-64);
+    padding-top: var(--h-menu-bar);
+    padding-bottom: clamp(var(--px-20), 2.5svh, var(--px-36));
   }
 }
 
 /* Sin max-width centrado: el carrusel usa todo el ancho del viewport (el section ya no tiene padding lateral). */
-#portfolio .section-container {
+#hero.portfolio .section-container {
   max-width: none;
   width: 100%;
   margin-inline: 0;
   box-sizing: border-box;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 

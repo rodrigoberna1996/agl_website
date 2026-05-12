@@ -1,10 +1,14 @@
-<section id="hero" class="hero">
+---
+import heroVideoPoster from "/src/assets/images/catalog/agl_43.jpeg";
+---
+
+<section id="intro" class="hero">
     <div class="section-container hero-container">
         <div class="video-wrapper">
             <video
                 class="media"
                 preload="auto"
-                poster="hero-video-poster.webp"
+                poster={heroVideoPoster.src}
                 autoplay
                 loop
                 muted

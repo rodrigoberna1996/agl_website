@@ -6,9 +6,10 @@ import HowItWorksSection from '@components/HowItWorksSection.astro';
 import PortfolioSection from '@components/PortfolioSection.astro';
 import TestimonialsSection from '@components/TestimonialsSection.astro';
 import FAQ from '@components/FAQ.astro';
+import heroVideoPoster from '/src/assets/images/catalog/agl_43.jpeg';
 ---
 
-<BaseLayout>
+<BaseLayout preloadLcpImage={heroVideoPoster.src}>
   <PortfolioSection hideSectionHeading />
   <HeroSection />
   <TestimonialsSection />
