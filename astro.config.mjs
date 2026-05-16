@@ -58,7 +58,7 @@ export default defineConfig({
         "form-action 'self'",
       ],
       styleDirective: {
-        resources: ["'self'", "'unsafe-hashes'"],
+        resources: ["'self'", "'unsafe-inline'"],
         hashes: [
           "sha256-WUDfWmQP7MHmJVPG87eP2N5ZE7RjDV9+6B/uKHMlSAE=",
           "sha256-P+wlFJoxzaX+ilJ24YqyBBK/sG4spb5yZWdYMQspG1I=",

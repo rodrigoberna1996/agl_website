@@ -118,10 +118,7 @@ const getImageDimensions = (src: ImageMetadata | string) => {
 
                     return (
                         <div class="swiper-slide">
-                            <div
-                                class="project-image"
-                                style={`--image-aspect: ${imageDimensions.width} / ${imageDimensions.height}`}
-                            >
+                            <div class="project-image">
                                 {typeof project.images.after.src === "string" ? (
                                     <img
                                         class="image"
@@ -220,17 +217,17 @@ const getImageDimensions = (src: ImageMetadata | string) => {
     }
 
     .project-image {
-        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
-        aspect-ratio: var(--image-aspect);
         overflow: hidden;
     }
 
     .image {
-        position: absolute;
-        inset: 0;
         width: 100%;
-        height: 100%;
+        height: auto;
+        display: block;
         object-fit: contain;
         object-position: center;
     }
