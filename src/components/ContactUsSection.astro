@@ -1,5 +1,5 @@
 ---
-import { CONTACT_LOCATIONS, SITE, toTelHref } from '@consts';
+import { CONTACT_LOCATIONS, toTelHref } from '@consts';
 
 type Props = {
   pageLayout?: boolean;
@@ -85,12 +85,9 @@ const { pageLayout = false } = Astro.props;
         </form>
       </div>
 
-      <aside class="contact-split__channels" aria-label="Correo y teléfonos">
-        <h3 class="contact-channels-title">Escríbanos o llámenos</h3>
+      <aside class="contact-split__channels" aria-label="Teléfonos de contacto">
+        <h3 class="contact-channels-title">Hable con nuestro equipo</h3>
         <address class="contact-channels-address">
-          <a href={`mailto:${SITE.EMAIL}`} class="contact-detail contact-email"
-            >{SITE.EMAIL}</a
-          >
           <div class="contact-channels-grid">
             {
               CONTACT_LOCATIONS.map(loc => (
@@ -224,7 +221,7 @@ const { pageLayout = false } = Astro.props;
   }
 
   .contact-branches {
-    padding-top: var(--px-48);
+    padding: var(--px-48) 0 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
 
@@ -349,11 +346,6 @@ const { pageLayout = false } = Astro.props;
 
   .contact-detail:active {
     opacity: 1;
-  }
-
-  .contact-email {
-    display: inline-block;
-    margin-bottom: 0;
   }
 
   @media (hover: hover) and (pointer: fine) {
