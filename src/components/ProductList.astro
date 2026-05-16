@@ -1,70 +1,163 @@
 ---
 import { Image } from "astro:assets";
-import { getCatalogItems } from "@lib/catalog";
+import { getCatalogItems, CATEGORY_LABELS } from "@lib/catalog";
+import type { ProductCategory } from "@lib/catalog";
 
 const items = getCatalogItems();
+
+const counts: Record<string, number> = { all: items.length };
+for (const item of items) {
+    counts[item.category] = (counts[item.category] ?? 0) + 1;
+}
+
+const filters: { key: string; label: string; count: number }[] = [
+    { key: "all", label: "Todos", count: counts.all },
+    ...(Object.entries(CATEGORY_LABELS) as [ProductCategory, string][]).map(
+        ([key, label]) => ({ key, label, count: counts[key] ?? 0 }),
+    ),
+];
 ---
 
 <section class="product-list-section" aria-labelledby="product-list-heading">
     <div class="section-container">
-        <h1 id="product-list-heading" class="section-title product-list-title">
-            Catálogo de productos
-        </h1>
-        <p class="product-list-intro">
-            Referencias disponibles. Para cotización o ficha técnica, contáctenos.
-        </p>
+        <header class="product-list-header">
+            <h1 id="product-list-heading" class="section-title product-list-title">
+                Catálogo de productos
+            </h1>
+        </header>
+
+        <nav class="filter-bar" aria-label="Filtrar por categoria" role="group">
+            {filters.map((f) => (
+                <button
+                    class:list={["filter-btn", { active: f.key === "all" }]}
+                    data-filter={f.key}
+                    type="button"
+                    aria-pressed={f.key === "all" ? "true" : "false"}
+                >
+                    {f.label}
+                    <span class="filter-count">{f.count}</span>
+                </button>
+            ))}
+        </nav>
 
         {
             items.length === 0 ? (
                 <p class="product-list-empty">
-                    No hay imágenes en el catálogo por el momento.
+                    No hay productos en el catalogo por el momento.
                 </p>
             ) : (
-                <ul class="product-list">
+                <ul class="product-list" id="product-grid">
                     {items.map((item) => (
-                        <li class="product-list__item">
-                            <figure class="product-card">
+                        <li class="product-list__item" data-category={item.category}>
+                            <article class="product-card">
                                 <div class="product-card__media">
                                     <Image
                                         class="product-card__image"
                                         src={item.image}
-                                        alt={`Producto AGL — ${item.fileName}`}
+                                        alt={item.name}
                                         width={item.image.width}
                                         height={item.image.height}
                                         loading="lazy"
                                         decoding="async"
-                                        sizes="(max-width: 42rem) 100vw, (max-width: 64rem) 50vw, 25vw"
+                                        sizes="(max-width: 42rem) 50vw, (max-width: 64rem) 33vw, 25vw"
                                     />
                                 </div>
-                                <figcaption class="product-card__caption">
-                                    {item.fileName.replace(/\.(jpe?g)$/i, "")}
-                                </figcaption>
-                            </figure>
+                                <div class="product-card__body">
+                                    <div class="product-card__meta">
+                                        <span class:list={["product-card__brand", `brand--${item.brand.toLowerCase()}`]}>
+                                            {item.brand}
+                                        </span>
+                                        <span class="product-card__category">
+                                            {CATEGORY_LABELS[item.category]}
+                                        </span>
+                                    </div>
+                                    <h3 class="product-card__name">{item.name}</h3>
+                                    <p class="product-card__desc">{item.description}</p>
+                                </div>
+                            </article>
                         </li>
                     ))}
                 </ul>
             )
         }
+
+        <p class="filter-empty" id="filter-empty" hidden>
+            No hay productos en esta categoria.
+        </p>
     </div>
 </section>
 
 <style>
-    .product-list-section {
-        padding-block: var(--px-80) var(--px-96);
+    section.product-list-section {
+        padding-top: calc(var(--h-menu-bar) + var(--px-64));
+        padding-bottom: var(--px-96);
+    }
+
+    .product-list-header {
+        max-width: 44rem;
+        margin-bottom: var(--px-48);
     }
 
     .product-list-title {
-        margin-bottom: var(--px-24);
-    }
-
-    .product-list-intro {
-        max-width: 40rem;
-        margin-bottom: var(--px-48);
-        font-size: var(--text-lg);
+        margin-bottom: 0;
     }
 
     .product-list-empty {
         opacity: 0.75;
+    }
+
+    .filter-bar {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--px-2);
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: var(--px-12);
+        padding: var(--px-4);
+        margin-bottom: var(--px-40);
+        flex-wrap: wrap;
+        row-gap: var(--px-4);
+    }
+
+    .filter-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--px-6);
+        padding: var(--px-8) var(--px-16);
+        border: none;
+        background: transparent;
+        border-radius: var(--px-8);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        transition: all var(--transition-short);
+        white-space: nowrap;
+    }
+
+    .filter-btn.active {
+        background: #fff;
+        color: var(--color-text-primary);
+        box-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.1),
+            0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    .filter-btn.active .filter-count {
+        background: rgba(0, 0, 0, 0.07);
+        color: var(--color-text-primary);
+    }
+
+    .filter-count {
+        font-size: 0.7rem;
+        font-weight: 600;
+        background: transparent;
+        border-radius: 999px;
+        padding: 0.1rem 0.45rem;
+        line-height: 1.7;
+        min-width: 1.3rem;
+        text-align: center;
+        transition: all var(--transition-short);
+        color: rgba(0, 0, 0, 0.35);
     }
 
     .product-list {
@@ -73,53 +166,225 @@ const items = getCatalogItems();
         padding: 0;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: var(--px-32);
+        gap: var(--px-20);
+    }
+
+    .product-list__item:nth-child(5n + 1) {
+        grid-column: span 2;
     }
 
     .product-card {
-        margin: 0;
+        width: 100%;
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.07);
+        border-radius: var(--px-12);
+        overflow: hidden;
         display: flex;
         flex-direction: column;
-        gap: var(--px-12);
-        height: 100%;
+        transition:
+            box-shadow var(--transition-medium),
+            transform var(--transition-medium);
     }
 
     .product-card__media {
-        position: relative;
         aspect-ratio: 1;
         overflow: hidden;
-        border-radius: var(--px-4);
-        background: rgba(0, 0, 0, 0.06);
+        background: #fafafa;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .product-list__item:nth-child(5n + 1) .product-card__media {
+        aspect-ratio: 2 / 1;
     }
 
     .product-card__image {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         display: block;
+        padding: var(--px-20);
     }
 
-    .product-card__caption {
+    .product-card__body {
+        padding: var(--px-14) var(--px-16) var(--px-18);
+        display: flex;
+        flex-direction: column;
+        gap: var(--px-4);
+        flex: 1;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .product-card__meta {
+        display: flex;
+        align-items: center;
+        gap: var(--px-6);
+        margin-bottom: var(--px-2);
+    }
+
+    .product-card__brand,
+    .product-card__category {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        padding: 0.18rem 0.45rem;
+        border-radius: 4px;
+        line-height: 1.6;
+    }
+
+    .brand--total {
+        background: #c8001a12;
+        color: #b0001a;
+    }
+
+    .brand--elf {
+        background: #00529b14;
+        color: #004a8c;
+    }
+
+    .product-card__category {
+        background: rgba(0, 0, 0, 0.05);
+        color: var(--color-text-secondary);
+    }
+
+    .product-card__name {
+        margin: 0;
         font-size: var(--text-sm);
-        font-weight: 500;
-        line-height: 1.4;
-        word-break: break-word;
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--color-text-primary);
+        letter-spacing: -0.01em;
+    }
+
+    .product-list__item:nth-child(5n + 1) .product-card__name {
+        font-size: var(--text-lg);
+    }
+
+    .product-card__desc {
+        margin: 0;
+        font-size: var(--text-xs);
+        line-height: 1.5;
+        color: var(--color-text-secondary);
+        opacity: 0.8;
+    }
+
+    .product-list-empty,
+    .filter-empty {
+        opacity: 0.55;
+        font-size: var(--text-lg);
+        padding: var(--px-64) 0;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .filter-btn:not(.active):hover {
+            background: rgba(0, 0, 0, 0.05);
+            color: rgba(0, 0, 0, 0.75);
+        }
+
+        .product-card:hover {
+            box-shadow:
+                0 8px 24px rgba(0, 0, 0, 0.08),
+                0 2px 6px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+        }
     }
 
     @media screen and (max-width: 64rem) {
+        section.product-list-section {
+            padding-top: calc(var(--h-menu-bar) + var(--px-56));
+            padding-bottom: var(--px-80);
+        }
+
+        .filter-bar {
+            width: 100%;
+        }
+
         .product-list {
             grid-template-columns: repeat(2, 1fr);
-            gap: var(--px-24);
+            gap: var(--px-16);
+        }
+
+        .product-list__item:nth-child(5n + 1) {
+            grid-column: span 2;
         }
     }
 
     @media screen and (max-width: 42.188rem) {
-        .product-list-section {
-            padding-block: var(--px-64) var(--px-80);
+        section.product-list-section {
+            padding-top: calc(var(--h-menu-bar) + var(--px-48));
+            padding-bottom: var(--px-64);
+        }
+
+        .filter-bar {
+            gap: var(--px-2);
+            margin-bottom: var(--px-24);
+        }
+
+        .filter-btn {
+            font-size: var(--text-xs);
+            padding: var(--px-6) var(--px-12);
         }
 
         .product-list {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--px-12);
+        }
+
+        .product-list__item:nth-child(5n + 1) {
+            grid-column: span 2;
+        }
+
+        .product-card__body {
+            padding: var(--px-10) var(--px-12) var(--px-14);
+            gap: var(--px-2);
+        }
+
+        .product-card__desc {
+            display: none;
+        }
+
+        .product-list__item:nth-child(5n + 1) .product-card__desc {
+            display: block;
         }
     }
 </style>
+
+<script>
+    function initFilter() {
+        const buttons = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+        const items = document.querySelectorAll<HTMLLIElement>(".product-list__item");
+        const empty = document.getElementById("filter-empty");
+
+        if (!buttons.length || !items.length) return;
+
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const filter = btn.dataset.filter ?? "all";
+
+                buttons.forEach((b) => {
+                    b.classList.toggle("active", b === btn);
+                    b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+                });
+
+                let visible = 0;
+                items.forEach((item) => {
+                    const show = filter === "all" || item.dataset.category === filter;
+                    if (show) {
+                        item.removeAttribute("hidden");
+                        visible++;
+                    } else {
+                        item.setAttribute("hidden", "");
+                    }
+                });
+
+                if (empty) empty.hidden = visible > 0;
+            });
+        });
+    }
+
+    initFilter();
+    document.addEventListener("astro:after-swap", initFilter);
+</script>

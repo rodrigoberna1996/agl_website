@@ -2,9 +2,7 @@
 import BaseSwiper from "./BaseSwiper.astro";
 import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
-import after1Image from "/src/assets/images/after1.png";
-import after2Image from "/src/assets/images/after2.png";
-import agl43HeroImage from "/src/assets/images/catalog/agl_43.png";
+import agl43HeroImage from "/src/assets/images/hero/hero_2.jpg";
 import { getPortfolioProjects } from "@lib/wordpress";
 
 interface Props {
@@ -41,56 +39,20 @@ const heroSpotlight: Project = {
     },
     info: {
         challenge: {
-            title: "AGL Legaspi",
-            text: "Aceites y lubricantes con respaldo profesional. Distribución Total ELF y soluciones de lubricación.",
+            title: "Lubricantes y aceites profesionales",
+            text: "Soluciones AGL Legaspi para talleres, flotillas e industria, con productos TotalEnergies ELF y asesoría para elegir el lubricante adecuado.",
         },
         result: {
-            title: "Cobertura",
-            text: "CDMX, Estado de México, Morelos y más. Consulte disponibilidad con nuestro equipo.",
+            title: "Cobertura y atención confiable",
+            text: "Atendemos CDMX, Estado de México, Morelos y zonas cercanas con disponibilidad, seguimiento y soporte especializado.",
         },
     },
 };
 
-const fallbackProjects: Project[] = [
-    {
-        id: 1,
-        images: {
-            after: {
-                src: after1Image,
-                alt: "A modern, open-concept living space with a wooden table, chairs, and a metal staircase. The room is lit by ceiling lights and natural sunlight from large windows.",
-            },
-        },
-        info: {
-            challenge: {
-                title: "Client's Challenge",
-                text: "We wanted to transform our unfinished space into a modern, functional home with an open-concept design that maximizes space, brings in plenty of natural light, and fits seamlessly into our daily lives.",
-            },
-            result: {
-                title: "Result",
-                text: "Our home now feels more open and airy. The transformation has expanded our living area, making every room feel larger and brighter. With a design that prioritizes natural light, our home is now perfectly set up for everyday living and family moments.",
-            },
-        },
-    },
-    {
-        id: 2,
-        images: {
-            after: {
-                src: after2Image,
-                alt: "A modern kitchen with dark wood cabinets, stainless steel appliances, and a stone backsplash.",
-            },
-        },
-        info: {
-            challenge: {
-                title: "Client's Challenge",
-                text: "Our kitchen felt outdated. The all-white design was plain, and the layout wasn't as functional as it could be. We wanted a space with better lighting that made cooking more enjoyable.",
-            },
-            result: {
-                title: "Result",
-                text: "Now, our kitchen feels completely renewed. The improved lighting makes the space brighter and more welcoming, while the new wood-style elements fit perfectly with our vision.",
-            },
-        },
-    },
-];
+const fallbackProjects: Project[] = [1, 2].map((id) => ({
+    ...heroSpotlight,
+    id,
+}));
 
 const staticProjects: Project[] = [heroSpotlight, ...fallbackProjects];
 
@@ -122,6 +84,19 @@ const wpMapped: Project[] | null =
 const projects: Project[] = wpMapped
     ? [heroSpotlight, ...wpMapped]
     : staticProjects;
+
+const getImageDimensions = (src: ImageMetadata | string) => {
+    if (typeof src === "string") {
+        return { width: 1144, height: 800 };
+    }
+
+    const width = Math.min(src.width, 1144);
+
+    return {
+        width,
+        height: Math.round((width * src.height) / src.width),
+    };
+};
 ---
 
 <section id="hero" class="portfolio">
@@ -136,51 +111,60 @@ const projects: Project[] = wpMapped
         }
         <BaseSwiper sliderName="portfolio" navigation={false}>
             {
-                projects.map((project, index) => (
-                    <div class="swiper-slide">
-                        <div class="project-image">
-                            {typeof project.images.after.src === "string" ? (
-                                <img
-                                    class="image"
-                                    src={project.images.after.src}
-                                    alt={project.images.after.alt}
-                                    width="1144"
-                                    height="800"
-                                    loading={index === 0 ? "eager" : "lazy"}
-                                    decoding="async"
-                                />
-                            ) : (
-                                <Image
-                                    class="image"
-                                    src={project.images.after.src}
-                                    alt={project.images.after.alt}
-                                    width={1144}
-                                    height={800}
-                                    loading={index === 0 ? "eager" : "lazy"}
-                                    decoding="async"
-                                />
-                            )}
-                        </div>
-                        <div class="project-info">
-                            <div class="info-section">
-                                <h3 class="section-subtitle info-title">
-                                    {project.info.challenge.title}
-                                </h3>
-                                <p class="info-text">
-                                    {project.info.challenge.text}
-                                </p>
+                projects.map((project, index) => {
+                    const imageDimensions = getImageDimensions(
+                        project.images.after.src,
+                    );
+
+                    return (
+                        <div class="swiper-slide">
+                            <div
+                                class="project-image"
+                                style={`--image-aspect: ${imageDimensions.width} / ${imageDimensions.height}`}
+                            >
+                                {typeof project.images.after.src === "string" ? (
+                                    <img
+                                        class="image"
+                                        src={project.images.after.src}
+                                        alt={project.images.after.alt}
+                                        width={imageDimensions.width}
+                                        height={imageDimensions.height}
+                                        loading={index === 0 ? "eager" : "lazy"}
+                                        decoding="async"
+                                    />
+                                ) : (
+                                    <Image
+                                        class="image"
+                                        src={project.images.after.src}
+                                        alt={project.images.after.alt}
+                                        width={imageDimensions.width}
+                                        height={imageDimensions.height}
+                                        loading={index === 0 ? "eager" : "lazy"}
+                                        decoding="async"
+                                    />
+                                )}
                             </div>
-                            <div class="info-section">
-                                <h3 class="section-subtitle info-title">
-                                    {project.info.result.title}
-                                </h3>
-                                <p class="info-text">
-                                    {project.info.result.text}
-                                </p>
+                            <div class="project-info">
+                                <div class="info-section">
+                                    <h3 class="section-subtitle info-title">
+                                        {project.info.challenge.title}
+                                    </h3>
+                                    <p class="info-text">
+                                        {project.info.challenge.text}
+                                    </p>
+                                </div>
+                                <div class="info-section">
+                                    <h3 class="section-subtitle info-title">
+                                        {project.info.result.title}
+                                    </h3>
+                                    <p class="info-text">
+                                        {project.info.result.text}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))
+                    );
+                })
             }
         </BaseSwiper>
     </div>
@@ -195,36 +179,32 @@ const projects: Project[] = wpMapped
         min-height: 0;
     }
 
-    /* Swiper necesita height explícito (no solo min-height) para que
-       height:100% en wrapper/slides resuelva. Usamos viewport units directas. */
     :global(#hero.portfolio .portfolio-swiper) {
         width: 100%;
         padding-inline: 0;
         position: relative;
-        height: calc(65vh - 6rem);
-        height: calc(65svh - 6rem);
+        height: auto;
     }
 
     :global(#hero.portfolio .portfolio-swiper .swiper-wrapper) {
-        height: 100%;
-        align-items: stretch;
+        height: auto;
+        align-items: center;
     }
 
     :global(#hero.portfolio .portfolio-swiper .swiper-slide) {
-        height: 100%;
+        height: auto;
         box-sizing: border-box;
     }
 
     .swiper-slide {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr;
-        align-items: stretch;
+        grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.85fr);
+        align-items: center;
         gap: clamp(var(--px-32), 4vw, var(--px-64));
         opacity: 0;
         transform: scale(0.75);
         transition: all var(--transition-long);
-        height: 100%;
+        height: auto;
         box-sizing: border-box;
     }
 
@@ -241,7 +221,8 @@ const projects: Project[] = wpMapped
 
     .project-image {
         position: relative;
-        height: 100%;
+        width: 100%;
+        aspect-ratio: var(--image-aspect);
         overflow: hidden;
     }
 
@@ -259,36 +240,57 @@ const projects: Project[] = wpMapped
         display: flex;
         flex-direction: column;
         justify-content: center;
-        gap: var(--px-24);
+        gap: clamp(var(--px-32), 4vw, var(--px-48));
         overflow-y: auto;
         overflow-x: hidden;
-        padding-inline: var(--px-32);
+        padding: clamp(var(--px-32), 5vw, var(--px-64));
         box-sizing: border-box;
+        background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.72)),
+            radial-gradient(circle at top left, rgba(0, 0, 0, 0.06), transparent 42%);
     }
 
     .info-section {
         display: flex;
         flex-direction: column;
-        gap: var(--px-12);
+        gap: var(--px-16);
         flex-shrink: 0;
+    }
+
+    .info-section + .info-section {
+        padding-top: clamp(var(--px-8), 1vw, var(--px-16));
     }
 
     .info-text {
         margin: 0;
+        max-width: 34rem;
+        color: rgba(0, 0, 0, 0.72);
+        font-size: clamp(1rem, 1.2vw, 1.125rem);
+        line-height: 1.7;
         overflow-wrap: anywhere;
     }
 
     .info-title {
         margin-bottom: 0;
+        max-width: 34rem;
+        color: var(--color-black, #000);
+        line-height: 1.18;
+        letter-spacing: normal;
+        text-wrap: balance;
+    }
+
+    .info-section:first-child .info-title {
+        font-size: clamp(1.875rem, 3.4vw, 3.75rem);
     }
 
     @media screen and (max-width: 64rem) {
         .swiper-slide {
+            grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
             gap: var(--px-32);
         }
 
         .project-info {
-            padding-inline: var(--px-24);
+            padding: var(--px-32) var(--px-24);
         }
     }
 
@@ -312,10 +314,7 @@ const projects: Project[] = wpMapped
             height: auto;
         }
 
-        /* Imagen con proporción 4:3 */
         .project-image {
-            height: auto;
-            aspect-ratio: 4 / 3;
             width: 100%;
         }
 
@@ -323,11 +322,10 @@ const projects: Project[] = wpMapped
         .project-info {
             display: flex;
             justify-content: flex-start;
-            padding: var(--px-20) var(--px-20) var(--px-24);
-            gap: var(--px-16);
+            padding: var(--px-28) var(--px-20) var(--px-32);
+            gap: var(--px-24);
             overflow-y: visible;
             background-color: var(--color-bg, #fff);
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
         }
     }
 </style>
@@ -337,21 +335,12 @@ const projects: Project[] = wpMapped
 
     function initPortfolioSlider() {
         const portfolioSwiper = initSwiper("portfolio", {
-            autoHeight: false,
+            autoHeight: true,
             spaceBetween: 30,
             autoplay: false,
             pagination: {
                 el: ".portfolio-pagination",
                 clickable: true,
-            },
-            // En móvil (≤880px ≈ 55rem) el slide tiene altura automática
-            breakpoints: {
-                0: {
-                    autoHeight: true,
-                },
-                880: {
-                    autoHeight: false,
-                },
             },
         });
 
