@@ -110,8 +110,9 @@ const filters: { key: string; label: string; count: number }[] = [
         display: inline-flex;
         align-items: center;
         gap: var(--px-2);
-        background: rgba(0, 0, 0, 0.05);
-        border-radius: var(--px-12);
+        background: var(--color-white);
+        border: 1px solid var(--color-border);
+        border-radius: 999px;
         padding: var(--px-4);
         margin-bottom: var(--px-40);
         flex-wrap: wrap;
@@ -128,23 +129,23 @@ const filters: { key: string; label: string; count: number }[] = [
         border-radius: var(--px-8);
         font-size: var(--text-sm);
         font-weight: 500;
-        color: rgba(0, 0, 0, 0.5);
+        color: var(--color-text-secondary);
         cursor: pointer;
         transition: all var(--transition-short);
         white-space: nowrap;
     }
 
     .filter-btn.active {
-        background: #fff;
-        color: var(--color-text-primary);
+        background: var(--color-brand-blue);
+        color: var(--color-white);
         box-shadow:
             0 1px 3px rgba(0, 0, 0, 0.1),
             0 1px 2px rgba(0, 0, 0, 0.06);
     }
 
     .filter-btn.active .filter-count {
-        background: rgba(0, 0, 0, 0.07);
-        color: var(--color-text-primary);
+        background: rgba(255, 255, 255, 0.18);
+        color: var(--color-white);
     }
 
     .filter-count {
@@ -176,8 +177,8 @@ const filters: { key: string; label: string; count: number }[] = [
     .product-card {
         width: 100%;
         background: #fff;
-        border: 1px solid rgba(0, 0, 0, 0.07);
-        border-radius: var(--px-12);
+        border: 1px solid var(--color-border);
+        border-radius: var(--px-16);
         overflow: hidden;
         display: flex;
         flex-direction: column;
@@ -189,7 +190,7 @@ const filters: { key: string; label: string; count: number }[] = [
     .product-card__media {
         aspect-ratio: 1;
         overflow: hidden;
-        background: #fafafa;
+        background: #f8fbff;
         flex-shrink: 0;
         display: flex;
         align-items: center;
@@ -236,13 +237,13 @@ const filters: { key: string; label: string; count: number }[] = [
     }
 
     .brand--total {
-        background: #c8001a12;
-        color: #b0001a;
+        background: rgba(237, 26, 58, 0.1);
+        color: var(--color-brand-red);
     }
 
     .brand--elf {
-        background: #00529b14;
-        color: #004a8c;
+        background: rgba(3, 78, 162, 0.1);
+        color: var(--color-brand-blue);
     }
 
     .product-card__category {
@@ -280,8 +281,8 @@ const filters: { key: string; label: string; count: number }[] = [
 
     @media (hover: hover) and (pointer: fine) {
         .filter-btn:not(.active):hover {
-            background: rgba(0, 0, 0, 0.05);
-            color: rgba(0, 0, 0, 0.75);
+            background: rgba(3, 78, 162, 0.1);
+            color: var(--color-brand-blue);
         }
 
         .product-card:hover {

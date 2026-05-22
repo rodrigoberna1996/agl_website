@@ -1,148 +1,139 @@
 ---
-import { Image } from "astro:assets";
-import consultationImage from "/src/assets/images/sections/consultation.jpg";
-import designImage from "/src/assets/images/sections/design.jpg";
-import transformImage from "/src/assets/images/sections/transform.jpg";
-
-const processSteps = [
+const serviceSteps = [
     {
-        id: 1,
-        title: "Connect",
+        eyebrow: "01",
+        title: "Identificamos la aplicación",
         description:
-            "Begin with a consultation where you share your style, needs, and vision. We listen, ask the right questions, and get to know what truly makes a space feel like home for you.",
-        image: {
-            src: consultationImage,
-            alt: "People talking about an interior design project",
-        },
+            "Motor, transmisión, hidráulico, engranaje o grasa: partimos del equipo y las condiciones reales de trabajo.",
     },
     {
-        id: 2,
-        title: "Design",
+        eyebrow: "02",
+        title: "Recomendamos el producto correcto",
         description:
-            "Using your input, we make a personalized design plan with mood boards, 3D renderings, and detailed layouts — so you can visualize your space before the transformation begins.",
-        image: {
-            src: designImage,
-            alt: "Detailed layouts of entry and bath",
-        },
+            "Aterrizamos viscosidad, especificación, marca y presentación para reducir dudas en compra y mantenimiento.",
     },
     {
-        id: 3,
-        title: "Transform",
+        eyebrow: "03",
+        title: "Entregamos y damos seguimiento",
         description:
-            "Watch your space come to life as our team brings the design to reality with expert craftsmanship, thoughtful execution, and a keen eye for detail.",
-        image: {
-            src: transformImage,
-            alt: "Expert measuring distance",
-        },
+            "Atendemos pedidos en zonas de cobertura con soporte comercial para talleres, flotillas e industria.",
     },
 ];
 ---
 
-<section id="how-it-works" class="process">
-    <div class="section-container">
-        <div class="process-content">
-            <span class="section-tag">HOW IT WORKS</span>
-            <h2 class="section-title">How we bring your space to life.</h2>
-            <div class="process-steps">
-                {
-                    processSteps.map((step) => (
-                        <div class="process-step">
-                            <div class="process-step-content">
-                                <h3 class="section-subtitle process-step-title">
-                                    {step.title}
-                                </h3>
-                                <p class="process-step-description">
-                                    {step.description}
-                                </p>
-                            </div>
-                            <div class="process-step-image-wrapper">
-                                <Image
-                                    src={step.image.src}
-                                    alt={step.image.alt}
-                                    width={1272}
-                                    height={660}
-                                    class="media"
-                                />
-                            </div>
+<section id="how-it-works" class="support" aria-labelledby="support-heading">
+    <div class="section-container support-container">
+        <div class="support-copy">
+            <span class="section-tag">Asesoría especializada</span>
+            <h2 id="support-heading" class="section-title">
+                El valor de AGL está en ayudar a elegir bien.
+            </h2>
+            <p class="support-lead">
+                TotalEnergies comunica tecnología y confianza. En AGL lo llevamos
+                al terreno práctico: disponibilidad, recomendación técnica y
+                atención cercana.
+            </p>
+            <a href="/contact" class="btn btn--primary">Solicitar asesoría</a>
+        </div>
+
+        <div class="support-steps">
+            {
+                serviceSteps.map((step) => (
+                    <article class="support-step">
+                        <span class="support-step__eyebrow">{step.eyebrow}</span>
+                        <div>
+                            <h3 class="support-step__title">{step.title}</h3>
+                            <p class="support-step__description">{step.description}</p>
                         </div>
-                    ))
-                }
-            </div>
+                    </article>
+                ))
+            }
         </div>
     </div>
 </section>
 
 <style>
-    .process-steps {
-        display: flex;
-        flex-direction: column;
-        gap: var(--px-64);
+    .support {
+        background: var(--color-brand-navy);
+        color: var(--color-white);
     }
 
-    .process-step {
+    .support :global(.section-tag),
+    .support :global(.section-title) {
+        color: var(--color-white);
+    }
+
+    .support-container {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
         gap: var(--px-64);
+        align-items: start;
+    }
+
+    .support-copy {
+        max-width: 42rem;
+    }
+
+    .support-lead {
+        margin-top: calc(var(--px-48) * -1);
+        margin-bottom: var(--px-40);
+        color: rgba(255, 255, 255, 0.78);
+        font-size: var(--text-xl);
+    }
+
+    .support-steps {
+        display: grid;
+        gap: var(--px-20);
+    }
+
+    .support-step {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: var(--px-24);
+        padding: var(--px-28);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: var(--px-16);
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    .support-step__eyebrow {
+        display: inline-flex;
         align-items: center;
+        justify-content: center;
+        width: var(--px-48);
+        height: var(--px-48);
+        border-radius: var(--px-8);
+        background: var(--color-brand-red);
+        color: var(--color-white);
+        font-weight: 800;
     }
 
-    .process-step:nth-child(even) {
-        direction: rtl;
+    .support-step__title {
+        margin: 0 0 var(--px-8);
+        font-size: var(--text-xl);
+        font-weight: 800;
+        line-height: 1.2;
     }
 
-    .process-step:nth-child(even) .process-step-content {
-        direction: ltr;
-    }
-
-    .process-step-title {
-        font-size: 1.313rem;
-    }
-
-    .process-step-description {
-        max-width: 31.25rem;
-    }
-
-    .process-step-image-wrapper {
-        width: 100%;
-        height: 100%;
-        max-height: 20.625rem;
-        overflow: hidden;
+    .support-step__description {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.78);
     }
 
     @media screen and (max-width: 64rem) {
-        .process-step {
-            gap: var(--px-32);
+        .support-container {
+            grid-template-columns: 1fr;
+            gap: var(--px-40);
         }
 
-        .process-images {
-            max-height: 18rem;
+        .support-lead {
+            margin-top: 0;
         }
     }
 
-    @media screen and (max-width: 48rem) {
-        .process-steps {
-            gap: var(--px-36);
-        }
-
-        .process-step {
+    @media screen and (max-width: 42.188rem) {
+        .support-step {
             grid-template-columns: 1fr;
-            gap: var(--px-32);
-        }
-
-        .process-step:nth-child(even) {
-            direction: ltr;
-        }
-
-        .process-step-content {
-            order: -1;
-        }
-
-        .process-step-description {
-            max-width: 100%;
-        }
-
-        .process-images {
-            max-height: 15rem;
         }
     }
 </style>

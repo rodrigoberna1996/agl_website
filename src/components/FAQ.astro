@@ -1,91 +1,41 @@
 ---
-import { getFaqItems } from "@lib/wordpress";
-
-type FaqItem = {
-  id: number;
-  question: string;
-  answer: string;
-};
-
-const staticFaqItems: FaqItem[] = [
-  {
-    id: 1,
-    question: 'What services do you offer?',
-    answer:
-      'We provide end-to-end interior design solutions — from the initial consultation and custom design plans (including mood boards and 3D renderings) to complete transformations with expert craftsmanship.',
-  },
-  {
-    id: 2,
-    question: 'How does the consultation process work?',
-    answer:
-      "It all starts with a friendly conversation. We sit down (or hop on a video call) to chat about your style, how you use your space, and what makes you feel at home. Our goal is to really get to know you so we can create a design that's totally you.",
-  },
-  {
-    id: 3,
-    question: 'Can I see what my design will look like before the work begins?',
-    answer:
-      "Absolutely! Once we've talked things through, we whip up a design plan complete with mood boards, layouts, and 3D renderings. This way, you can see exactly how your ideas come together before we break out the tools.",
-  },
-  {
-    id: 4,
-    question: "What's the typical timeline for a project?",
-    answer:
-      "Every project is different. After we nail down your design plan, we'll work together to set a realistic timeline that fits your needs. We keep you in the loop from start to finish, making sure the process is smooth and stress-free.",
-  },
-  {
-    id: 5,
-    question: 'How do you work with different budgets?',
-    answer:
-      "We believe great design should work for everyone. Early on, we'll talk about your budget and find creative, cost-effective ways to bring your vision to life — without skimping on quality or style.",
-  },
-  {
-    id: 6,
-    question: 'Can I incorporate my current furniture or design pieces?',
-    answer:
-      "For sure! We love adding personal touches that make your space uniquely yours. Whether you're bringing in favorite pieces or working with your existing layout, we'll blend everything together seamlessly.",
-  },
-  {
-    id: 7,
-    question: 'How do you make sure my personal style comes through?',
-    answer:
-      'Your style is our blueprint. We start by listening closely to your ideas and preferences, then tailor every detail — from the materials we choose to the final layout — to make sure your personality shines through in every corner of your home.',
-  },
-  {
-    id: 8,
-    question: 'What if I have new ideas or changes during the project?',
-    answer:
-      'No problem at all. We get that plans can evolve. Our process is super flexible, so we can tweak things as we go along to make sure your space always matches your vision.',
-  },
-  {
-    id: 9,
-    question: 'Do you offer virtual consultations?',
-    answer:
-      "Yep! Whether you're down the street or across the country, we offer both in-person and virtual consultations. It's all about making the process as convenient as possible for you.",
-  },
-  {
-    id: 10,
-    question: 'How do I get started?',
-    answer:
-      "It's simple — just give us a call or shoot us an email. We'll set up your initial consultation, get to know your ideas, and kick off the journey to creating a space that feels just right.",
-  },
+const faqItems = [
+    {
+        id: 1,
+        question: "¿Qué marcas distribuye AGL Legaspi?",
+        answer:
+            "Distribuimos productos TotalEnergies y ELF para aplicaciones automotrices, motocicletas, transporte, industria, transmisión y grasas.",
+    },
+    {
+        id: 2,
+        question: "¿Me pueden ayudar a elegir el aceite correcto?",
+        answer:
+            "Sí. Revisamos el tipo de motor, equipo, aplicación y condiciones de trabajo para recomendar viscosidad, tecnología y presentación adecuada.",
+    },
+    {
+        id: 3,
+        question: "¿En qué zonas tienen cobertura?",
+        answer:
+            "Atendemos principalmente Ciudad de México, Estado de México, Morelos, Oaxaca y zonas cercanas desde nuestros centros de distribución.",
+    },
+    {
+        id: 4,
+        question: "¿Venden para talleres, flotillas e industria?",
+        answer:
+            "Sí. El portafolio está pensado para consumo profesional: talleres, refaccionarias, flotillas, servicio pesado, maquinaria e industria.",
+    },
 ];
-
-const wpFaqItems = await getFaqItems();
-
-const faqItems: FaqItem[] = wpFaqItems
-  ? wpFaqItems.map((item) => ({
-      id: item.id,
-      question: item.title.rendered,
-      answer: item.content.rendered.replace(/<[^>]+>/g, "").trim(),
-    }))
-  : staticFaqItems;
 ---
 
-<section id="faq" class="faq">
+<section id="faq" class="faq" aria-labelledby="faq-heading">
   <div class="section-container faq-container">
     <div class="faq-header">
-      <span class="section-tag">FAQ</span>
-      <h2 class="section-title">We’ve got answers.</h2>
+      <span class="section-tag">Preguntas frecuentes</span>
+      <h2 id="faq-heading" class="section-title">Resolvemos la compra técnica.</h2>
+      <p class="faq-lead">
+        La experiencia debe sentirse clara y confiable, como la referencia:
+        menos fricción, más orientación.
+      </p>
     </div>
 
     <div class="faq-content">
@@ -93,7 +43,7 @@ const faqItems: FaqItem[] = wpFaqItems
         {
           faqItems.map(item => (
             <div class="accordion-item">
-              <button class="accordion-button">
+              <button class="accordion-button" aria-expanded="false">
                 <span class="button-text">{item.question}</span>
                 <svg
                   class="button-icon"
@@ -106,7 +56,7 @@ const faqItems: FaqItem[] = wpFaqItems
                   <path d="M12 5v14M5 12h14" />
                 </svg>
               </button>
-              <div class="accordion-content">
+              <div class="accordion-content" aria-hidden="true">
                 <div class="content-wrapper">
                   <p>{item.answer}</p>
                 </div>
@@ -120,26 +70,45 @@ const faqItems: FaqItem[] = wpFaqItems
 </section>
 
 <style>
+  .faq {
+    background: var(--color-background);
+  }
+
   .faq-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
     gap: var(--px-64);
     align-items: start;
   }
 
   .faq-header {
     position: sticky;
-    top: var(--px-32);
-    max-width: 80%;
+    top: calc(var(--h-menu-bar) + var(--px-24));
+    max-width: 32rem;
+  }
+
+  .faq-lead {
+    margin-top: calc(var(--px-48) * -1);
+    color: var(--color-text-secondary);
+    font-size: var(--text-xl);
   }
 
   .accordion {
     display: flex;
     flex-direction: column;
+    border-radius: var(--px-20);
+    background: var(--color-white);
+    box-shadow: none;
+    border: 1px solid var(--color-border);
+    overflow: hidden;
   }
 
   .accordion-item {
-    border-bottom: var(--px-1) solid var(--color-primary);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .accordion-item:last-child {
+    border-bottom: 0;
   }
 
   .accordion-button {
@@ -148,9 +117,10 @@ const faqItems: FaqItem[] = wpFaqItems
     justify-content: space-between;
     align-items: center;
     gap: var(--px-16);
-    padding: var(--px-20) 0;
+    padding: var(--px-24);
     background: none;
     border: none;
+    color: var(--color-brand-navy);
     cursor: pointer;
     text-align: left;
     transition: all var(--transition-long);
@@ -158,19 +128,16 @@ const faqItems: FaqItem[] = wpFaqItems
 
   .button-text {
     font-size: var(--text-xl);
-    font-weight: 400;
+    font-weight: 700;
     transition: all var(--transition-long);
   }
 
   .button-icon {
     width: var(--px-20);
     height: var(--px-20);
+    color: var(--color-brand-red);
     transition: all var(--transition-long);
     flex-shrink: 0;
-  }
-
-  .accordion-item.active .button-text {
-    font-weight: 500;
   }
 
   .accordion-item.active .button-icon {
@@ -184,7 +151,7 @@ const faqItems: FaqItem[] = wpFaqItems
   }
 
   .content-wrapper {
-    padding-bottom: 0.813rem;
+    padding: 0 var(--px-24) var(--px-24);
     opacity: 0;
     transform: translateY(10px);
     transition: all var(--transition-long);
@@ -196,22 +163,15 @@ const faqItems: FaqItem[] = wpFaqItems
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .accordion-button:hover .button-text,
-    .accordion-button:hover .button-icon {
-      opacity: 0.65;
+    .accordion-button:hover {
+      color: var(--color-brand-blue);
     }
   }
 
   @media (max-width: 64rem) {
     .faq-container {
-      gap: var(--px-32);
-    }
-  }
-
-  @media (max-width: 48rem) {
-    .faq-container {
       grid-template-columns: 1fr;
-      gap: 0;
+      gap: var(--px-32);
     }
 
     .faq-header {
@@ -219,8 +179,8 @@ const faqItems: FaqItem[] = wpFaqItems
       max-width: none;
     }
 
-    .section-title {
-      margin-bottom: var(--px-44);
+    .faq-lead {
+      margin-top: 0;
     }
   }
 </style>

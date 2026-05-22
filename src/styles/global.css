@@ -10,6 +10,8 @@ html {
 
 body {
   font-size: var(--text-base);
+  background: var(--color-background);
+  color: var(--color-text-primary);
 }
 
 section {
@@ -31,16 +33,17 @@ p {
   display: inline-block;
   margin-bottom: var(--px-24);
   font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  font-weight: 500;
+  color: var(--color-brand-blue);
+  font-weight: 800;
   letter-spacing: 0.075em;
+  text-transform: uppercase;
 }
 
 .section-title {
-  margin-bottom: var(--px-64);
-  font-size: clamp(1.75rem, 2.5vw + var(--text-lg), 3.25rem);
-  font-weight: 500;
-  line-height: 1.2;
+  margin-bottom: var(--px-48);
+  font-size: clamp(1.5rem, 1.35vw + 1rem, 2.25rem);
+  font-weight: 600;
+  line-height: 1.25;
   color: var(--color-text-primary);
 }
 
@@ -64,16 +67,20 @@ p {
 }
 
 .btn--primary {
-  background-color: var(--color-primary);
+  background: var(--color-brand-blue);
   color: var(--color-white);
-  border-radius: var(--px-4);
+  border-radius: 999px;
   font-size: var(--text-xs);
   letter-spacing: 0.085em;
   font-weight: 700;
+  text-transform: uppercase;
   position: relative;
   overflow: hidden;
   z-index: 1;
-  transition: transform var(--transition-short);
+  box-shadow: none;
+  transition:
+    transform var(--transition-short),
+    background-color var(--transition-short);
 }
 
 .btn--primary:before {
@@ -85,7 +92,7 @@ p {
   top: 0;
   left: 0;
   transform: scale(0.7) translateY(55%);
-  background: var(--color-secondary);
+  background: var(--color-brand-red);
   border-radius: 100%;
   transition: all var(--transition-medium);
   z-index: -1;
@@ -93,6 +100,11 @@ p {
 
 .btn--primary:active:before {
   transform: scaleX(2) scaleY(1) translateY(-15%);
+}
+
+.btn--primary:active {
+  transform: translateY(1px) scale(0.99);
+  background: var(--color-brand-navy);
 }
 
 .btns--secondary {
@@ -109,6 +121,8 @@ p {
     transform 0.5s var(--ease-elastic-1),
     opacity 0.5s var(--ease-elastic-1),
     color 0.2s var(--ease-default);
+  color: var(--color-brand-blue);
+  font-weight: 700;
 }
 
 .btn--secondary-hovered {
@@ -141,7 +155,7 @@ p {
 }
 
 .indicator.active {
-  background-color: black;
+  background-color: var(--color-brand-red);
   transform: scale(1.5);
 }
 
@@ -164,6 +178,10 @@ p {
 @media (hover: hover) and (pointer: fine) {
   .btn--primary:hover:before {
     transform: scaleX(2) scaleY(1) translateY(-15%);
+  }
+
+  .btn--primary:hover {
+    background: var(--color-brand-navy);
   }
 
   .btns--secondary:hover .btn--secondary-unhovered {
@@ -221,9 +239,8 @@ p {
 section#hero.portfolio {
   padding-inline: 0;
   padding-top: var(--h-menu-bar);
-  padding-bottom: clamp(var(--px-24), 3svh, var(--px-48));
-  min-height: calc(65vh + var(--h-menu-bar));
-  min-height: calc(65svh + var(--h-menu-bar));
+  padding-bottom: 0;
+  min-height: auto;
   scroll-margin-top: var(--h-menu-bar);
   display: flex;
   flex-direction: column;
@@ -233,7 +250,7 @@ section#hero.portfolio {
   section#hero.portfolio {
     padding-inline: 0;
     padding-top: var(--h-menu-bar);
-    padding-bottom: clamp(var(--px-24), 3svh, var(--px-40));
+    padding-bottom: 0;
   }
 }
 
@@ -241,7 +258,7 @@ section#hero.portfolio {
   section#hero.portfolio {
     padding-inline: 0;
     padding-top: var(--h-menu-bar);
-    padding-bottom: clamp(var(--px-20), 2.5svh, var(--px-36));
+    padding-bottom: 0;
   }
 }
 

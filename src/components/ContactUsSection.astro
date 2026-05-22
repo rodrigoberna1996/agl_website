@@ -146,6 +146,7 @@ const { pageLayout = false } = Astro.props;
 <style>
   .contact {
     display: grid;
+    background: var(--color-white);
   }
 
   .contact--page {
@@ -222,7 +223,7 @@ const { pageLayout = false } = Astro.props;
 
   .contact-branches {
     padding: var(--px-48) 0 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--color-border);
   }
 
   .contact-branches-tag {
@@ -263,7 +264,8 @@ const { pageLayout = false } = Astro.props;
 
   .contact-branch__map {
     overflow: hidden;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--color-border);
+    border-radius: var(--px-16);
   }
 
   .contact-branch__map iframe {
@@ -294,15 +296,16 @@ const { pageLayout = false } = Astro.props;
     color: var(--color-text-primary);
     padding: var(--px-16) var(--px-20);
     box-shadow: none;
-    border: 1px solid rgba(0, 0, 0, 0.183);
+    border: 1px solid var(--color-border);
+    border-radius: var(--px-12);
     transition: all var(--transition-short);
     font-size: var(--text-sm);
   }
 
   .form-input:focus {
     color: var(--color-primary);
-    border-color: rgba(0, 0, 0, 0.7);
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    border-color: var(--color-border-focus);
+    box-shadow: 0 0 0 3px rgba(0, 193, 206, 0.16);
     outline: none;
   }
 
@@ -354,7 +357,7 @@ const { pageLayout = false } = Astro.props;
     }
 
     .form-input:hover {
-      border-color: rgba(0, 0, 0, 0.38);
+      border-color: var(--color-border-hover);
     }
   }
 
