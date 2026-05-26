@@ -1,0 +1,550 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import heroSlideOne from "/src/assets/images/hero/hero_2.jpg";
+import heroSlideTwo from "/src/assets/images/hero/agl_43.png";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+
+type HeroSlide = {
+    id: string;
+    subtitle: string;
+    title: string;
+    description: string;
+    ctaLabel: string;
+    ctaHref: string;
+    image: ImageMetadata;
+    imageAlt: string;
+    counterLabel?: string;
+    dueDate?: string;
+};
+
+const slides: HeroSlide[] = [
+    {
+        id: "distribuidor",
+        subtitle: "TotalEnergies y ELF",
+        title: "Lubricantes para cada operación, en un solo distribuidor.",
+        description:
+            "Aceites, grasas y fluidos con asesoría técnica para talleres, flotillas, transporte e industria en CDMX y zona centro.",
+        ctaLabel: "Ver productos",
+        ctaHref: "/products",
+        image: heroSlideOne,
+        imageAlt: "Productos de lubricación AGL Legaspi",
+        counterLabel: "Cobertura en CDMX, Edo. Méx., Morelos y zonas cercanas.",
+    },
+    {
+        id: "servicio-pesado",
+        subtitle: "Transporte e industria",
+        title: "Rubia y soluciones para trabajo continuo.",
+        description:
+            "Protección para motores diesel, flotillas y maquinaria que exigen rendimiento, disponibilidad y entregas confiables.",
+        ctaLabel: "Contactar asesoría",
+        ctaHref: "/contact",
+        image: heroSlideTwo,
+        imageAlt: "Lubricantes para servicio pesado AGL Legaspi",
+        counterLabel: "Asesoría para elegir viscosidad y tecnología correcta.",
+        dueDate: "2026-12-31",
+    },
+];
+---
+
+<section id="hero" class="home-hero" aria-label="Destacados">
+    <div class="home-hero__wrap">
+        <div class="swiper home-hero-swiper">
+            <div class="swiper-wrapper">
+                {
+                    slides.map((slide, index) => (
+                        <div class="swiper-slide">
+                            <article class="home-hero__banner">
+                                <div class="home-hero__content">
+                                    <div class="home-hero__inner">
+                                        <p class="home-hero__subtitle">
+                                            {slide.subtitle}
+                                        </p>
+                                        {index === 0 ? (
+                                            <h1 class="home-hero__title">
+                                                {slide.title}
+                                            </h1>
+                                        ) : (
+                                            <h2 class="home-hero__title">
+                                                {slide.title}
+                                            </h2>
+                                        )}
+                                        <p class="home-hero__desc">
+                                            {slide.description}
+                                        </p>
+                                        <div class="home-hero__footer">
+                                            <a
+                                                href={slide.ctaHref}
+                                                class="home-hero__cta"
+                                            >
+                                                {slide.ctaLabel}
+                                            </a>
+                                        </div>
+                                        {slide.counterLabel && (
+                                            <p
+                                                class="home-hero__meta"
+                                                {...(slide.dueDate
+                                                    ? {
+                                                          "data-countdown": "",
+                                                          "data-due-date":
+                                                              slide.dueDate,
+                                                      }
+                                                    : {})}
+                                            >
+                                                <span class="home-hero__meta-label">
+                                                    {slide.counterLabel}
+                                                </span>
+                                                {slide.dueDate && (
+                                                    <strong
+                                                        class="home-hero__countdown"
+                                                        aria-live="polite"
+                                                    />
+                                                )}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                                <div class="home-hero__media">
+                                    <Image
+                                        src={slide.image}
+                                        alt={slide.imageAlt}
+                                        class="home-hero__image"
+                                        widths={[640, 960, 1200]}
+                                        sizes="(max-width: 768px) 100vw, 50vw"
+                                        loading={index === 0 ? "eager" : "lazy"}
+                                        decoding="async"
+                                        fetchpriority={
+                                            index === 0 ? "high" : "auto"
+                                        }
+                                    />
+                                </div>
+                            </article>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+        <button
+            type="button"
+            class="home-hero__nav home-hero__nav--prev home-hero-prev"
+            aria-label="Slide anterior"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <path d="M15 18l-6-6 6-6" />
+            </svg>
+        </button>
+        <button
+            type="button"
+            class="home-hero__nav home-hero__nav--next home-hero-next"
+            aria-label="Slide siguiente"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <path d="M9 18l6-6-6-6" />
+            </svg>
+        </button>
+        <div class="home-hero__pagination-bar" aria-hidden="true">
+            <div class="swiper-pagination home-hero-pagination" />
+        </div>
+    </div>
+</section>
+
+<style>
+    .home-hero {
+        padding-inline: 0;
+        padding-top: var(--h-menu-bar);
+        padding-bottom: 0;
+        background: var(--color-white);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .home-hero__wrap {
+        position: relative;
+        width: 100%;
+        --home-hero-controls-h: 2.75rem;
+    }
+
+    :global(.home-hero-swiper) {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    :global(.home-hero-swiper .swiper-slide) {
+        height: auto;
+    }
+
+    .home-hero__banner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        min-height: clamp(22rem, 52vh, 33.75rem);
+        padding-bottom: var(--home-hero-controls-h);
+        background: var(--color-white);
+        box-sizing: border-box;
+    }
+
+    .home-hero__content {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: clamp(1.75rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2.5rem);
+        box-sizing: border-box;
+    }
+
+    .home-hero__inner {
+        display: flex;
+        flex-direction: column;
+        gap: clamp(0.625rem, 1.2vw, 0.875rem);
+        max-width: 36rem;
+    }
+
+    .home-hero__subtitle {
+        margin: 0;
+        font-size: var(--text-xs);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-text-secondary);
+    }
+
+    .home-hero__title {
+        margin: 0;
+        font-size: clamp(1.75rem, 3.8vw, 3rem);
+        font-weight: 800;
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+        color: var(--color-text-primary);
+        text-wrap: balance;
+    }
+
+    .home-hero__desc {
+        margin: 0;
+        max-width: 34rem;
+        font-size: clamp(0.95rem, 1.35vw, 1.125rem);
+        line-height: 1.55;
+        color: var(--color-text-secondary);
+    }
+
+    .home-hero__footer {
+        margin-top: clamp(0.25rem, 1vw, 0.5rem);
+    }
+
+    .home-hero__cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.75rem;
+        padding: 0.625rem 1.5rem;
+        border-radius: var(--radius-md);
+        font-size: var(--text-sm);
+        font-weight: 600;
+        color: var(--color-white);
+        text-decoration: none;
+        background: var(--color-primary);
+        transition: background var(--transition-short);
+    }
+
+    .home-hero__cta:hover {
+        background: var(--color-brand-navy);
+    }
+
+    .home-hero__cta:focus-visible {
+        outline: 2px solid var(--color-focus);
+        outline-offset: 2px;
+    }
+
+    .home-hero__meta {
+        margin: 0.25rem 0 0;
+        font-size: var(--text-xs);
+        line-height: 1.45;
+        color: var(--color-text-secondary);
+    }
+
+    .home-hero__meta-label {
+        display: inline;
+    }
+
+    .home-hero__countdown {
+        display: inline;
+        margin-inline-start: 0.25rem;
+        color: var(--color-text-primary);
+    }
+
+    .home-hero__media {
+        position: relative;
+        width: 100%;
+        min-height: clamp(16rem, 38vw, 28rem);
+        overflow: hidden;
+        background: var(--color-white);
+    }
+
+    .home-hero__image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center bottom;
+    }
+
+    .home-hero__pagination-bar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--home-hero-controls-h);
+        pointer-events: none;
+    }
+
+    :global(.home-hero-pagination) {
+        position: static !important;
+        width: auto !important;
+        transform: none !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        pointer-events: auto;
+    }
+
+    :global(.home-hero-pagination.swiper-pagination-horizontal) {
+        bottom: auto !important;
+        top: auto !important;
+    }
+
+    :global(.home-hero-pagination .swiper-pagination-bullet) {
+        width: 0.5rem;
+        height: 0.5rem;
+        margin: 0 !important;
+        opacity: 1;
+        background: rgba(3, 78, 162, 0.22);
+        transition: background var(--transition-short),
+            transform var(--transition-short);
+    }
+
+    :global(.home-hero-pagination .swiper-pagination-bullet-active) {
+        background: var(--color-primary);
+        transform: scale(1.15);
+    }
+
+    .home-hero__nav {
+        position: absolute;
+        top: 50%;
+        z-index: 5;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin: 0;
+        padding: 0;
+        border: 1px solid transparent;
+        border-radius: var(--radius-md);
+        color: var(--color-text-primary);
+        background: transparent;
+        box-shadow: none;
+        cursor: pointer;
+        transform: translateY(-50%);
+        transition:
+            color var(--transition-short),
+            border-color var(--transition-short),
+            background var(--transition-short),
+            box-shadow var(--transition-short);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .home-hero__wrap:hover .home-hero__nav,
+        .home-hero__wrap:focus-within .home-hero__nav {
+            border-color: var(--color-border);
+            background: var(--color-white);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .home-hero__wrap:hover .home-hero__nav:hover,
+        .home-hero__wrap:focus-within .home-hero__nav:hover {
+            color: var(--color-primary);
+            border-color: var(--color-border-hover);
+            background: var(--color-background);
+        }
+    }
+
+    .home-hero__nav:focus-visible {
+        border-color: var(--color-border);
+        background: var(--color-white);
+        box-shadow: var(--shadow-sm);
+        outline: 2px solid var(--color-focus);
+        outline-offset: 2px;
+    }
+
+    .home-hero__nav svg {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .home-hero__nav--prev {
+        left: clamp(0.5rem, 2vw, 1.25rem);
+    }
+
+    .home-hero__nav--next {
+        right: clamp(0.5rem, 2vw, 1.25rem);
+    }
+
+    :global(.home-hero__nav.swiper-button-disabled) {
+        opacity: 0.35;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    @media screen and (min-width: 48rem) {
+        .home-hero__wrap {
+            --home-hero-controls-h: 0;
+        }
+
+        .home-hero__banner {
+            padding-bottom: 0;
+        }
+
+        .home-hero__pagination-bar {
+            display: none;
+        }
+
+        .home-hero__content {
+            width: 55%;
+            padding-inline: clamp(1.5rem, 4vw, 3rem);
+        }
+
+        .home-hero__media {
+            width: 45%;
+            min-height: auto;
+        }
+    }
+
+    @media screen and (min-width: 64rem) {
+        .home-hero__content {
+            width: 50%;
+            padding-inline: clamp(2rem, 5vw, 4rem);
+        }
+
+        .home-hero__media {
+            width: 50%;
+        }
+
+        .home-hero__inner {
+            max-width: 32rem;
+        }
+    }
+
+    @media screen and (max-width: 47.99rem) {
+        .home-hero__banner {
+            flex-direction: column-reverse;
+            min-height: 0;
+        }
+
+        .home-hero__content {
+            padding-block: var(--px-24) var(--px-8);
+        }
+
+        .home-hero__media {
+            min-height: 14rem;
+            max-height: 18rem;
+        }
+
+        .home-hero__nav {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    import { initSwiper } from "@utils/initSwiper";
+    import { onPageReady } from "@utils/onPageReady";
+
+    const countdownTimers: number[] = [];
+
+    function formatCountdown(dueDate: string): string {
+        const end = new Date(`${dueDate}T23:59:59`);
+        const now = new Date();
+
+        if (Number.isNaN(end.getTime()) || end <= now) {
+            return "La promoción ha finalizado.";
+        }
+
+        const diff = end.getTime() - now.getTime();
+        const days = Math.floor(diff / 86_400_000);
+        const hours = Math.floor((diff % 86_400_000) / 3_600_000);
+        const minutes = Math.floor((diff % 3_600_000) / 60_000);
+
+        return `${days}d ${hours}h ${minutes}m restantes.`;
+    }
+
+    function initCountdowns() {
+        countdownTimers.forEach((id) => window.clearInterval(id));
+        countdownTimers.length = 0;
+
+        document
+            .querySelectorAll<HTMLElement>("[data-countdown][data-due-date]")
+            .forEach((meta) => {
+                const dueDate = meta.dataset.dueDate;
+                const target = meta.querySelector(".home-hero__countdown");
+                if (!dueDate || !target) return;
+
+                const update = () => {
+                    target.textContent = formatCountdown(dueDate);
+                };
+
+                update();
+                countdownTimers.push(window.setInterval(update, 60_000));
+            });
+    }
+
+    onPageReady(() => {
+        const swiper = initSwiper("home-hero", {
+            loop: true,
+            autoHeight: false,
+            spaceBetween: 0,
+            speed: 700,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".home-hero-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".home-hero-next",
+                prevEl: ".home-hero-prev",
+            },
+        });
+
+        initCountdowns();
+
+        return () => {
+            swiper.destroy();
+            countdownTimers.forEach((id) => window.clearInterval(id));
+            countdownTimers.length = 0;
+        };
+    }, { root: ".home-hero-swiper" });
+</script>

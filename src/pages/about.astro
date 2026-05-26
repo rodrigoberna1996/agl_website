@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import AboutPageHero from '@components/AboutPageHero.astro';
 import { SITE } from '@consts';
 
 const pageTitle = `Quiénes somos | ${SITE.COMPANY_NAME}`;
@@ -9,12 +10,15 @@ const pageDescription =
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <article class="about-page">
-    <section class="about-page__hero" aria-labelledby="about-heading">
+    <AboutPageHero
+      title="Quiénes somos"
+      headline="Lubricación de confianza, con el respaldo que su operación merece"
+      lead="Más de 30 años dedicados a aceites, grasas y lubricantes, con distribución exclusiva Total ELF en Morelos, Ciudad de México y Estado de México."
+    />
+
+    <section class="about-page__hero" aria-label="Nuestra empresa">
       <div class="section-container about-page__hero-grid">
         <div class="about-page__hero-main">
-          <h1 id="about-heading" class="section-title about-page__title">
-            Lubricación de confianza, con el respaldo que su operación merece
-          </h1>
           <div class="about-page__body">
             <h2 class="about-page__subheading">Lo que hacemos</h2>
             <p>
@@ -127,7 +131,7 @@ const pageDescription =
   }
 
   .about-page__hero {
-    padding-top: calc(var(--h-menu-bar) + var(--px-64));
+    padding-top: var(--px-64);
     padding-bottom: var(--px-64);
   }
 
@@ -140,10 +144,6 @@ const pageDescription =
 
   .about-page__hero-main {
     min-width: 0;
-  }
-
-  .about-page__title {
-    max-width: none;
   }
 
   .about-page__body {
@@ -330,7 +330,7 @@ const pageDescription =
 
   @media screen and (max-width: 48rem) {
     .about-page__hero {
-      padding-top: calc(var(--h-menu-bar) + var(--px-48));
+      padding-top: var(--px-48);
     }
 
     .about-page__statements {

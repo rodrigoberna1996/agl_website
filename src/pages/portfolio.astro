@@ -1,0 +1,13 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import PortfolioPage from '@components/PortfolioPage.astro';
+import { SITE } from '@consts';
+
+const pageTitle = `Portafolio | ${SITE.COMPANY_NAME}`;
+const pageDescription =
+  'Publicaciones, eventos y noticias de AGL Legaspi: distribución Total ELF y lubricación industrial.';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <PortfolioPage />
+</BaseLayout>

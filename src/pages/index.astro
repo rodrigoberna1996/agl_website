@@ -2,13 +2,15 @@
 import BaseLayout from '@layouts/BaseLayout.astro';
 import AboutSection from '@components/AboutSection.astro';
 import HowItWorksSection from '@components/HowItWorksSection.astro';
-import PortfolioSection from '@components/PortfolioSection.astro';
+import HomeHeroSlider from '@components/HomeHeroSlider.astro';
+import ClientCarouselSection from '@components/ClientCarouselSection.astro';
 import TestimonialsSection from '@components/TestimonialsSection.astro';
 import FAQ from '@components/FAQ.astro';
 ---
 
 <BaseLayout>
-  <PortfolioSection hideSectionHeading />
+  <HomeHeroSlider />
+  <ClientCarouselSection />
   <TestimonialsSection />
   <HowItWorksSection />
   <AboutSection />

@@ -16,6 +16,14 @@ export default defineConfig({
   site: SITE.CANONICAL_URL,
   output: "static",
 
+  // En dev, el prefetch del ClientRouter puede mostrar HTML viejo tras HMR.
+  prefetch: import.meta.env.DEV
+    ? false
+    : {
+        prefetchAll: true,
+        defaultStrategy: "hover",
+      },
+
   build: {
     // Evita que cada ruta inyecte <style> inline distintos, lo que
     // rompe con CSP al navegar con ClientRouter entre páginas.

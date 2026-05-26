@@ -75,6 +75,12 @@ const schemaData = {
 
         <ClientRouter />
 
+        {import.meta.env.DEV && (
+            <script>
+                import "@utils/devNavReload.ts";
+            </script>
+        )}
+
         <!-- General Meta Tags -->
         <title>{title}</title>
         <meta name="title" content={title} />

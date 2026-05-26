@@ -216,6 +216,15 @@ p {
     padding: var(--px-80) var(--px-28);
   }
 
+  section#clients.client-carousel {
+    padding-top: var(--px-16);
+    padding-bottom: 0;
+  }
+
+  section#clients.client-carousel + #segments {
+    padding-top: 0;
+  }
+
   .section-title {
     line-height: 1.3;
   }
@@ -224,6 +233,15 @@ p {
 @media screen and (max-width: 42.188rem) {
   section {
     padding: var(--px-64) var(--px-20);
+  }
+
+  section#clients.client-carousel {
+    padding-top: var(--px-16);
+    padding-bottom: 0;
+  }
+
+  section#clients.client-carousel + #segments {
+    padding-top: 0;
   }
 
   .section-tag {
@@ -235,42 +253,45 @@ p {
   }
 }
 
-/* #hero (carrusel superior): sin padding horizontal; respeta navbar fijo; alto mínimo ~65% viewport útil. */
-section#hero.portfolio {
-  padding-inline: 0;
-  padding-top: var(--h-menu-bar);
-  padding-bottom: 0;
+/* #hero (home): sin padding de sección; respeta navbar fijo. */
+section#hero.home-hero {
+  padding: var(--h-menu-bar) 0 0;
   min-height: auto;
   scroll-margin-top: var(--h-menu-bar);
-  display: flex;
-  flex-direction: column;
 }
 
-@media screen and (max-width: 64rem) {
-  section#hero.portfolio {
-    padding-inline: 0;
-    padding-top: var(--h-menu-bar);
-    padding-bottom: 0;
+/* Portafolio: mismo espaciado superior que productos. */
+section.portfolio-page {
+  padding-top: calc(var(--h-menu-bar) + var(--px-64));
+  padding-bottom: var(--px-96);
+}
+
+@media screen and (max-width: 42rem) {
+  section.portfolio-page {
+    padding-top: calc(var(--h-menu-bar) + var(--px-48));
   }
 }
 
-@media screen and (max-width: 42.188rem) {
-  section#hero.portfolio {
-    padding-inline: 0;
-    padding-top: var(--h-menu-bar);
-    padding-bottom: 0;
-  }
+/* About: banner debajo del navbar fijo, altura restante de pantalla. */
+section.about-banner {
+  padding: 0;
+  margin-top: var(--h-menu-bar);
+  min-height: calc(100vh - var(--h-menu-bar));
+  min-height: calc(100dvh - var(--h-menu-bar));
+  scroll-margin-top: var(--h-menu-bar);
 }
 
-/* Sin max-width centrado: el carrusel usa todo el ancho del viewport (el section ya no tiene padding lateral). */
-#hero.portfolio .section-container {
-  max-width: none;
-  width: 100%;
-  margin-inline: 0;
-  box-sizing: border-box;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
+/* Clientes: poco espacio arriba; mínimo hacia la sección siguiente. */
+section#clients.client-carousel {
+  padding-top: var(--px-20);
+  padding-bottom: 0;
+}
+
+section#clients.client-carousel + #segments {
+  padding-top: 0;
+}
+
+section#clients.client-carousel + #segments .section-title {
+  margin-bottom: var(--px-32);
 }
 

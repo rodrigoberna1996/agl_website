@@ -1,0 +1,276 @@
+---
+import totalLogo from "/src/assets/images/clients/total-energies.svg";
+import elfLogo from "/src/assets/images/clients/elf.svg";
+import talleresLogo from "/src/assets/images/clients/talleres.svg";
+import flotillasLogo from "/src/assets/images/clients/flotillas.svg";
+import industriaLogo from "/src/assets/images/clients/industria.svg";
+import transporteLogo from "/src/assets/images/clients/transporte.svg";
+import refaccionariasLogo from "/src/assets/images/clients/refaccionarias.svg";
+
+type ClientLogo = {
+    name: string;
+    src: string;
+    href?: string;
+};
+
+const clients: ClientLogo[] = [
+    { name: "TotalEnergies", src: totalLogo.src, href: "/products" },
+    { name: "ELF", src: elfLogo.src, href: "/products" },
+    { name: "Talleres", src: talleresLogo.src },
+    { name: "Flotillas", src: flotillasLogo.src },
+    { name: "Transporte", src: transporteLogo.src },
+    { name: "Industria", src: industriaLogo.src },
+    { name: "Refaccionarias", src: refaccionariasLogo.src },
+];
+
+const marqueeGroups = [1, 2];
+---
+
+<section
+    id="clients"
+    class="client-carousel"
+    aria-label="Marcas y sectores que atendemos"
+>
+    <div class="section-container">
+        <div class="client-carousel__fade">
+            <div
+                class="client-carousel__marquee"
+                data-clone="3"
+                style="--marquee-speed: 50s"
+            >
+                <div class="client-carousel__inner">
+                    {
+                        marqueeGroups.map(() => (
+                            <div class="client-carousel__group">
+                                {clients.map((client) => (
+                                    <div class="client-carousel__item">
+                                        <div class="client-carousel__logo">
+                                            <img
+                                                src={client.src}
+                                                alt=""
+                                                width="200"
+                                                height="40"
+                                                loading="lazy"
+                                                decoding="async"
+                                            />
+                                            {client.href && (
+                                                <a
+                                                    href={client.href}
+                                                    class="client-carousel__link"
+                                                >
+                                                    <span class="sr-only">
+                                                        Ver productos{" "}
+                                                        {client.name}
+                                                    </span>
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .client-carousel {
+        background: var(--color-white);
+    }
+
+    .client-carousel__fade {
+        position: relative;
+        overflow: hidden;
+        background: var(--color-white);
+    }
+
+    .client-carousel__fade::before,
+    .client-carousel__fade::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 12%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .client-carousel__fade::before {
+        left: 0;
+        background: linear-gradient(
+            to right,
+            var(--color-white) 0%,
+            transparent 100%
+        );
+    }
+
+    .client-carousel__fade::after {
+        right: 0;
+        background: linear-gradient(
+            to left,
+            var(--color-white) 0%,
+            transparent 100%
+        );
+    }
+
+    .client-carousel__marquee {
+        --marquee-speed: 50s;
+        --marquee-translate: -50%;
+        --marquee-gap: 2.75rem;
+        overflow: hidden;
+    }
+
+    .client-carousel__inner {
+        display: flex;
+        flex-wrap: nowrap;
+        width: max-content;
+        gap: 0;
+        animation: client-marquee-scroll var(--marquee-speed) linear infinite;
+    }
+
+    .client-carousel__group {
+        display: flex;
+        flex-shrink: 0;
+        gap: var(--marquee-gap);
+    }
+
+    .client-carousel__item {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        padding: var(--px-12) var(--px-28);
+    }
+
+    .client-carousel__logo {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .client-carousel__logo img {
+        width: auto;
+        height: 2.875rem;
+        object-fit: contain;
+        opacity: 0.85;
+        filter: grayscale(1);
+        transition:
+            opacity var(--transition-short),
+            filter var(--transition-short);
+    }
+
+    @media screen and (min-width: 64rem) {
+        .client-carousel__logo img {
+            height: 3.375rem;
+        }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .client-carousel__marquee:hover .client-carousel__inner {
+            animation-play-state: paused;
+        }
+
+        .client-carousel__logo:hover img {
+            opacity: 1;
+            filter: grayscale(0);
+        }
+    }
+
+    .client-carousel__link {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+    }
+
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    @keyframes client-marquee-scroll {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(var(--marquee-translate));
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .client-carousel__inner {
+            animation: none;
+            flex-wrap: wrap;
+            width: 100%;
+            justify-content: center;
+            gap: var(--marquee-gap);
+        }
+
+        .client-carousel__group:nth-child(2) {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    import { onPageReady } from "@utils/onPageReady";
+    function setupClientMarquee() {
+        document
+            .querySelectorAll<HTMLElement>(".client-carousel__marquee")
+            .forEach((marquee) => {
+                const inner = marquee.querySelector(
+                    ".client-carousel__inner",
+                );
+                const group = marquee.querySelector(".client-carousel__group");
+                if (!inner || !group) return;
+
+                const cloneTarget = Number(marquee.dataset.clone) || 3;
+                const groupWidth = group.scrollWidth;
+                const containerWidth = marquee.clientWidth;
+
+                inner
+                    .querySelectorAll<HTMLElement>(
+                        '.client-carousel__group[aria-hidden="true"]',
+                    )
+                    .forEach((node) => node.remove());
+
+                let totalWidth = groupWidth;
+                while (totalWidth < containerWidth * cloneTarget) {
+                    const clone = group.cloneNode(true) as HTMLElement;
+                    clone.setAttribute("aria-hidden", "true");
+                    inner.appendChild(clone);
+                    totalWidth += groupWidth;
+                }
+            });
+    }
+
+    function initClientMarquee() {
+        setupClientMarquee();
+
+        const onResize = () => {
+            window.clearTimeout(
+                (window as Window & { __clientMarqueeTimeout?: number })
+                    .__clientMarqueeTimeout,
+            );
+            (window as Window & { __clientMarqueeTimeout?: number })
+                .__clientMarqueeTimeout = window.setTimeout(
+                setupClientMarquee,
+                200,
+            );
+        };
+
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
+    }
+
+    onPageReady(() => initClientMarquee(), { root: ".client-carousel" });
+</script>

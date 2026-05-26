@@ -1,0 +1,171 @@
+---
+import { Image } from 'astro:assets';
+import aboutHeroImage from '/src/assets/images/hero/about-hero.png';
+
+interface Props {
+  title?: string;
+  headline: string;
+  lead: string;
+}
+
+const {
+  title = 'Quiénes somos',
+  headline,
+  lead,
+} = Astro.props;
+---
+
+<section class="about-banner" aria-labelledby="about-heading">
+  <div class="about-banner__media" aria-hidden="true">
+    <Image
+      src={aboutHeroImage}
+      alt="Tambor TotalEnergies en planta industrial"
+      class="about-banner__image"
+      width={750}
+      height={570}
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+  <div class="about-banner__overlay" aria-hidden="true"></div>
+
+  <div class="section-container about-banner__content">
+    <div class="about-banner__inner">
+      <h1 id="about-heading" class="about-banner__title">{title}</h1>
+      <h2 class="about-banner__headline">{headline}</h2>
+      <p class="about-banner__lead">{lead}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-banner {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    min-height: calc(100vh - var(--h-menu-bar));
+    min-height: calc(100dvh - var(--h-menu-bar));
+    margin: var(--h-menu-bar) 0 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .about-banner__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .about-banner__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 58% center;
+  }
+
+  .about-banner__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      105deg,
+      rgba(16, 38, 79, 0.78) 0%,
+      rgba(16, 38, 79, 0.52) 55%,
+      rgba(16, 38, 79, 0.4) 100%
+    );
+    pointer-events: none;
+  }
+
+  .about-banner__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: clamp(2rem, 5vh, 3.5rem) var(--px-64);
+    color: var(--color-white);
+  }
+
+  .about-banner__inner {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.875rem, 1.8vw, 1.25rem);
+    max-width: 44rem;
+  }
+
+  .about-banner__title {
+    margin: 0;
+    padding-bottom: var(--px-16);
+    font-size: clamp(0.8125rem, 1vw, var(--text-xs));
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    border-bottom: 3px solid var(--color-brand-red);
+    width: fit-content;
+  }
+
+  .about-banner__headline {
+    margin: clamp(0.25rem, 1vw, 0.5rem) 0 0;
+    max-width: 42rem;
+    font-size: clamp(1.625rem, 3.6vw, 2.875rem);
+    font-weight: 800;
+    line-height: 1.14;
+    letter-spacing: -0.025em;
+    color: var(--color-white);
+    text-wrap: balance;
+  }
+
+  .about-banner__lead {
+    margin: clamp(0.125rem, 0.5vw, 0.375rem) 0 0;
+    max-width: 38rem;
+    font-size: clamp(1rem, 1.35vw, 1.125rem);
+    font-weight: 400;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.88);
+    text-wrap: pretty;
+    opacity: 1;
+  }
+
+  @media screen and (max-width: 64rem) {
+    .about-banner__content {
+      padding-inline: var(--px-28);
+    }
+  }
+
+  @media screen and (max-width: 48rem) {
+    .about-banner__content {
+      padding: var(--px-40) var(--px-20);
+    }
+
+    .about-banner__inner {
+      max-width: none;
+      gap: var(--px-12);
+    }
+
+    .about-banner__title {
+      padding-bottom: var(--px-12);
+    }
+
+    .about-banner__headline {
+      font-size: clamp(1.5rem, 6.5vw, 1.875rem);
+      line-height: 1.2;
+    }
+
+    .about-banner__lead {
+      font-size: var(--text-base);
+      line-height: 1.6;
+    }
+
+    .about-banner__overlay {
+      background: linear-gradient(
+        180deg,
+        rgba(16, 38, 79, 0.72) 0%,
+        rgba(16, 38, 79, 0.82) 100%
+      );
+    }
+  }
+</style>
