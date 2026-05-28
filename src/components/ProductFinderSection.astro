@@ -355,20 +355,28 @@ const filters = [
     }
 
     @media screen and (min-width: 768.02px) {
-        .garage-form.horizontal .form-garage {
+        section.product-finder-section .garage-form.horizontal .form-garage {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr)) max-content;
             gap: 0.625rem;
+            align-items: center;
         }
 
-        .garage-form.horizontal .form-garage > * {
-            flex: 1 0 0%;
+        section.product-finder-section .garage-form.horizontal .form-garage > * {
+            min-width: 0;
             width: auto;
             margin-bottom: 0;
         }
 
-        .garage-form.horizontal .form-garage button {
-            flex: none;
+        section.product-finder-section .garage-form.horizontal .form-garage .form-group {
+            min-width: 0;
+        }
+
+        section.product-finder-section .garage-form.horizontal .form-garage button {
+            min-width: 10.5rem;
             width: auto;
             padding-inline: 2rem;
+            white-space: nowrap;
         }
     }
 
