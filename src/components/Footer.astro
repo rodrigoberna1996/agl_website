@@ -3,10 +3,8 @@ import { CONTACT_LOCATIONS, SITE, toTelHref } from "@consts";
 
 const currentYear = new Date().getFullYear();
 
-const phonesCdmx =
-  CONTACT_LOCATIONS.find((l) => l.id === "cdmx")?.phones ?? [];
-const phonesMorelos =
-  CONTACT_LOCATIONS.find((l) => l.id === "morelos")?.phones ?? [];
+const phoneCdmx = CONTACT_LOCATIONS.find((l) => l.id === "cdmx")?.phone;
+const phoneMorelos = CONTACT_LOCATIONS.find((l) => l.id === "morelos")?.phone;
 ---
 
 <footer class="main-footer">
@@ -48,16 +46,16 @@ const phonesMorelos =
                 <p class="footer-contact-region">CDMX</p>
                 <ul class="footer-list footer-list--contact">
                     {
-                        phonesCdmx.map((phone) => (
+                        phoneCdmx && (
                             <li>
                                 <a
-                                    href={toTelHref(phone)}
+                                    href={toTelHref(phoneCdmx)}
                                     class="footer-link"
                                 >
-                                    {phone}
+                                    {phoneCdmx}
                                 </a>
                             </li>
-                        ))
+                        )
                     }
                 </ul>
             </div>
@@ -65,16 +63,16 @@ const phonesMorelos =
                 <p class="footer-contact-region">Cuernavaca</p>
                 <ul class="footer-list footer-list--contact">
                     {
-                        phonesMorelos.map((phone) => (
+                        phoneMorelos && (
                             <li>
                                 <a
-                                    href={toTelHref(phone)}
+                                    href={toTelHref(phoneMorelos)}
                                     class="footer-link"
                                 >
-                                    {phone}
+                                    {phoneMorelos}
                                 </a>
                             </li>
-                        ))
+                        )
                     }
                 </ul>
             </div>

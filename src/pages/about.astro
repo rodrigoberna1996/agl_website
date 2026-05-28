@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 import AboutPageHero from '@components/AboutPageHero.astro';
+import AboutTeamSection from '@components/AboutTeamSection.astro';
 import { SITE } from '@consts';
 
 const pageTitle = `Quiénes somos | ${SITE.COMPANY_NAME}`;
@@ -87,6 +88,8 @@ const pageDescription =
         </aside>
       </div>
     </section>
+
+    <AboutTeamSection />
 
     <section
       class="about-page__mission"

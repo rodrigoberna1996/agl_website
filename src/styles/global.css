@@ -9,9 +9,28 @@ html {
 }
 
 body {
+  font-family:
+    var(--font-dm-sans), Helvetica, ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   font-size: var(--text-base);
   background: var(--color-background);
   color: var(--color-text-primary);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+button,
+input,
+textarea,
+select,
+label {
+  font-family: inherit;
 }
 
 section {
@@ -258,6 +277,31 @@ section#hero.home-hero {
   padding: var(--h-menu-bar) 0 0;
   min-height: auto;
   scroll-margin-top: var(--h-menu-bar);
+}
+
+/* About: equipo (cuadrícula sin gutter de sección global). */
+section.about-team {
+  padding-top: var(--px-80);
+  padding-bottom: var(--px-80);
+}
+
+@media screen and (max-width: 48rem) {
+  section.about-team {
+    padding-top: var(--px-64);
+    padding-bottom: var(--px-64);
+  }
+}
+
+/* Contacto (página): espaciado bajo navbar fijo. */
+section.contact.contact--page {
+  padding-top: calc(var(--h-menu-bar) + var(--px-64));
+  padding-bottom: var(--px-96);
+}
+
+@media screen and (max-width: 42rem) {
+  section.contact.contact--page {
+    padding-top: calc(var(--h-menu-bar) + var(--px-48));
+  }
 }
 
 /* Portafolio: mismo espaciado superior que productos. */

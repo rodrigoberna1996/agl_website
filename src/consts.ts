@@ -58,32 +58,25 @@ export const SOCIALS: Socials = [
   },
 ];
 
-/** Sucursales con enlace a Google Maps e iframe embebido. */
+/** Sucursales: una dirección y un teléfono por ubicación. */
 export const CONTACT_LOCATIONS = [
   {
     id: 'cdmx',
     title: 'Ciudad de México',
-    phones: [
-      '(55) 5751-1569',
-      '(55) 5751-1574',
-      '(55) 5751-6501',
-      '(55) 4410-8408',
-    ],
+    phone: '(55) 5751-1569',
     address:
       'Av 503 143, San Juan de Aragón I Secc, 07969 Ciudad de México, CDMX.',
     mapsUrl:
       'https://www.google.com/maps/place/Aceites+TotalEnergies+ELF+Distribuidor+Mayorista/@19.4560369,-99.096981,901m/data=!3m2!1e3!4b1!4m6!3m5!1s0x85d1fbe12104cfd9:0x7fa8c4aca2f34de8!8m2!3d19.4560369!4d-99.096981!16s%2Fg%2F1tql53fz?hl=es&entry=ttu',
-    embedSrc:
-      'https://maps.google.com/maps?q=19.4560369,-99.096981&z=17&hl=es&output=embed',
   },
   {
     id: 'morelos',
     title: 'Morelos — Cuernavaca',
-    phones: ['(777) 318 4937', '(777) 361 0656', '(55) 4410-8408'],
+    phone: '(777) 318 4937',
     address: 'Lázaro Cárdenas 2 B, Lazaro Cardenas, 62080 Cuernavaca, Mor.',
     mapsUrl:
       'https://www.google.com/maps?cid=5444569026220032927&hl=es&gl=MX',
-    embedSrc:
-      'https://maps.google.com/maps?cid=5444569026220032927&hl=es&output=embed',
   },
 ] as const;
+
+export const CONTACT_OFFICE_HOURS = 'Lun–Vie, 9:00 – 18:00';

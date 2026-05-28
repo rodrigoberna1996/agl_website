@@ -1,6 +1,6 @@
 ---
-import { Image } from "astro:assets";
-import productImage from "/src/assets/images/catalog/image_1.jpg";
+import { Image } from 'astro:assets';
+import mapaMexico from '/src/assets/images/mapa-mexico-agl.png';
 
 const stats = [
     { value: "30+", label: "años de experiencia" },
@@ -13,11 +13,13 @@ const stats = [
     <div class="section-container about-container">
         <div class="about-media">
             <Image
-                src={productImage}
-                alt="Productos TotalEnergies y ELF distribuidos por AGL Legaspi"
+                src={mapaMexico}
+                alt="Mapa de cobertura AGL Legaspi en México: CDMX, Estado de México, Morelos y Oaxaca"
                 class="about-image"
-                width={900}
-                height={720}
+                width={800}
+                height={800}
+                loading="lazy"
+                decoding="async"
             />
         </div>
 
@@ -58,39 +60,25 @@ const stats = [
 
     .about-container {
         display: grid;
-        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
-        gap: var(--px-64);
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr);
+        gap: var(--px-48) var(--px-64);
         align-items: center;
     }
 
     .about-media {
-        position: relative;
-        padding: var(--px-32);
-        border-radius: var(--px-16);
-        background: #f3f6fa;
-        border: 1px solid var(--color-border);
-        overflow: hidden;
-    }
-
-    .about-media::before {
-        content: "";
-        position: absolute;
-        top: var(--px-24);
-        left: var(--px-24);
-        width: var(--px-80);
-        height: var(--px-6);
-        border-radius: 999px;
-        background: var(--color-brand-red);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-width: 0;
     }
 
     .about-image {
-        position: relative;
-        z-index: 1;
         width: 100%;
+        max-width: none;
         height: auto;
         display: block;
         object-fit: contain;
-        filter: drop-shadow(0 16px 20px rgba(16, 38, 79, 0.1));
     }
 
     .about-content {
@@ -139,6 +127,11 @@ const stats = [
         .about-container {
             grid-template-columns: 1fr;
             gap: var(--px-40);
+        }
+
+        .about-image {
+            max-width: min(100%, 20rem);
+            margin-inline: auto;
         }
 
         .about-lead {
