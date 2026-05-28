@@ -1,0 +1,453 @@
+---
+const filters = [
+    {
+        number: "01",
+        label: "Selecciona linea",
+        options: ["Motor", "Industrial", "Transmision", "Grasas"],
+    },
+    {
+        number: "02",
+        label: "Selecciona marca",
+        options: ["TotalEnergies", "ELF"],
+    },
+    {
+        number: "03",
+        label: "Selecciona aplicacion",
+        options: ["Taller", "Flotilla", "Transporte", "Industria"],
+    },
+    {
+        number: "04",
+        label: "Selecciona producto",
+        options: ["Quartz", "Rubia", "Azolla", "Transmission", "Multis"],
+    },
+];
+---
+
+<section class="product-finder-section" aria-labelledby="product-finder-heading">
+    <div class="section-container">
+        <header
+            class="site-module-header flex-col items-center justify-center"
+            style="--module-header-offset: 20px; --module-header-offset-lg: 20px; --module-header-border: transparent; --module-description-width: 760px; --module-title-size-lg: 28px;"
+        >
+            <div class="column content-column">
+                <div class="site-module-header-title">
+                    <h2 id="product-finder-heading" class="entry-title bordered w-full">
+                        Find the Right Parts Faster
+                    </h2>
+                </div>
+                <p class="entry-description">
+                    Having the right lubricant for your vehicle or operation helps
+                    protect equipment, reduce downtime and keep your business moving.
+                </p>
+            </div>
+        </header>
+
+        <div class="finder-panel p p-sm p-lg">
+            <div class="garage-form horizontal" style="--garage-form-width: 100%;">
+                <div class="garage-form-body">
+                    <form id="klb-attribute-filter" class="form-garage service-search-form" action="/products">
+                        {
+                            filters.map((filter, index) => (
+                                <div class:list={["form-group", { current: index === 0 }]}>
+                                    <span class="form-number">{filter.number}</span>
+                                    <select
+                                        class="ignavo-attribute-filter"
+                                        data-selected="-1"
+                                        data-taxonomy={`filter-${index + 1}`}
+                                        name={`filter-${index + 1}`}
+                                        aria-label={filter.label}
+                                        disabled={index > 0}
+                                    >
+                                        <option value="">{filter.label}</option>
+                                        {filter.options.map((option) => (
+                                            <option value={option}>{option}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            ))
+                        }
+                        <button type="submit" class="variant-primary">
+                            Find Auto Parts
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="finder-footer mt mt-sm">
+            <p>
+                You can find the product you are looking for faster by entering the
+                search criteria correctly.
+            </p>
+        </div>
+    </div>
+</section>
+
+<style>
+    section.product-finder-section {
+        --colors-gray-100: 241, 245, 249;
+        --colors-gray-200: 226, 232, 240;
+        --colors-gray-300: 203, 213, 225;
+        --colors-gray-400: 148, 163, 184;
+        --colors-gray-500: 100, 116, 139;
+        --colors-gray-600: 71, 85, 105;
+        --colors-primary-background: 3, 78, 162;
+        --colors-primary-foreground: 255, 255, 255;
+        --theme-radius: 8px;
+        --text-xs: 0.75rem;
+        background: var(--color-white);
+        padding: var(--px-8) var(--px-64) var(--px-96);
+    }
+
+    .site-module-header {
+        --module-header-gap: 20px;
+        --module-header-column-gap: 20px;
+        --module-header-title-gap: 20px;
+        --module-header-offset: 16px;
+        --module-header-offset-lg: 30px;
+        --module-header-padding: 10px;
+        --module-header-padding-lg: 20px;
+        --module-title-size-lg: 24px;
+        --module-title-size-sm: 22px;
+        --module-title-size-xs: 18px;
+        --module-title-weight: 600;
+        --module-title-background: rgb(255, 255, 255);
+        --module-title-border: rgb(var(--colors-gray-200));
+        --module-description-size: 13px;
+        --module-description-size-desktop: 13px;
+        --module-description-width: auto;
+        --module-header-color: rgb(15, 23, 42);
+        --module-header-color-muted: rgb(var(--colors-gray-500));
+        --module-header-border: rgb(var(--colors-gray-200));
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--module-header-gap);
+        text-align: center;
+        margin-bottom: var(--module-header-offset);
+        padding-bottom: var(--module-header-padding);
+        border-bottom: 1px solid var(--module-header-border);
+    }
+
+    .site-module-header .content-column {
+        width: 100%;
+    }
+
+    .site-module-header-title {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--module-header-title-gap);
+        width: 100%;
+        z-index: 1;
+    }
+
+    .site-module-header-title:has(.entry-title.bordered)::before {
+        content: "";
+        position: absolute;
+        inset-inline-start: 0;
+        z-index: -1;
+        width: 100%;
+        height: 1px;
+        background: var(--module-title-border);
+    }
+
+    .site-module-header .entry-title {
+        margin: 0;
+        padding-inline: 1rem;
+        background: var(--module-title-background);
+        color: var(--module-header-color);
+        font-size: var(--module-title-size-xs);
+        font-weight: var(--module-title-weight);
+        line-height: 1.2;
+        white-space: nowrap;
+    }
+
+    .site-module-header .entry-description {
+        max-width: var(--module-description-width);
+        margin: 0 auto;
+        color: var(--module-header-color-muted);
+        font-size: var(--module-description-size);
+        line-height: 1.6;
+        opacity: 1;
+    }
+
+    .finder-panel {
+        --p: 16px;
+        --p-sm: 22px;
+        --p-lg: 30px;
+        padding: var(--p);
+        border-radius: var(--theme-radius);
+        background: rgb(var(--colors-gray-200));
+    }
+
+    .garage-form {
+        --garage-number-color: rgb(var(--colors-gray-400));
+        --garage-number-background: rgb(var(--colors-gray-200));
+        --garage-number-active-color: rgb(var(--colors-primary-foreground));
+        --garage-number-active-background: rgb(var(--colors-primary-background));
+        --garage-select-outline: rgba(var(--colors-primary-background), 0.6);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        gap: 30px;
+        max-width: var(--garage-form-width, 440px);
+        width: 100%;
+    }
+
+    .garage-form > * {
+        width: 100%;
+    }
+
+    .garage-form.horizontal .form-garage {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .garage-form.horizontal .form-garage > * {
+        width: 100%;
+        margin-bottom: 0.625rem;
+    }
+
+    .garage-form.horizontal .form-garage button {
+        width: 100%;
+    }
+
+    .form-group {
+        position: relative;
+        margin: 0;
+    }
+
+    .form-number {
+        position: absolute;
+        inset-inline-start: 0.625rem;
+        top: 50%;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.375rem;
+        height: 1.375rem;
+        border-radius: 50%;
+        color: var(--garage-number-color);
+        background: var(--garage-number-background);
+        font-size: 0.5625rem;
+        font-weight: 600;
+        line-height: 1;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .form-group.current .form-number {
+        color: var(--garage-number-active-color);
+        background: var(--garage-number-active-background);
+    }
+
+    .form-garage.form-complete .form-number {
+        color: var(--garage-number-active-color);
+        background: var(--garage-number-active-background);
+    }
+
+    .form-garage select {
+        --form-input-size-base: 42px;
+        --form-input-font-size-base: 13px;
+        width: 100%;
+        min-height: var(--form-input-size-base);
+        padding: 0 2.5rem 0 2.875rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--theme-radius);
+        background: var(--color-white);
+        color: rgb(var(--colors-gray-600));
+        font-size: var(--form-input-font-size-base);
+        font-weight: 400;
+    }
+
+    .form-garage select:disabled {
+        cursor: not-allowed;
+        opacity: 0.65;
+    }
+
+    .form-garage select:focus,
+    .form-garage.form-focus .current select {
+        outline: 0.125rem solid var(--garage-select-outline);
+        outline-offset: 0.125rem;
+    }
+
+    .form-garage button {
+        --form-button-size-base: 42px;
+        min-height: var(--form-button-size-base);
+        border: 0;
+        border-radius: var(--theme-radius);
+        background: var(--color-brand-blue);
+        color: var(--color-white);
+        font-size: var(--text-sm);
+        font-weight: 800;
+        cursor: pointer;
+    }
+
+    .finder-footer {
+        --mt: 10px;
+        --mt-sm: 20px;
+        margin-top: var(--mt);
+        text-align: center;
+    }
+
+    .finder-footer p {
+        margin: 0;
+        color: var(--color-text-secondary);
+        font-size: var(--text-xs);
+        opacity: 0.5;
+    }
+
+    @media screen and (min-width: 576.02px) {
+        .site-module-header .entry-title {
+            font-size: var(--module-title-size-sm);
+        }
+
+        .site-module-header .entry-description {
+            font-size: var(--module-description-size-desktop);
+        }
+
+        .finder-panel {
+            padding: var(--p-sm);
+        }
+
+        .finder-footer {
+            margin-top: var(--mt-sm);
+        }
+    }
+
+    @media screen and (min-width: 768.02px) {
+        .garage-form.horizontal .form-garage {
+            gap: 0.625rem;
+        }
+
+        .garage-form.horizontal .form-garage > * {
+            flex: 1 0 0%;
+            width: auto;
+            margin-bottom: 0;
+        }
+
+        .garage-form.horizontal .form-garage button {
+            flex: none;
+            width: auto;
+            padding-inline: 2rem;
+        }
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-module-header {
+            margin-bottom: var(--module-header-offset-lg);
+            padding-bottom: var(--module-header-padding-lg);
+        }
+
+        .site-module-header .entry-title {
+            font-size: var(--module-title-size-lg);
+        }
+
+        .finder-panel {
+            padding: var(--p-lg);
+        }
+
+        .form-garage select {
+            --form-input-size-base: 46px;
+        }
+
+        .form-garage button {
+            --form-button-size-base: 46px;
+        }
+    }
+
+    @media screen and (max-width: 64rem) {
+        section.product-finder-section {
+            padding-inline: var(--px-32);
+            padding-bottom: var(--px-80);
+        }
+    }
+
+    @media screen and (max-width: 42rem) {
+        section.product-finder-section {
+            padding-inline: var(--px-20);
+            padding-bottom: var(--px-72);
+        }
+
+        .site-module-header-title::before {
+            display: none;
+        }
+
+        .site-module-header .entry-title {
+            white-space: normal;
+        }
+
+        .garage-form.horizontal .form-garage > *,
+        .garage-form.horizontal .form-garage button {
+            flex-basis: 100%;
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    import { onPageReady } from "@utils/onPageReady";
+
+    onPageReady(() => {
+        const form = document.querySelector<HTMLFormElement>("#klb-attribute-filter");
+        if (!form) return;
+
+        const groups = Array.from(form.querySelectorAll<HTMLElement>(".form-group"));
+        const selects = Array.from(form.querySelectorAll<HTMLSelectElement>(".ignavo-attribute-filter"));
+
+        const syncState = () => {
+            const firstIncomplete = selects.findIndex((select) => !select.value);
+            const currentIndex = firstIncomplete === -1 ? selects.length - 1 : firstIncomplete;
+
+            groups.forEach((group, index) => {
+                group.classList.toggle("current", index === currentIndex);
+            });
+
+            selects.forEach((select, index) => {
+                select.disabled = index > 0 && !selects[index - 1]?.value;
+                select.dataset.selected = select.value ? "1" : "-1";
+            });
+
+            form.classList.toggle("form-complete", selects.every((select) => select.value));
+        };
+
+        const handleChange = (event: Event) => {
+            const changed = event.currentTarget as HTMLSelectElement;
+            const index = selects.indexOf(changed);
+
+            selects.slice(index + 1).forEach((select) => {
+                select.value = "";
+                select.dataset.selected = "-1";
+            });
+
+            syncState();
+            selects[index + 1]?.focus();
+        };
+
+        const handleFocus = () => form.classList.add("form-focus");
+        const handleBlur = () => form.classList.remove("form-focus");
+
+        selects.forEach((select) => {
+            select.addEventListener("change", handleChange);
+            select.addEventListener("focus", handleFocus);
+            select.addEventListener("blur", handleBlur);
+        });
+
+        syncState();
+
+        return () => {
+            selects.forEach((select) => {
+                select.removeEventListener("change", handleChange);
+                select.removeEventListener("focus", handleFocus);
+                select.removeEventListener("blur", handleBlur);
+            });
+        };
+    }, { root: "#klb-attribute-filter" });
+</script>

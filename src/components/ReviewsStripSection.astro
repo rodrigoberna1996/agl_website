@@ -1,0 +1,508 @@
+---
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
+const reviews = [
+    {
+        title: "Great quality fast delivery and well priced",
+        comment:
+            "Entrega puntual y excelente atencion para seleccionar lubricantes de acuerdo con nuestra flotilla.",
+        name: "Teresa Holland",
+        date: "3 days ago",
+    },
+    {
+        title: "Great quality fast delivery and well priced",
+        comment:
+            "Nos apoyaron con disponibilidad y asesoria tecnica para mantenimiento industrial.",
+        name: "Jessica Lindström",
+        date: "3 days ago",
+    },
+    {
+        title: "Great quality fast delivery and well priced",
+        comment:
+            "Buen seguimiento comercial y productos TotalEnergies listos para entrega.",
+        name: "Victoria Blomqvist",
+        date: "3 days ago",
+    },
+    {
+        title: "Great quality fast delivery and well priced",
+        comment:
+            "La recomendacion de producto fue clara y nos ayudo a evitar compras incorrectas.",
+        name: "John Malkovich",
+        date: "3 days ago",
+    },
+];
+
+const stars = Array.from({ length: 5 });
+const starPath =
+    "M16.991 23.3299L23.1509 22L26 31L16.3398 23.7972L6.30279 31L10.1984 19.1593L0 11.8415H12.6056L16.4996 0L20.3952 11.8415H33L16.991 23.3299Z";
+---
+
+<section class="reviews-strip-section" aria-label="Resenas de clientes">
+    <div class="section-container">
+        <div class="site-testimonial style-1">
+            <aside class="site-testimonial-profile">
+                <h3 class="entry-score">Excellent</h3>
+                <div class="testimonial-score" aria-label="5 de 5 estrellas">
+                    {
+                        stars.map(() => (
+                            <div class="star-item">
+                                <svg viewBox="0 0 33 31" fill="none" aria-hidden="true">
+                                    <path d={starPath} fill="currentColor" />
+                                </svg>
+                            </div>
+                        ))
+                    }
+                </div>
+                <div class="testimonial-rating">
+                    <span>Based on <strong>2,147 reviews</strong></span>
+                </div>
+                <div class="testimonial-brand">
+                    <p class="text-xs">
+                        All comments are from real users who have made purchases before.
+                    </p>
+                </div>
+            </aside>
+
+            <div class="site-testimonial-inner">
+                <div class="site-slider-wrapper relative">
+                    <div class="site-slider swiper reviews-swiper">
+                        <div class="swiper-wrapper">
+                            {
+                                reviews.map((review) => (
+                                    <div class="swiper-slide">
+                                        <article class="site-testimonial-box">
+                                            <div class="testimonial-box-header">
+                                                <div class="testimonial-score" aria-hidden="true">
+                                                    {stars.map(() => (
+                                                        <div class="star-item">
+                                                            <svg viewBox="0 0 33 31" fill="none" aria-hidden="true">
+                                                                <path d={starPath} fill="currentColor" />
+                                                            </svg>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                                <span class="testimonial-status">
+                                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                        <circle cx="12" cy="12" r="10"></circle>
+                                                        <line x1="12" x2="12" y1="8" y2="12"></line>
+                                                        <line x1="12" x2="12.01" y1="16" y2="16"></line>
+                                                    </svg>
+                                                    <span>Purchased user</span>
+                                                </span>
+                                            </div>
+                                            <div class="testimonial-box-body">
+                                                <h4 class="entry-testimonial-title">
+                                                    {review.title}
+                                                </h4>
+                                                <p>{review.comment}</p>
+                                            </div>
+                                            <div class="testimonial-user">
+                                                <p class="author-name">{review.name}</p>
+                                                <span class="testimonial-date">{review.date}</span>
+                                            </div>
+                                        </article>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </div>
+                    <div class="site-slider-controls">
+                        <div class="swiper-pagination reviews-pagination" style="--slider-dots-offset: 24px"></div>
+                        <div class="swiper-button-prev reviews-prev out"></div>
+                        <div class="swiper-button-next reviews-next out"></div>
+                    </div>
+                </div>
+                <div class="site-testimonial-message">Showing our 5 star reviews.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    section.reviews-strip-section {
+        --colors-green-base: 5, 150, 105;
+        --colors-white: 255, 255, 255;
+        --colors-primary-background: 3, 78, 162;
+        --colors-gray-300: 203, 213, 225;
+        --colors-gray-400: 148, 163, 184;
+        --colors-gray-500: 100, 116, 139;
+        --colors-gray-600: 71, 85, 105;
+        --theme-ease-in-out: ease;
+        --theme-ease-time-fast: 0.18s;
+        --theme-ease-time-medium: 0.28s;
+        --text-xs: 0.75rem;
+        background: var(--color-white);
+        padding: var(--px-72) var(--px-64) var(--px-88);
+    }
+
+    .site-testimonial {
+        --testimonial-primary: rgb(var(--colors-green-base));
+        --testimonial-secondary: rgb(var(--colors-white));
+        position: relative;
+    }
+
+    .site-testimonial.style-1 {
+        --testimonial-gap: 26px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.625rem;
+    }
+
+    .site-testimonial.style-1 > * {
+        width: 100%;
+    }
+
+    .site-testimonial .site-testimonial-profile {
+        text-align: center;
+    }
+
+    .site-testimonial .site-testimonial-profile .entry-score {
+        margin: 0 0 0.625rem;
+        font-size: 1.375rem;
+        font-weight: 600;
+        color: var(--color-text-primary);
+    }
+
+    .site-testimonial .testimonial-score {
+        --rating-size: 26px;
+        --rating-icon-size: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.125rem;
+        margin-bottom: 0.375rem;
+    }
+
+    .site-testimonial .testimonial-score > * {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--rating-size);
+        height: var(--rating-size);
+        color: var(--testimonial-secondary);
+        background-color: var(--testimonial-primary);
+        border-radius: 0.125rem;
+        line-height: 1;
+    }
+
+    .site-testimonial .testimonial-score > * > * {
+        width: var(--rating-icon-size);
+        height: var(--rating-icon-size);
+    }
+
+    .site-testimonial .site-testimonial-profile .testimonial-rating {
+        color: rgb(var(--colors-gray-500));
+        margin-bottom: 1rem;
+    }
+
+    .site-testimonial .site-testimonial-profile .testimonial-rating span strong {
+        text-decoration: underline;
+        text-underline-offset: 0.1875rem;
+    }
+
+    .site-testimonial .site-testimonial-profile .testimonial-brand {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding-inline: 0.375rem;
+    }
+
+    .site-testimonial .site-testimonial-profile .testimonial-brand p {
+        max-width: 13rem;
+        margin: 0;
+        color: var(--color-text-secondary);
+        font-size: var(--text-xs);
+        line-height: 1.45;
+        opacity: 1;
+    }
+
+    .site-slider-wrapper {
+        position: relative;
+    }
+
+    :global(.reviews-swiper) {
+        z-index: 3;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    :global(.reviews-swiper .swiper-slide) {
+        height: auto;
+    }
+
+    .site-testimonial .site-testimonial-box .testimonial-box-header {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.625rem;
+    }
+
+    .site-testimonial .site-testimonial-box .testimonial-box-header .testimonial-score {
+        --rating-size: 16px;
+        --rating-icon-size: 12px;
+        gap: 0.0625rem;
+        margin-bottom: 0;
+    }
+
+    .site-testimonial .site-testimonial-box .testimonial-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        color: rgb(var(--colors-gray-500));
+        font-size: calc(var(--text-xs) - 1px);
+        font-weight: 500;
+        pointer-events: none;
+    }
+
+    .site-testimonial .site-testimonial-box .testimonial-status svg,
+    .site-testimonial .site-testimonial-box .testimonial-status img {
+        width: calc(var(--text-xs) - 1px);
+        height: auto;
+        stroke: currentColor;
+        stroke-width: 2;
+    }
+
+    .site-testimonial .site-testimonial-box .testimonial-box-body {
+        margin-bottom: 0.625rem;
+    }
+
+    .site-testimonial .site-testimonial-box .testimonial-box-body .entry-testimonial-title {
+        --title-size: 15px;
+        margin: 0 0 0.125rem;
+        color: var(--color-text-primary);
+        font-size: var(--title-size);
+        font-weight: 600;
+        line-height: 1.25;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .site-testimonial .site-testimonial-box .testimonial-box-body p {
+        display: -webkit-box;
+        margin: 0;
+        color: rgb(var(--colors-gray-600));
+        font-size: var(--text-xs);
+        line-height: 1.45;
+        opacity: 1;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .site-testimonial .site-testimonial-box .testimonial-user {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: rgb(var(--colors-gray-400));
+        font-size: var(--text-xs);
+    }
+
+    .site-testimonial .site-testimonial-box .testimonial-user p {
+        margin: 0;
+        color: rgb(var(--colors-gray-600));
+        font-weight: 700;
+        opacity: 1;
+    }
+
+    .site-testimonial .site-testimonial-box .testimonial-user span {
+        font-size: calc(var(--text-xs) - 1px);
+    }
+
+    .site-slider-controls .swiper-pagination {
+        --slider-dots-offset: 24px;
+        --slider-dots: 6px;
+        --slider-dots-gap: 4px;
+        --slider-dots-opacity: 0.3;
+        --slider-dots-color: rgb(var(--colors-primary-background));
+        --slider-dots-active-color: rgb(var(--colors-primary-background));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--slider-dots);
+        margin-top: var(--slider-dots-offset);
+        position: relative;
+    }
+
+    .site-slider-controls :global(.swiper-pagination-bullet) {
+        width: var(--slider-dots);
+        height: var(--slider-dots);
+        margin: 0 calc(var(--slider-dots-gap) / 2);
+        border-radius: 999px;
+        background-color: var(--slider-dots-color);
+        opacity: var(--slider-dots-opacity);
+    }
+
+    .site-slider-controls :global(.swiper-pagination-bullet-active) {
+        background-color: var(--slider-dots-active-color);
+        opacity: 1;
+    }
+
+    .site-slider-controls :global(.swiper-button-next),
+    .site-slider-controls :global(.swiper-button-prev) {
+        --swiper-navigation-boxed: 1;
+        --swiper-navigation-size: 24px;
+        --swiper-navigation-font-size: 10px;
+        --swiper-navigation-weight: 600;
+        --swiper-navigation-border: rgb(var(--colors-gray-300));
+        --swiper-navigation-hover-border: rgb(var(--colors-gray-400));
+        --swiper-navigation-radius: 50%;
+        color: #000;
+        width: var(--swiper-navigation-size);
+        height: var(--swiper-navigation-size);
+        border: 1px solid var(--swiper-navigation-border);
+        border-radius: var(--swiper-navigation-radius);
+        background: var(--color-white);
+        transition:
+            border-color var(--theme-ease-time-fast) var(--theme-ease-in-out),
+            color var(--theme-ease-time-fast) var(--theme-ease-in-out);
+    }
+
+    .site-slider-controls :global(.swiper-button-next)::after,
+    .site-slider-controls :global(.swiper-button-prev)::after {
+        font-size: var(--swiper-navigation-font-size);
+        font-weight: var(--swiper-navigation-weight);
+    }
+
+    .site-slider-controls :global(.swiper-button-prev) {
+        padding-inline-end: 1px;
+    }
+
+    .site-slider-controls :global(.swiper-button-next) {
+        padding-inline-start: 2px;
+    }
+
+    .site-slider-controls :global(.swiper-button-next:hover),
+    .site-slider-controls :global(.swiper-button-prev:hover) {
+        border-color: var(--swiper-navigation-hover-border);
+    }
+
+    .site-testimonial .site-testimonial-message {
+        margin-top: 1.25rem;
+        color: rgb(var(--colors-gray-400));
+        font-size: var(--text-xs);
+        font-weight: 500;
+        text-align: center;
+    }
+
+    @media screen and (min-width: 576.02px) {
+        .site-testimonial.style-1 {
+            gap: var(--testimonial-gap);
+        }
+    }
+
+    @media screen and (min-width: 768.02px) {
+        .site-testimonial.style-1 > * {
+            width: auto;
+        }
+
+        .site-testimonial.style-1 > .site-testimonial-profile {
+            width: 240px;
+        }
+
+        .site-testimonial.style-1 > .site-testimonial-inner {
+            flex: 1 0 0%;
+            min-width: 0;
+            position: relative;
+        }
+
+        .site-testimonial .site-testimonial-profile .entry-score {
+            font-size: 1.375rem;
+        }
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-testimonial .site-slider-wrapper .swiper-pagination {
+            display: none;
+        }
+
+        .site-testimonial .site-testimonial-message {
+            text-align: start;
+        }
+
+        .site-slider-controls :global(.swiper-button-prev.out) {
+            left: -36px;
+        }
+
+        .site-slider-controls :global(.swiper-button-next.out) {
+            right: -36px;
+        }
+    }
+
+    @media screen and (max-width: 1023.98px) {
+        .site-slider-controls :global(.swiper-button-next),
+        .site-slider-controls :global(.swiper-button-prev) {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 64rem) {
+        section.reviews-strip-section {
+            padding-inline: var(--px-32);
+            padding-block: var(--px-64) var(--px-72);
+        }
+    }
+
+    @media screen and (max-width: 42rem) {
+        section.reviews-strip-section {
+            padding-inline: var(--px-20);
+            padding-block: var(--px-56) var(--px-64);
+        }
+
+        .site-testimonial .site-testimonial-profile .entry-score {
+            font-size: 1.125rem;
+        }
+    }
+</style>
+
+<script>
+    import { initSwiper } from "@utils/initSwiper";
+    import { onPageReady } from "@utils/onPageReady";
+
+    onPageReady(() => {
+        const swiper = initSwiper("reviews", {
+            autoHeight: false,
+            loop: true,
+            speed: 600,
+            simulateTouch: true,
+            slidesPerView: 1.5,
+            slidesPerGroup: 1,
+            spaceBetween: 10,
+            autoplay: {
+                delay: 2400,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+                waitForTransition: true,
+            },
+            pagination: {
+                el: ".reviews-pagination",
+                clickable: false,
+            },
+            navigation: {
+                nextEl: ".reviews-next",
+                prevEl: ".reviews-prev",
+            },
+            breakpoints: {
+                567: {
+                    slidesPerView: 1.5,
+                    slidesPerGroup: 1,
+                    spaceBetween: 10,
+                },
+                768: {
+                    slidesPerView: 3,
+                    slidesPerGroup: 1,
+                    spaceBetween: 20,
+                },
+                1024: {
+                    slidesPerView: 4,
+                    slidesPerGroup: 1,
+                    spaceBetween: 30,
+                },
+            },
+        });
+
+        return () => swiper.destroy();
+    }, { root: ".reviews-swiper" });
+</script>

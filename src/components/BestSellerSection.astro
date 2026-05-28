@@ -1,0 +1,580 @@
+---
+import { Image } from "astro:assets";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { getCatalogItems } from "@lib/catalog";
+
+const catalogItems = getCatalogItems();
+const featuredFileNames = [
+    "agl_1.jpeg",
+    "agl_7.jpeg",
+    "agl_10.jpeg",
+    "agl_20.jpeg",
+    "agl_30.jpeg",
+];
+
+const products = featuredFileNames
+    .map((fileName, index) => {
+        const item = catalogItems.find((product) => product.fileName === fileName);
+        if (!item) return null;
+
+        return {
+            ...item,
+            discount: [32, 28, 17, 24, 34][index],
+            rating: ["4.83", "4.67", "4.33", "4.50", "4.75"][index],
+            reviews: [3, 5, 3, 4, 6][index],
+            available: [10, 29, 38, 16, 12][index],
+            sold: [65, 54, 37, 42, 34][index],
+        };
+    })
+    .filter(Boolean);
+---
+
+<section class="best-seller-section" aria-labelledby="best-seller-heading">
+    <div class="section-container">
+        <div class="site-module-header">
+            <div class="column content-column">
+                <div class="site-module-header-title">
+                    <h2 id="best-seller-heading" class="entry-title">Best Seller</h2>
+                </div>
+                <p>Our most ordered products.</p>
+            </div>
+            <div class="column button-column flex-none">
+                <a href="/products" class="link link-decoration text-primary-background">
+                    View All
+                </a>
+            </div>
+        </div>
+
+        <div class="site-slider-wrapper relative">
+            <div class="site-slider swiper carousel-for-mobile best-seller-swiper">
+                <div class="swiper-wrapper products">
+                    {
+                        products.map((product) => (
+                            <div class="swiper-slide">
+                                <article class="best-seller-card">
+                                    <div class="best-seller-card__media">
+                                        <span class="best-seller-card__badge">
+                                            {product.discount}%
+                                        </span>
+                                        <button
+                                            class="best-seller-card__wishlist"
+                                            type="button"
+                                            aria-label={`Agregar ${product.name} a favoritos`}
+                                        >
+                                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z" />
+                                            </svg>
+                                        </button>
+                                        <a href="/products" class="best-seller-card__image-link">
+                                            <Image
+                                                src={product.image}
+                                                alt={product.name}
+                                                class="best-seller-card__image"
+                                                width={320}
+                                                height={320}
+                                                loading="lazy"
+                                                decoding="async"
+                                            />
+                                        </a>
+                                    </div>
+
+                                    <div class="best-seller-card__body">
+                                        <div class="best-seller-card__rating">
+                                            <span aria-hidden="true">★★★★★</span>
+                                            <strong>{product.rating}</strong>
+                                            <small>({product.reviews})</small>
+                                        </div>
+                                        <h3 class="best-seller-card__title">
+                                            <a href="/products">{product.name}</a>
+                                        </h3>
+                                        <p class="best-seller-card__quote">Cotizar</p>
+                                        <div class="best-seller-card__stock">
+                                            <div class="best-seller-card__stock-track">
+                                                <span
+                                                    style={`width: ${Math.min(100, Math.round((product.sold / (product.available + product.sold)) * 100))}%`}
+                                                />
+                                            </div>
+                                            <div class="best-seller-card__stock-meta">
+                                                <span>Available:{product.available}</span>
+                                                <span>Sold:{product.sold}</span>
+                                            </div>
+                                        </div>
+                                        <a href="/contact" class="best-seller-card__cta">
+                                            Solicitar cotizacion
+                                        </a>
+                                    </div>
+                                </article>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+            <div class="site-slider-controls">
+                <div class="swiper-pagination best-seller-pagination" style="--slider-dots-offset: 24px"></div>
+                <div class="swiper-button-prev best-seller-prev half on-hover"></div>
+                <div class="swiper-button-next best-seller-next half on-hover"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    section.best-seller-section {
+        --colors-primary-background: 3, 78, 162;
+        --colors-gray-200: 226, 232, 240;
+        --colors-gray-300: 203, 213, 225;
+        --colors-white: 255, 255, 255;
+        --colors-gray-500: 100, 116, 139;
+        --colors-gray-900: 15, 23, 42;
+        --theme-ease-in-out: ease;
+        --theme-ease-time-fast: 0.18s;
+        --theme-ease-time-medium: 0.28s;
+        --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.08);
+        background: var(--color-white);
+        padding: var(--px-8) var(--px-64) var(--px-96);
+    }
+
+    .site-module-header {
+        --module-header-gap: 20px;
+        --module-header-column-gap: 20px;
+        --module-header-title-gap: 20px;
+        --module-header-offset: 16px;
+        --module-header-offset-lg: 30px;
+        --module-header-padding: 10px;
+        --module-header-padding-lg: 20px;
+        --module-title-size-lg: 24px;
+        --module-title-size-sm: 22px;
+        --module-title-size-xs: 18px;
+        --module-title-weight: 600;
+        --module-description-size: 13px;
+        --module-description-size-desktop: 13px;
+        --module-header-color: rgb(var(--colors-gray-900));
+        --module-header-color-muted: rgb(var(--colors-gray-500));
+        --module-header-border: rgb(var(--colors-gray-200));
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--module-header-gap);
+        margin-bottom: var(--module-header-offset);
+        padding-bottom: var(--module-header-padding);
+        border-bottom: 1px solid var(--module-header-border);
+    }
+
+    .site-module-header > * {
+        display: inline-flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: var(--module-header-column-gap);
+        width: 100%;
+    }
+
+    .site-module-header-title {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--module-header-title-gap);
+    }
+
+    .site-module-header-title .entry-title {
+        margin: 0;
+        color: var(--module-header-color);
+        font-size: var(--module-title-size-xs);
+        font-weight: var(--module-title-weight);
+        line-height: 1.2;
+    }
+
+    .site-module-header p {
+        margin: 0;
+        color: var(--module-header-color-muted);
+        font-size: var(--module-description-size);
+        line-height: 1.1;
+        opacity: 1;
+    }
+
+    .site-module-header .button-column {
+        display: none;
+        justify-content: flex-end;
+    }
+
+    .site-module-header .link {
+        color: var(--color-brand-blue);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .site-slider-wrapper {
+        position: relative;
+    }
+
+    :global(.best-seller-swiper) {
+        z-index: 3;
+        overflow: hidden;
+    }
+
+    :global(.best-seller-swiper .swiper-slide) {
+        height: auto;
+    }
+
+    .best-seller-card {
+        min-width: 0;
+    }
+
+    .best-seller-card__media {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        border: 1px solid var(--color-border);
+        border-radius: var(--px-8);
+        background: var(--color-white);
+        overflow: hidden;
+    }
+
+    .best-seller-card__badge {
+        position: absolute;
+        top: var(--px-10);
+        left: var(--px-10);
+        z-index: 2;
+        min-width: 2.25rem;
+        padding: 0.24rem 0.45rem;
+        border-radius: 4px;
+        background: var(--color-brand-blue);
+        color: var(--color-white);
+        font-size: 0.68rem;
+        font-weight: 800;
+        line-height: 1;
+        text-align: center;
+    }
+
+    .best-seller-card__wishlist {
+        position: absolute;
+        top: var(--px-10);
+        right: var(--px-10);
+        z-index: 2;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--color-text-primary);
+        cursor: pointer;
+    }
+
+    .best-seller-card__wishlist svg {
+        width: 1.25rem;
+        height: 1.25rem;
+        stroke: currentColor;
+        stroke-width: 1.7;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .best-seller-card__image-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        padding: var(--px-20);
+    }
+
+    .best-seller-card__image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+    }
+
+    .best-seller-card__body {
+        padding-top: var(--px-12);
+    }
+
+    .best-seller-card__rating {
+        display: flex;
+        align-items: center;
+        gap: var(--px-4);
+        color: #f5b301;
+        font-size: 0.78rem;
+        line-height: 1;
+        margin-bottom: var(--px-10);
+    }
+
+    .best-seller-card__rating strong,
+    .best-seller-card__rating small {
+        color: var(--color-text-primary);
+    }
+
+    .best-seller-card__rating strong {
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+
+    .best-seller-card__rating small {
+        font-size: 0.74rem;
+        color: var(--color-text-secondary);
+    }
+
+    .best-seller-card__title {
+        margin: 0 0 var(--px-12);
+        min-height: 2.7rem;
+        font-size: var(--text-sm);
+        font-weight: 600;
+        line-height: 1.35;
+        color: var(--color-text-primary);
+    }
+
+    .best-seller-card__title a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .best-seller-card__quote {
+        margin: 0 0 var(--px-16);
+        color: #0f9f6e;
+        font-size: var(--text-xl);
+        font-weight: 900;
+        line-height: 1;
+        opacity: 1;
+    }
+
+    .best-seller-card__stock-track {
+        height: 0.25rem;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #e5e7eb;
+    }
+
+    .best-seller-card__stock-track span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: #e93673;
+    }
+
+    .best-seller-card__stock-meta {
+        display: flex;
+        justify-content: space-between;
+        gap: var(--px-8);
+        margin-top: var(--px-8);
+        color: var(--color-text-secondary);
+        font-size: 0.68rem;
+    }
+
+    .best-seller-card__cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.35rem;
+        margin-top: var(--px-16);
+        border-radius: var(--px-6);
+        background: var(--color-brand-blue);
+        color: var(--color-white);
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .site-slider-controls .swiper-pagination {
+        --slider-dots-offset: 24px;
+        --slider-dots: 6px;
+        --slider-dots-gap: 4px;
+        --slider-dots-opacity: 0.3;
+        --slider-dots-color: rgb(var(--colors-primary-background));
+        --slider-dots-active-color: rgb(var(--colors-primary-background));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--slider-dots);
+        margin-top: var(--slider-dots-offset);
+        position: relative;
+    }
+
+    .site-slider-controls :global(.swiper-pagination-bullet) {
+        width: var(--slider-dots);
+        height: var(--slider-dots);
+        margin: 0 calc(var(--slider-dots-gap) / 2);
+        border-radius: 999px;
+        background-color: var(--slider-dots-color);
+        opacity: var(--slider-dots-opacity);
+    }
+
+    .site-slider-controls :global(.swiper-pagination-bullet-active) {
+        background-color: var(--slider-dots-active-color);
+        opacity: 1;
+    }
+
+    .site-slider-controls :global(.swiper-button-next),
+    .site-slider-controls :global(.swiper-button-prev) {
+        --swiper-navigation-boxed: 1;
+        --swiper-navigation-size: 48px;
+        --swiper-navigation-font-size: 16px;
+        --swiper-navigation-weight: 600;
+        --swiper-navigation-background: #fff;
+        --swiper-navigation-hover-background: #fff;
+        --swiper-navigation-border: rgb(var(--colors-gray-200));
+        --swiper-navigation-hover-border: rgb(var(--colors-gray-300));
+        --swiper-navigation-radius: 50%;
+        --swiper-navigation-shadow: var(--shadow-xs);
+        color: #000;
+        width: var(--swiper-navigation-size);
+        height: var(--swiper-navigation-size);
+        border: 1px solid var(--swiper-navigation-border);
+        border-radius: var(--swiper-navigation-radius);
+        background: var(--swiper-navigation-background);
+        box-shadow: var(--swiper-navigation-shadow);
+        transition:
+            opacity var(--theme-ease-time-medium) var(--theme-ease-in-out),
+            transform var(--theme-ease-time-medium) var(--theme-ease-in-out),
+            border-color var(--theme-ease-time-fast) var(--theme-ease-in-out);
+    }
+
+    .site-slider-controls :global(.swiper-button-next)::after,
+    .site-slider-controls :global(.swiper-button-prev)::after {
+        font-size: var(--swiper-navigation-font-size);
+        font-weight: var(--swiper-navigation-weight);
+    }
+
+    .site-slider-controls :global(.swiper-button-next:hover),
+    .site-slider-controls :global(.swiper-button-prev:hover) {
+        border-color: var(--swiper-navigation-hover-border);
+        background: var(--swiper-navigation-hover-background);
+    }
+
+    .site-slider-controls :global(.swiper-button-next.on-hover),
+    .site-slider-controls :global(.swiper-button-prev.on-hover) {
+        opacity: 0;
+    }
+
+    .site-slider-controls :global(.swiper-button-prev.on-hover) {
+        transform: translate3d(10px, 0, 0);
+    }
+
+    .site-slider-controls :global(.swiper-button-next.on-hover) {
+        transform: translate3d(-10px, 0, 0);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .best-seller-card__title a:hover,
+        .site-module-header .link:hover {
+            color: var(--color-brand-red);
+        }
+
+        .best-seller-card__cta:hover {
+            background: var(--color-brand-navy);
+        }
+
+        .site-slider-wrapper:hover .site-slider-controls :global(.on-hover) {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+    @media screen and (min-width: 576.02px) {
+        .site-module-header > * {
+            flex: 1 0 0%;
+            width: auto;
+        }
+
+        .site-module-header-title .entry-title {
+            font-size: var(--module-title-size-sm);
+        }
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-module-header {
+            margin-bottom: var(--module-header-offset-lg);
+            padding-bottom: var(--module-header-padding-lg);
+        }
+
+        .site-module-header > .button-column {
+            display: inline-flex;
+            flex: none;
+        }
+
+        .site-module-header-title .entry-title {
+            font-size: var(--module-title-size-lg);
+        }
+
+        .site-slider-controls :global(.swiper-button-prev.half) {
+            left: -24px;
+        }
+
+        .site-slider-controls :global(.swiper-button-next.half) {
+            right: -24px;
+        }
+    }
+
+    @media screen and (max-width: 1023.98px) {
+        .site-slider-controls :global(.swiper-button-next),
+        .site-slider-controls :global(.swiper-button-prev) {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 64rem) {
+        section.best-seller-section {
+            padding-inline: var(--px-32);
+            padding-bottom: var(--px-80);
+        }
+    }
+
+    @media screen and (max-width: 42rem) {
+        section.best-seller-section {
+            padding-inline: var(--px-20);
+            padding-bottom: var(--px-64);
+        }
+
+        .best-seller-card__title {
+            min-height: auto;
+        }
+    }
+</style>
+
+<script>
+    import { initSwiper } from "@utils/initSwiper";
+    import { onPageReady } from "@utils/onPageReady";
+
+    onPageReady(() => {
+        const swiper = initSwiper("best-seller", {
+            autoHeight: false,
+            loop: false,
+            speed: 700,
+            simulateTouch: true,
+            slidesPerView: 2,
+            slidesPerGroup: 1,
+            spaceBetween: 10,
+            pagination: {
+                el: ".best-seller-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: ".best-seller-next",
+                prevEl: ".best-seller-prev",
+            },
+            breakpoints: {
+                567: {
+                    slidesPerView: 2,
+                    slidesPerGroup: 1,
+                    spaceBetween: 10,
+                },
+                768: {
+                    slidesPerView: 3,
+                    slidesPerGroup: 1,
+                    spaceBetween: 20,
+                },
+                1024: {
+                    slidesPerView: 5,
+                    slidesPerGroup: 1,
+                    spaceBetween: 30,
+                },
+            },
+        });
+
+        return () => swiper.destroy();
+    }, { root: ".best-seller-swiper" });
+</script>
