@@ -20,19 +20,31 @@ const filters: { key: 'all' | PortfolioCategory; label: string }[] = [
 ---
 
 <section class="portfolio-page" aria-labelledby="portfolio-heading">
+  <h1 id="portfolio-heading" class="sr-only">Blog</h1>
   <div class="section-container">
-    <header class="portfolio-page__header">
-      <h1 id="portfolio-heading" class="section-title portfolio-page__title">
-        Blog
-      </h1>
-    </header>
-
     {
       posts.length > 0 && (
         <div class="portfolio-page__toolbar">
+          <nav
+            class="portfolio-page__filters"
+            aria-label="Filtrar publicaciones"
+            role="group"
+          >
+            {filters.map((f, i) => (
+              <button
+                type="button"
+                class:list={['portfolio-page__filter', { 'is-active': i === 0 }]}
+                data-filter={f.key}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+              >
+                {f.label}
+              </button>
+            ))}
+          </nav>
+
           <div class="portfolio-page__search">
-            <label class="portfolio-page__search-label" for="portfolio-search">
-              Buscar
+            <label class="sr-only" for="portfolio-search">
+              Buscar publicaciones
             </label>
             <div class="portfolio-page__search-field">
               <svg
@@ -53,28 +65,11 @@ const filters: { key: 'all' | PortfolioCategory; label: string }[] = [
                 type="search"
                 id="portfolio-search"
                 class="portfolio-page__search-input"
-                placeholder="Buscar por título, tema o contenido…"
+                placeholder="Buscar…"
                 autocomplete="off"
               />
             </div>
           </div>
-
-          <nav
-            class="portfolio-page__filters"
-            aria-label="Filtrar publicaciones"
-            role="group"
-          >
-            {filters.map((f, i) => (
-              <button
-                type="button"
-                class:list={['portfolio-page__filter', { 'is-active': i === 0 }]}
-                data-filter={f.key}
-                aria-pressed={i === 0 ? 'true' : 'false'}
-              >
-                {f.label}
-              </button>
-            ))}
-          </nav>
         </div>
       )
     }
@@ -159,35 +154,35 @@ const filters: { key: 'all' | PortfolioCategory; label: string }[] = [
     background: var(--color-white);
   }
 
-  .portfolio-page__header {
-    margin-bottom: var(--px-40);
-  }
-
-  .portfolio-page__title {
-    margin-bottom: 0;
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .portfolio-page__toolbar {
     display: flex;
-    flex-direction: column;
-    gap: var(--px-24);
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--px-16) var(--px-24);
     margin-bottom: var(--px-40);
   }
 
   .portfolio-page__search {
-    max-width: 28rem;
-  }
-
-  .portfolio-page__search-label {
-    display: block;
-    margin-bottom: var(--px-8);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--color-text-primary);
+    flex: 0 1 18rem;
+    min-width: min(100%, 12rem);
   }
 
   .portfolio-page__search-field {
     position: relative;
+    width: 100%;
   }
 
   .portfolio-page__search-icon {
@@ -203,7 +198,9 @@ const filters: { key: 'all' | PortfolioCategory; label: string }[] = [
 
   .portfolio-page__search-input {
     width: 100%;
-    padding: var(--px-14) var(--px-16) var(--px-14) calc(var(--px-16) + 1.5rem);
+    min-height: 2.75rem;
+    padding: var(--px-10) var(--px-16) var(--px-10) calc(var(--px-16) + 1.5rem);
+    box-sizing: border-box;
     border: 1px solid var(--color-border);
     border-radius: var(--px-8);
     font-size: var(--text-sm);
@@ -228,11 +225,15 @@ const filters: { key: 'all' | PortfolioCategory; label: string }[] = [
   .portfolio-page__filters {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: var(--px-10);
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .portfolio-page__filter {
     padding: var(--px-10) var(--px-20);
+    min-height: 2.75rem;
     border: 1px solid var(--color-border);
     border-radius: 999px;
     background: var(--color-white);
@@ -391,13 +392,19 @@ const filters: { key: 'all' | PortfolioCategory; label: string }[] = [
     .portfolio-page__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
-    .portfolio-page__search {
-      max-width: none;
-    }
   }
 
   @media screen and (max-width: 42rem) {
+    .portfolio-page__toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .portfolio-page__search {
+      flex: 1 1 auto;
+      max-width: none;
+    }
+
     .portfolio-page__grid {
       grid-template-columns: 1fr;
     }
