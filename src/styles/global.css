@@ -304,6 +304,18 @@ section.contact.contact--page {
   }
 }
 
+/* Blog: detalle de publicación. */
+article.blog-post {
+  padding-top: calc(var(--h-menu-bar) + var(--px-64));
+  padding-bottom: var(--px-96);
+}
+
+@media screen and (max-width: 48rem) {
+  article.blog-post {
+    padding-top: calc(var(--h-menu-bar) + var(--px-48));
+  }
+}
+
 /* Portafolio: mismo espaciado superior que productos. */
 section.portfolio-page {
   padding-top: calc(var(--h-menu-bar) + var(--px-64));

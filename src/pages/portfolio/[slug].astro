@@ -1,0 +1,25 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import BlogPostDetail from '@components/BlogPostDetail.astro';
+import { SITE } from '@consts';
+import { getPortfolioPosts, getPortfolioPostBySlug } from '@lib/portfolio';
+
+export async function getStaticPaths() {
+  return getPortfolioPosts().map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const post = getPortfolioPostBySlug(Astro.params.slug ?? '');
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const pageTitle = `${post.title} | Blog | ${SITE.COMPANY_NAME}`;
+const pageDescription = post.excerpt;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <BlogPostDetail post={post} />
+</BaseLayout>
