@@ -152,15 +152,26 @@ const productCategories = [
     }
 
     .ignavo-feature-column {
+        position: relative;
         display: flex;
         align-items: center;
         min-width: 0;
-        padding: 0 40px;
-        min-height: 78px;
+        padding: 22px 40px 0;
+        min-height: 100px;
     }
 
     .ignavo-feature-column + .ignavo-feature-column {
-        border-left: 1px solid rgb(var(--colors-gray-200));
+        border-left: 0;
+    }
+
+    .ignavo-feature-column + .ignavo-feature-column::before {
+        content: "";
+        position: absolute;
+        inset-inline-start: 0;
+        top: 22px;
+        bottom: 0;
+        width: 1px;
+        background: rgb(var(--colors-gray-200));
     }
 
     /* Copiado del template Ignavo: base.css / Iconbox */
@@ -383,12 +394,15 @@ const productCategories = [
 
         .ignavo-feature-column {
             min-height: auto;
-            padding: 16px 0;
+            padding: 22px 0 16px;
         }
 
         .ignavo-feature-column + .ignavo-feature-column {
-            border-left: 0;
             border-top: 1px solid rgb(var(--colors-gray-200));
+        }
+
+        .ignavo-feature-column + .ignavo-feature-column::before {
+            display: none;
         }
     }
 
