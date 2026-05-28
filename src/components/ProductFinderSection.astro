@@ -45,7 +45,12 @@ const filters = [
         <div class="finder-panel p p-sm p-lg">
             <div class="garage-form horizontal" style="--garage-form-width: 100%;">
                 <div class="garage-form-body">
-                    <form id="klb-attribute-filter" class="form-garage service-search-form" action="/products">
+                    <form
+                        id="klb-attribute-filter"
+                        class="form-garage service-search-form"
+                        action="/products"
+                        style="width: 100%;"
+                    >
                         {
                             filters.map((filter, index) => (
                                 <div class:list={["form-group", { current: index === 0 }]}>
@@ -213,6 +218,14 @@ const filters = [
         width: 100%;
     }
 
+    section.product-finder-section #klb-attribute-filter {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: none;
+    }
+
     section.product-finder-section .garage-form.horizontal .form-garage > * {
         width: 100%;
         margin-bottom: 0.625rem;
@@ -367,8 +380,24 @@ const filters = [
             width: 100%;
         }
 
+        section.product-finder-section #klb-attribute-filter {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 0.625rem;
+            width: 100%;
+            max-width: none;
+        }
+
         section.product-finder-section .garage-form.horizontal .form-garage > * {
             flex: 1 0 0%;
+            width: auto;
+            min-width: 0;
+            margin-bottom: 0;
+        }
+
+        section.product-finder-section #klb-attribute-filter > .form-group {
+            flex: 1 1 0;
             width: auto;
             min-width: 0;
             margin-bottom: 0;
@@ -384,6 +413,13 @@ const filters = [
             width: auto;
             padding-inline: 2rem;
             white-space: nowrap;
+        }
+
+        section.product-finder-section #klb-attribute-filter > button {
+            flex: 0 0 auto;
+            width: auto;
+            min-width: max-content;
+            margin-bottom: 0;
         }
     }
 
