@@ -316,15 +316,52 @@ article.blog-post {
   }
 }
 
-/* Portafolio: mismo espaciado superior que productos. */
+/* Blog (/portfolio): espaciado y barra buscador + filtros en una fila. */
 section.portfolio-page {
   padding-top: calc(var(--h-menu-bar) + var(--px-64));
   padding-bottom: var(--px-96);
 }
 
+section.portfolio-page .portfolio-page__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--px-16) var(--px-24);
+  margin-bottom: var(--px-40);
+}
+
+section.portfolio-page .portfolio-page__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--px-10);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+section.portfolio-page .portfolio-page__search {
+  flex: 0 1 18rem;
+  min-width: min(100%, 12rem);
+}
+
+section.portfolio-page .portfolio-page__search-field {
+  width: 100%;
+}
+
 @media screen and (max-width: 42rem) {
   section.portfolio-page {
     padding-top: calc(var(--h-menu-bar) + var(--px-48));
+  }
+
+  section.portfolio-page .portfolio-page__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  section.portfolio-page .portfolio-page__search {
+    flex: 1 1 auto;
+    max-width: none;
   }
 }
 

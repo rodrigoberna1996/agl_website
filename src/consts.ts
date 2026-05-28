@@ -7,6 +7,17 @@ export function toTelHref(phone: string): string {
   return `tel:+${d}`;
 }
 
+/** Enlace wa.me para México (10 dígitos nacionales). */
+export function toWhatsAppHref(
+  phone: string,
+  text = 'Hola, me gustaría recibir información sobre sus productos.',
+): string {
+  const d = phone.replace(/\D/g, '');
+  const number = d.length === 10 ? `52${d}` : d.startsWith('52') ? d : `52${d}`;
+  const params = new URLSearchParams({ text });
+  return `https://wa.me/${number}?${params.toString()}`;
+}
+
 export const SITE: Site = {
   COMPANY_NAME: 'AGL Legaspi',
   LEGAL_NAME: 'AGL Legaspi',
