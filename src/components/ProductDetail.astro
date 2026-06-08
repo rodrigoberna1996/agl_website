@@ -1,0 +1,935 @@
+---
+import { Image } from "astro:assets";
+import {
+    CATEGORY_LABELS,
+    getProductUrl,
+    getRelatedProducts,
+    type CatalogItem,
+} from "@lib/catalog";
+import { SITE, toTelHref, toWhatsAppHref } from "@consts";
+
+interface Props {
+    product: CatalogItem;
+}
+
+const { product } = Astro.props;
+const relatedProducts = getRelatedProducts(product);
+const whatsappHref = toWhatsAppHref(
+    SITE.TELEPHONE,
+    `Hola, me interesa cotizar ${product.name} (${product.sku}).`,
+);
+---
+
+<article class="product-detail-page">
+    <div class="section-container">
+        <nav class="product-breadcrumb" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a>
+            <span aria-hidden="true">/</span>
+            <a href="/products">Productos</a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">{product.name}</span>
+        </nav>
+
+        <div class="single-product-wrapper in-page">
+            <div class="single-product product">
+                <div class="product-header">
+                    <h1 class="product_title entry-title">{product.name}</h1>
+                    <div class="product-meta product_meta">
+                        <span class="product-sku sku_wrapper">
+                            SKU: <span class="sku">{product.sku}</span>
+                        </span>
+                        <span class="product-brand-tag">{product.brand}</span>
+                        <span class="product-category-tag">
+                            {CATEGORY_LABELS[product.category]}
+                        </span>
+                        <span class="product-stock product-inventory in-stock">
+                            Disponible para cotización
+                        </span>
+                    </div>
+                </div>
+
+                <div class="product-body">
+                    <div class="column product-gallery-column">
+                        <div class="product-gallery">
+                            <div class="woocommerce-product-gallery">
+                                <Image
+                                    src={product.image}
+                                    alt={product.name}
+                                    class="product-gallery__image"
+                                    width={720}
+                                    height={720}
+                                    loading="eager"
+                                    fetchpriority="high"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column product-detail-column">
+                        <div class="product-detail-inner">
+                            <div class="woocommerce-product-details__short-description">
+                                <p>{product.description}</p>
+                            </div>
+
+                            <div class="product-price-wrapper">
+                                <span class="price price--quote">Cotizar precio</span>
+                            </div>
+
+                            <div class="product-actions">
+                                <div class="cart-actions">
+                                    <a
+                                        href="/contact"
+                                        class="button size-lg variant-primary single_add_to_cart_button"
+                                    >
+                                        Solicitar cotización
+                                    </a>
+                                    <a
+                                        href={whatsappHref}
+                                        class="button size-lg variant-secondary buy_now_button"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        WhatsApp
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="product-service">
+                                <ul>
+                                    <li>
+                                        <span class="service-icon" aria-hidden="true">✓</span>
+                                        <span class="service-detail">
+                                            <strong>Distribución autorizada</strong>
+                                            <span> — Productos TotalEnergies y ELF</span>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="service-icon" aria-hidden="true">✓</span>
+                                        <span class="service-detail">
+                                            <strong>Asesoría técnica</strong>
+                                            <span> — Orientación según aplicación</span>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="service-icon" aria-hidden="true">✓</span>
+                                        <span class="service-detail">
+                                            <strong>Cobertura regional</strong>
+                                            <span> — CDMX, Edo. Méx., Morelos y Oaxaca</span>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="product-call">
+                                <a href={toTelHref(SITE.TELEPHONE)}>
+                                    <span class="call-icon" aria-hidden="true">☎</span>
+                                    <span class="call-detail">
+                                        <span>¿Necesita ayuda para elegir?</span>
+                                        <p>
+                                            Llame al <strong>{SITE.TELEPHONE}</strong>
+                                        </p>
+                                    </span>
+                                </a>
+                            </div>
+
+                            <div class="single-bottom product_meta">
+                                <span class="posted_in">
+                                    Categoría:
+                                    <a href="/products">{CATEGORY_LABELS[product.category]}</a>
+                                </span>
+                                <span class="tagged_as">
+                                    Marca: <span>{product.brand}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="single-product-tabs-wrapper style-1">
+                    <div class="woocommerce-tabs wc-tabs-wrapper">
+                        <ul class="tabs wc-tabs" role="tablist">
+                            <li class="active" role="presentation">
+                                <a
+                                    href="#tab-description"
+                                    role="tab"
+                                    aria-selected="true"
+                                    data-tab="description"
+                                >
+                                    Descripción
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a
+                                    href="#tab-specification"
+                                    role="tab"
+                                    aria-selected="false"
+                                    data-tab="specification"
+                                >
+                                    Especificaciones
+                                </a>
+                            </li>
+                            <li role="presentation">
+                                <a
+                                    href="#tab-applications"
+                                    role="tab"
+                                    aria-selected="false"
+                                    data-tab="applications"
+                                >
+                                    Aplicaciones
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div
+                            class="woocommerce-Tabs-panel panel entry-content active"
+                            id="tab-description"
+                            role="tabpanel"
+                            data-panel="description"
+                        >
+                            <p>{product.fullDescription}</p>
+                            <p>{product.presentations}</p>
+                        </div>
+
+                        <div
+                            class="woocommerce-Tabs-panel panel entry-content"
+                            id="tab-specification"
+                            role="tabpanel"
+                            data-panel="specification"
+                            hidden
+                        >
+                            <table class="woocommerce-product-attributes shop_attributes">
+                                <tbody>
+                                    {
+                                        product.specs.map((spec) => (
+                                            <tr>
+                                                <th>{spec.label}</th>
+                                                <td><p>{spec.value}</p></td>
+                                            </tr>
+                                        ))
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div
+                            class="woocommerce-Tabs-panel panel entry-content"
+                            id="tab-applications"
+                            role="tabpanel"
+                            data-panel="applications"
+                            hidden
+                        >
+                            <ul class="product-applications-list">
+                                {
+                                    product.applications.map((application) => (
+                                        <li>{application}</li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    {
+                        relatedProducts.length > 0 && (
+                            <section
+                                class="site-module klb-module related"
+                                id="related-products"
+                                aria-labelledby="related-products-heading"
+                            >
+                                <div class="klb-module-header site-module-header">
+                                    <h3
+                                        id="related-products-heading"
+                                        class="entry-title"
+                                    >
+                                        Productos relacionados
+                                    </h3>
+                                </div>
+                                <div class="shop-products-wrapper">
+                                    <ul class="products related-products">
+                                        {
+                                            relatedProducts.map((related) => (
+                                                <li class="product related-product">
+                                                    <a
+                                                        href={getProductUrl(
+                                                            related.slug,
+                                                        )}
+                                                        class="related-product__link"
+                                                    >
+                                                        <div class="related-product__media">
+                                                            <Image
+                                                                src={related.image}
+                                                                alt={related.name}
+                                                                width={280}
+                                                                height={280}
+                                                                loading="lazy"
+                                                                decoding="async"
+                                                            />
+                                                        </div>
+                                                        <div class="related-product__body">
+                                                            <span class="related-product__brand">
+                                                                {related.brand}
+                                                            </span>
+                                                            <h4 class="related-product__title">
+                                                                {related.name}
+                                                            </h4>
+                                                            <p class="related-product__desc">
+                                                                {related.description}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            ))
+                                        }
+                                    </ul>
+                                </div>
+                            </section>
+                        )
+                    }
+                </div>
+            </div>
+        </div>
+
+        <a href="/products" class="product-detail-back text-link">
+            ← Volver al catálogo
+        </a>
+    </div>
+</article>
+
+<style>
+    .product-detail-page {
+        --colors-primary-background: 3, 78, 162;
+        --colors-primary-foreground: 255, 255, 255;
+        --colors-secondary-background: 15, 23, 42;
+        --colors-secondary-foreground: 255, 255, 255;
+        --colors-gray-100: 241, 245, 249;
+        --colors-gray-200: 226, 232, 240;
+        --colors-gray-400: 148, 163, 184;
+        --colors-gray-500: 100, 116, 139;
+        --colors-gray-600: 71, 85, 105;
+        --colors-gray-900: 15, 23, 42;
+        --colors-green-base: 5, 150, 105;
+        --colors-white: 255, 255, 255;
+        --theme-radius: 8px;
+        --radius-sm: 6px;
+        --theme-ease-in-out: ease;
+        --theme-ease-time-fast: 0.18s;
+        --text-xs: 12px;
+        --text-sm: 14px;
+        --text-base: 16px;
+        --form-button-size-lg: 48px;
+        --form-button-font-size-lg: 14px;
+        --form-button-font-weight: 600;
+        padding-top: calc(var(--h-menu-bar) + var(--px-48));
+        padding-bottom: var(--px-96);
+        background: var(--color-white);
+    }
+
+    .product-breadcrumb {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: var(--text-sm);
+        color: rgb(var(--colors-gray-500));
+        margin-bottom: 1.25rem;
+    }
+
+    .product-breadcrumb a {
+        color: rgb(var(--colors-gray-600));
+        text-decoration: none;
+        transition: color var(--theme-ease-time-fast) var(--theme-ease-in-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .product-breadcrumb a:hover {
+            color: rgb(var(--colors-primary-background));
+        }
+    }
+
+    .single-product-wrapper {
+        --product-header-gap: 12px;
+        --product-title-xs: 22px;
+        --product-title-sm: 26px;
+        --product-title-lg: 32px;
+        --product-gallery-width: 50%;
+        margin-block: 0.625rem;
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .single-product-wrapper {
+            margin-block: 1.25rem;
+        }
+    }
+
+    .product-header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--product-header-gap);
+        border-bottom: 1px solid rgb(var(--colors-gray-200));
+        padding-bottom: 0.625rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .product_title {
+        font-size: var(--product-title-xs);
+        font-weight: 500;
+        line-height: 1.2;
+        color: rgb(var(--colors-gray-900));
+        margin: 0;
+    }
+
+    @media screen and (min-width: 576.02px) {
+        .product_title {
+            font-size: var(--product-title-sm);
+        }
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .product_title {
+            font-size: var(--product-title-lg);
+        }
+    }
+
+    .product-meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .product-meta {
+            gap: 1.5rem;
+        }
+    }
+
+    .product-sku,
+    .product-brand-tag,
+    .product-category-tag {
+        font-size: var(--text-sm);
+        color: rgb(var(--colors-gray-600));
+    }
+
+    .product-brand-tag,
+    .product-category-tag {
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-size: var(--text-xs);
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        background: rgba(var(--colors-primary-background), 0.08);
+        color: rgb(var(--colors-primary-background));
+    }
+
+    .product-stock {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-size: var(--text-sm);
+        font-weight: 500;
+        color: rgb(var(--colors-green-base));
+    }
+
+    .product-stock::before {
+        content: "";
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .product-body {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .product-body {
+            flex-direction: row;
+            gap: 2rem;
+        }
+
+        .product-gallery-column {
+            width: var(--product-gallery-width);
+            flex-shrink: 0;
+        }
+
+        .product-detail-column {
+            flex: 1 0 0%;
+        }
+    }
+
+    .product-gallery {
+        overflow: hidden;
+        border-radius: var(--theme-radius);
+        border: 1px solid rgb(var(--colors-gray-100));
+        background: #f8fbff;
+    }
+
+    .woocommerce-product-gallery {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+    }
+
+    .product-gallery__image {
+        width: 100%;
+        height: auto;
+        max-height: 32rem;
+        object-fit: contain;
+        display: block;
+    }
+
+    .product-detail-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .product-detail-inner {
+            gap: 1rem;
+        }
+    }
+
+    .woocommerce-product-details__short-description {
+        font-size: var(--text-sm);
+        color: rgb(var(--colors-gray-600));
+        line-height: 1.6;
+    }
+
+    .woocommerce-product-details__short-description p {
+        margin: 0;
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .woocommerce-product-details__short-description {
+            font-size: 15px;
+        }
+    }
+
+    .price--quote {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: rgb(var(--colors-primary-background));
+    }
+
+    .cart-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .button.size-lg {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--form-button-size-lg);
+        padding-inline: 1.5rem;
+        border-radius: var(--theme-radius);
+        font-size: var(--form-button-font-size-lg);
+        font-weight: var(--form-button-font-weight);
+        line-height: 1;
+        text-decoration: none;
+        border: 1px solid transparent;
+        transition: background-color var(--theme-ease-time-fast)
+            var(--theme-ease-in-out);
+    }
+
+    .button.variant-primary {
+        color: rgb(var(--colors-primary-foreground));
+        background-color: rgb(var(--colors-primary-background));
+        flex: 1 0 0%;
+    }
+
+    .button.variant-secondary {
+        color: rgb(var(--colors-secondary-foreground));
+        background-color: rgb(var(--colors-secondary-background));
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .button.variant-primary:hover {
+            background-color: rgba(var(--colors-primary-background), 0.87);
+        }
+
+        .button.variant-secondary:hover {
+            background-color: rgba(var(--colors-secondary-background), 0.87);
+        }
+    }
+
+    .product-service {
+        margin-top: 0.625rem;
+        background-color: rgb(var(--colors-gray-100));
+        padding: 1.25rem;
+        border-radius: var(--radius-sm);
+    }
+
+    .product-service ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .product-service li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.625rem;
+        font-size: var(--text-xs);
+    }
+
+    .service-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.25rem;
+        flex-shrink: 0;
+        color: rgb(var(--colors-green-base));
+        font-weight: 700;
+    }
+
+    .service-detail span {
+        color: rgb(var(--colors-gray-500));
+    }
+
+    .product-call {
+        display: flex;
+        align-items: center;
+        margin-top: 0.625rem;
+    }
+
+    .product-call a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .call-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.875rem;
+        height: 2.875rem;
+        color: rgb(var(--colors-white));
+        background-color: rgb(var(--colors-green-base));
+        border-radius: 50%;
+        font-size: 1.1rem;
+    }
+
+    .call-detail {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.7;
+    }
+
+    .call-detail span {
+        font-size: var(--text-xs);
+        color: rgb(var(--colors-gray-500));
+    }
+
+    .call-detail p {
+        font-size: var(--text-sm);
+        margin: 0;
+    }
+
+    .call-detail strong {
+        text-decoration: underline;
+        text-underline-offset: 0.25rem;
+    }
+
+    .single-bottom.product_meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 0.5rem;
+        font-size: var(--text-sm);
+        color: rgb(var(--colors-gray-500));
+    }
+
+    .single-bottom.product_meta a {
+        color: rgb(var(--colors-primary-background));
+        text-decoration: none;
+    }
+
+    .single-product-tabs-wrapper {
+        margin-top: 1.875rem;
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .single-product-tabs-wrapper {
+            margin-top: 3.5rem;
+        }
+    }
+
+    .wc-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.125rem;
+        list-style: none;
+        margin: 0 0 0;
+        padding: 0;
+        border-bottom: 1px solid rgb(var(--colors-gray-200));
+    }
+
+    .wc-tabs li a {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        font-size: var(--text-base);
+        font-weight: 500;
+        text-decoration: none;
+        color: rgb(var(--colors-gray-400));
+        padding-bottom: 0.625rem;
+        transition: color var(--theme-ease-time-fast) var(--theme-ease-in-out);
+        cursor: pointer;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .wc-tabs li a:hover {
+            color: rgb(var(--colors-gray-600));
+        }
+    }
+
+    .wc-tabs li.active a {
+        color: rgb(var(--colors-primary-background));
+    }
+
+    .woocommerce-Tabs-panel {
+        padding-block: 1rem;
+        font-size: var(--text-sm);
+        line-height: 1.7;
+        color: rgb(var(--colors-gray-600));
+    }
+
+    .woocommerce-Tabs-panel p {
+        margin: 0 0 0.75rem;
+    }
+
+    .woocommerce-product-attributes {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .woocommerce-product-attributes tbody {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.625rem;
+    }
+
+    .woocommerce-product-attributes tr {
+        flex: 0 0 auto;
+        width: 100%;
+        border-bottom: 1px solid rgb(var(--colors-gray-200));
+        font-size: 0.875rem;
+    }
+
+    @media screen and (min-width: 768.02px) {
+        .woocommerce-product-attributes tr {
+            width: 49%;
+        }
+    }
+
+    .woocommerce-product-attributes th,
+    .woocommerce-product-attributes td {
+        padding-bottom: 0.75rem;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .woocommerce-product-attributes th {
+        font-weight: 600;
+        min-width: 8rem;
+        color: rgb(var(--colors-gray-900));
+    }
+
+    .woocommerce-product-attributes td p {
+        margin: 0;
+    }
+
+    .product-applications-list {
+        margin: 0;
+        padding-left: 1.25rem;
+    }
+
+    .product-applications-list li + li {
+        margin-top: 0.35rem;
+    }
+
+    .klb-module-header {
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgb(var(--colors-gray-200));
+    }
+
+    .klb-module-header .entry-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0;
+        color: rgb(var(--colors-gray-900));
+    }
+
+    .related-products {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    @media screen and (min-width: 768.02px) {
+        .related-products {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .related-product__link {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid rgb(var(--colors-gray-200));
+        border-radius: var(--theme-radius);
+        overflow: hidden;
+        transition:
+            box-shadow var(--theme-ease-time-fast) var(--theme-ease-in-out),
+            transform var(--theme-ease-time-fast) var(--theme-ease-in-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .related-product__link:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+    }
+
+    .related-product__media {
+        aspect-ratio: 1;
+        background: #f8fbff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem;
+    }
+
+    .related-product__media img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .related-product__body {
+        padding: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        flex: 1;
+    }
+
+    .related-product__brand {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: rgb(var(--colors-primary-background));
+    }
+
+    .related-product__title {
+        font-size: var(--text-sm);
+        font-weight: 600;
+        line-height: 1.3;
+        margin: 0;
+        color: rgb(var(--colors-gray-900));
+    }
+
+    .related-product__desc {
+        font-size: var(--text-xs);
+        line-height: 1.4;
+        color: rgb(var(--colors-gray-500));
+        margin: 0;
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .product-detail-back {
+        display: inline-block;
+        margin-top: 2rem;
+        font-size: var(--text-sm);
+        font-weight: 600;
+    }
+
+    @media screen and (max-width: 767.98px) {
+        .product-detail-page {
+            padding-top: calc(var(--h-menu-bar) + var(--px-32));
+            padding-bottom: var(--px-64);
+        }
+
+        .cart-actions .button.size-lg {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+    import { onPageReady } from "@utils/onPageReady";
+
+    onPageReady(() => {
+        const tabLinks = document.querySelectorAll<HTMLAnchorElement>(
+            ".wc-tabs a[data-tab]",
+        );
+        const panels = document.querySelectorAll<HTMLElement>(
+            ".woocommerce-Tabs-panel[data-panel]",
+        );
+        const tabItems = document.querySelectorAll<HTMLLIElement>(".wc-tabs li");
+
+        const activateTab = (tabId: string) => {
+            tabLinks.forEach((link) => {
+                const isActive = link.dataset.tab === tabId;
+                link.setAttribute("aria-selected", isActive ? "true" : "false");
+            });
+
+            tabItems.forEach((item) => {
+                const link = item.querySelector("a[data-tab]");
+                item.classList.toggle(
+                    "active",
+                    link?.dataset.tab === tabId,
+                );
+            });
+
+            panels.forEach((panel) => {
+                const isActive = panel.dataset.panel === tabId;
+                panel.classList.toggle("active", isActive);
+                panel.hidden = !isActive;
+            });
+        };
+
+        const handlers = Array.from(tabLinks).map((link) => {
+            const onClick = (event: Event) => {
+                event.preventDefault();
+                const tabId = link.dataset.tab;
+                if (tabId) activateTab(tabId);
+            };
+
+            link.addEventListener("click", onClick);
+            return { link, onClick };
+        });
+
+        return () => {
+            handlers.forEach(({ link, onClick }) => {
+                link.removeEventListener("click", onClick);
+            });
+        };
+    }, { root: ".product-detail-page" });
+</script>

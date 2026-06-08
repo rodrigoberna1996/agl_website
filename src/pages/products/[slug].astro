@@ -1,0 +1,25 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ProductDetail from "@components/ProductDetail.astro";
+import { SITE } from "@consts";
+import { getCatalogItems, getCatalogItemBySlug } from "@lib/catalog";
+
+export async function getStaticPaths() {
+    return getCatalogItems().map((product) => ({
+        params: { slug: product.slug },
+    }));
+}
+
+const product = getCatalogItemBySlug(Astro.params.slug ?? "");
+
+if (!product) {
+    return Astro.redirect("/404");
+}
+
+const pageTitle = `${product.name} | Productos | ${SITE.COMPANY_NAME}`;
+const pageDescription = product.description;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+    <ProductDetail product={product} />
+</BaseLayout>

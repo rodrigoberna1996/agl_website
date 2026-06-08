@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { getCatalogItems } from "@lib/catalog";
+import { getCatalogItems, getProductUrl } from "@lib/catalog";
 
 const catalogItems = getCatalogItems();
 const featuredFileNames = [
@@ -67,7 +67,7 @@ const products = featuredFileNames
                                                 <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z" />
                                             </svg>
                                         </button>
-                                        <a href="/products" class="best-seller-card__image-link">
+                                        <a href={getProductUrl(product.slug)} class="best-seller-card__image-link">
                                             <Image
                                                 src={product.image}
                                                 alt={product.name}
@@ -87,7 +87,7 @@ const products = featuredFileNames
                                             <small>({product.reviews})</small>
                                         </div>
                                         <h3 class="best-seller-card__title">
-                                            <a href="/products">{product.name}</a>
+                                            <a href={getProductUrl(product.slug)}>{product.name}</a>
                                         </h3>
                                         <p class="best-seller-card__quote">Cotizar</p>
                                         <div class="best-seller-card__stock">

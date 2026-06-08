@@ -3,14 +3,25 @@ import type { ImageMetadata } from "astro";
 export type ProductCategory = "motor" | "industrial" | "transmision" | "grasas";
 export type ProductBrand = "Total" | "ELF";
 
+export type ProductSpec = {
+    label: string;
+    value: string;
+};
+
 export type CatalogItem = {
     id: number;
+    slug: string;
     fileName: string;
     image: ImageMetadata;
     name: string;
     description: string;
     category: ProductCategory;
     brand: ProductBrand;
+    sku: string;
+    fullDescription: string;
+    applications: string[];
+    specs: ProductSpec[];
+    presentations: string;
 };
 
 function fileNameFromPath(path: string): string {
@@ -95,6 +106,72 @@ export const CATEGORY_LABELS: Record<ProductCategory, string> = {
     grasas: "Grasas",
 };
 
+const CATEGORY_APPLICATIONS: Record<ProductCategory, string[]> = {
+    motor: [
+        "Motores de gasolina y diésel",
+        "Flotillas y transporte",
+        "Talleres y refaccionarias",
+    ],
+    industrial: [
+        "Maquinaria industrial",
+        "Sistemas hidráulicos",
+        "Engranajes y compresores",
+    ],
+    transmision: [
+        "Cajas manuales y automáticas",
+        "Diferenciales y ejes",
+        "Maquinaria agrícola y pesada",
+    ],
+    grasas: [
+        "Rodamientos y cojinetes",
+        "Chasis y puntos de lubricación",
+        "Aplicaciones de alta temperatura",
+    ],
+};
+
+function slugFromFileName(fileName: string): string {
+    return fileName.replace(/\.(jpe?g)$/i, "");
+}
+
+function skuFromSlug(slug: string): string {
+    const match = slug.match(/(\d+)/);
+    const number = match ? match[1].padStart(3, "0") : "000";
+    return `AGL-${number}`;
+}
+
+function buildProductDetail(
+    meta: {
+        name: string;
+        description: string;
+        category: ProductCategory;
+        brand: ProductBrand;
+    },
+    slug: string,
+): Pick<
+    CatalogItem,
+    "fullDescription" | "applications" | "specs" | "presentations" | "sku"
+> {
+    const categoryLabel = CATEGORY_LABELS[meta.category];
+
+    return {
+        sku: skuFromSlug(slug),
+        fullDescription: `${meta.name} es un lubricante ${meta.brand} para aplicaciones de ${categoryLabel.toLowerCase()}. ${meta.description}. En AGL Legaspi le orientamos sobre viscosidad, presentación y disponibilidad según su equipo y zona.`,
+        applications: CATEGORY_APPLICATIONS[meta.category],
+        specs: [
+            { label: "Marca", value: meta.brand },
+            { label: "Categoría", value: categoryLabel },
+            { label: "Referencia", value: meta.name },
+            { label: "Distribución", value: "AGL Legaspi" },
+        ],
+        presentations:
+            "Consulte presentaciones disponibles: bidones, cubetas, tambores y formatos según referencia.",
+    };
+}
+
+export function getProductUrl(slug: string): string {
+    return `/products/${slug}`;
+}
+
 /** Imágenes locales en `src/assets/images/catalog/` (orden numérico por nombre). */
 export function getCatalogItems(): CatalogItem[] {
     const catalogGlob = import.meta.glob<{ default: ImageMetadata }>(
@@ -112,15 +189,36 @@ export function getCatalogItems(): CatalogItem[] {
         .map(([path, mod], index) => {
             const fileName = fileNameFromPath(path);
             const meta = PRODUCT_META[fileName] ?? DEFAULT_META;
+            const slug = slugFromFileName(fileName);
+            const detail = buildProductDetail(meta, slug);
 
             return {
                 id: index + 1,
+                slug,
                 fileName,
                 image: mod.default,
                 name: meta.name,
                 description: meta.description,
                 category: meta.category,
                 brand: meta.brand,
+                ...detail,
             };
         });
+}
+
+export function getCatalogItemBySlug(slug: string): CatalogItem | undefined {
+    return getCatalogItems().find((item) => item.slug === slug);
+}
+
+export function getRelatedProducts(
+    item: CatalogItem,
+    limit = 4,
+): CatalogItem[] {
+    return getCatalogItems()
+        .filter(
+            (product) =>
+                product.slug !== item.slug &&
+                product.category === item.category,
+        )
+        .slice(0, limit);
 }

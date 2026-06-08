@@ -49,49 +49,7 @@
                     <a href="/contact" class="nav-link">Contacto</a>
                 </li>
             </ul>
-
-            <a
-                href="/products"
-                class="nav-link header-search-cta header-search-cta--mobile"
-                aria-label="Ver productos"
-            >
-                <svg
-                    class="header-search-icon"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                >
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.3-4.3"></path>
-                </svg>
-            </a>
         </div>
-
-        <a
-            href="/products"
-            class="header-search-cta header-search-cta--desktop"
-            aria-label="Ver productos"
-        >
-            <svg
-                class="header-search-icon"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-            >
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.3-4.3"></path>
-            </svg>
-        </a>
 
         <button
             class="hamburger"
@@ -199,42 +157,6 @@
         transform: scale(0.98);
     }
 
-    .header-search-cta {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: inherit;
-        line-height: 0;
-        opacity: 0.65;
-        transition: opacity var(--transition-short);
-        padding: var(--px-8);
-        margin: calc(var(--px-8) * -1);
-        border-radius: var(--px-4);
-        text-decoration: none;
-    }
-
-    .header-search-cta:active {
-        opacity: 1;
-    }
-
-    .header-search-cta:focus-visible {
-        outline: 3px solid var(--color-focus);
-        outline-offset: var(--px-2);
-    }
-
-    .header-search-icon {
-        width: 1.375rem;
-        height: 1.375rem;
-    }
-
-    .header-search-cta--desktop {
-        display: inline-flex;
-    }
-
-    .header-search-cta--mobile {
-        display: none;
-    }
-
     .scrolled {
         height: var(--h-menu-bar-scrolled) !important;
         -webkit-backdrop-filter: blur(10px);
@@ -272,10 +194,6 @@
         .nav-link:hover {
             opacity: 1;
         }
-
-        .header-search-cta:hover {
-            opacity: 1;
-        }
     }
 
     @media screen and (max-width: 64rem) {
@@ -289,14 +207,6 @@
 
         .logo-img--mark {
             display: block;
-        }
-
-        .header-search-cta--desktop {
-            display: none;
-        }
-
-        .header-search-cta--mobile {
-            display: inline-flex;
         }
 
         .hamburger {
@@ -335,13 +245,8 @@
             margin: 0;
         }
 
-        .nav-link:not(.header-search-cta) {
+        .nav-link {
             font-size: var(--text-2xl);
-        }
-
-        .header-search-cta--mobile .header-search-icon {
-            width: 1.625rem;
-            height: 1.625rem;
         }
 
         .hamburger.active .hamburger-line:nth-child(1) {

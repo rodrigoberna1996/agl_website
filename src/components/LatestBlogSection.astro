@@ -1,0 +1,385 @@
+---
+import { Image } from "astro:assets";
+import { getPortfolioPosts, formatPortfolioDate, getPortfolioPostUrl, PORTFOLIO_CATEGORY_LABELS } from "@lib/portfolio";
+
+const posts = getPortfolioPosts().slice(0, 3);
+---
+
+<section class="latest-blog-section" aria-labelledby="latest-blog-heading">
+    <div class="section-container">
+        <div class="site-module-header">
+            <div class="column content-column">
+                <div class="site-module-header-title">
+                    <h2 id="latest-blog-heading" class="entry-title">Nuestras últimas noticias</h2>
+                </div>
+                <p class="entry-description">Noticias, eventos y publicaciones de AGL Legaspi.</p>
+            </div>
+            <div class="column button-column flex-none">
+                <a href="/portfolio" class="link link-decoration text-primary-background">
+                    Ver todas
+                </a>
+            </div>
+        </div>
+
+        <div
+            class="site-scroll-snap"
+            style="
+                --scroll-grid-lg: 3;
+                --scroll-grid-sm: 1;
+                --scroll-grid-xs: 1;
+                --scroll-gap: 32px;
+                --scroll-gap-sm: 16px;
+            "
+        >
+            {posts.map((post) => (
+                <div class="site-scroll-item">
+                    <div class="post post-module post-module-grid">
+                        {post.image && (
+                            <div class="post-thumbnail">
+                                <a href={getPortfolioPostUrl(post.slug)}>
+                                    <Image
+                                        src={post.image}
+                                        alt={post.title}
+                                        width={405}
+                                        height={270}
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
+                                </a>
+                            </div>
+                        )}
+                        <div class="post-content">
+                            <h3 class="entry-post-title">
+                                <a href={getPortfolioPostUrl(post.slug)}>{post.title}</a>
+                            </h3>
+                            <div class="entry-excerpt">
+                                <p>{post.excerpt}</p>
+                            </div>
+                            <div class="entry-post-meta">
+                                <div class="post-meta-item meta-category">
+                                    <span>{PORTFOLIO_CATEGORY_LABELS[post.category]}</span>
+                                </div>
+                                <div class="post-meta-item meta-time">
+                                    <span>{formatPortfolioDate(post.date)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    section.latest-blog-section {
+        --colors-primary-background: 3, 78, 162;
+        --colors-gray-200: 226, 232, 240;
+        --colors-gray-300: 203, 213, 225;
+        --colors-gray-500: 100, 116, 139;
+        --colors-gray-900: 15, 23, 42;
+        --theme-ease-in-out: ease;
+        --theme-ease-time-fast: 0.18s;
+        background: var(--color-white);
+        padding: var(--px-8) var(--px-64) var(--px-96);
+    }
+
+    /* ── Module header ── */
+    .site-module-header {
+        --module-header-gap: 20px;
+        --module-header-column-gap: 20px;
+        --module-header-title-gap: 20px;
+        --module-header-offset: 16px;
+        --module-header-offset-lg: 30px;
+        --module-header-padding: 10px;
+        --module-header-padding-lg: 20px;
+        --module-title-size-lg: 24px;
+        --module-title-size-sm: 22px;
+        --module-title-size-xs: 18px;
+        --module-title-weight: 600;
+        --module-description-size: 13px;
+        --module-description-size-desktop: 13px;
+        --module-header-color: rgb(var(--colors-gray-900));
+        --module-header-color-muted: rgb(var(--colors-gray-500));
+        --module-header-border: rgb(var(--colors-gray-200));
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--module-header-gap);
+        margin-bottom: var(--module-header-offset);
+        padding-bottom: var(--module-header-padding);
+        border-bottom: 1px solid var(--module-header-border);
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-module-header {
+            margin-bottom: var(--module-header-offset-lg);
+            padding-bottom: var(--module-header-padding-lg);
+        }
+    }
+
+    .site-module-header > * {
+        display: inline-flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: var(--module-header-column-gap);
+        width: 100%;
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-module-header > * {
+            width: auto;
+            flex: 1 0 0%;
+        }
+    }
+
+    .site-module-header-title {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--module-header-title-gap);
+    }
+
+    .site-module-header-title .entry-title {
+        font-size: var(--module-title-size-xs);
+        font-weight: var(--module-title-weight);
+        line-height: 1.2;
+        color: var(--module-header-color);
+        margin-bottom: 0;
+    }
+
+    @media screen and (min-width: 576.02px) {
+        .site-module-header-title .entry-title {
+            font-size: var(--module-title-size-sm);
+        }
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-module-header-title .entry-title {
+            font-size: var(--module-title-size-lg);
+        }
+    }
+
+    .site-module-header .entry-description {
+        font-size: var(--module-description-size);
+        line-height: 1.1;
+        color: var(--module-header-color-muted);
+        margin-bottom: 0;
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-module-header .entry-description {
+            font-size: var(--module-description-size-desktop);
+        }
+    }
+
+    .button-column {
+        justify-content: flex-end;
+    }
+
+    .link.link-decoration.text-primary-background {
+        color: rgb(var(--colors-primary-background));
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        text-underline-offset: 3px;
+        text-decoration-color: transparent;
+        transition: text-decoration-color var(--theme-ease-time-fast) var(--theme-ease-in-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .link.link-decoration.text-primary-background:hover {
+            text-decoration: underline;
+            text-decoration-color: currentColor;
+        }
+    }
+
+    /* ── Scroll snap grid ── */
+    .site-scroll-snap {
+        --scroll-gap: 32px;
+        --scroll-gap-mobile: 16px;
+        --scroll-grid-lg: 3;
+        --scroll-grid-sm: 1;
+        --scroll-grid-xs: 1;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: var(--scroll-gap);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .site-scroll-snap::-webkit-scrollbar {
+        display: none;
+    }
+
+    @media screen and (max-width: 1023.98px) {
+        .site-scroll-snap {
+            --scroll-gap: var(--scroll-gap-mobile);
+        }
+    }
+
+    .site-scroll-item {
+        scroll-snap-align: start;
+        flex: 0 0 auto;
+        width: calc(
+            (100% - (var(--scroll-grid-xs) - 0.6666666667) * var(--scroll-gap)) /
+            (var(--scroll-grid-xs) + 0.3333333333)
+        );
+    }
+
+    @media screen and (min-width: 576.02px) {
+        .site-scroll-item {
+            width: calc(
+                (100% - (var(--scroll-grid-sm) - 0.6666666667) * var(--scroll-gap)) /
+                (var(--scroll-grid-sm) + 0.3333333333)
+            );
+        }
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-scroll-item {
+            width: calc(
+                (100% - (var(--scroll-grid-lg) - 1) * var(--scroll-gap)) /
+                var(--scroll-grid-lg)
+            );
+        }
+    }
+
+    .site-scroll-item:last-child {
+        scroll-snap-align: end;
+        margin-inline-end: calc(var(--scroll-gap) * -1);
+    }
+
+    /* ── Post card ── */
+    .post.post-module-grid {
+        --post-thumbnail-offset: 16px;
+        --post-title-mobile: 20px;
+        --post-title-desktop: 24px;
+        --post-title-weight: 600;
+        --post-title-line-height: 1.3;
+        --post-title-color: rgb(var(--colors-gray-900));
+        --post-title-hover-color: rgb(var(--colors-primary-background));
+        --post-meta-gap: 10px;
+        --post-meta-size: 12px;
+        --post-meta-color: rgb(var(--colors-gray-500));
+        display: flex;
+        flex-direction: column;
+    }
+
+    .post-thumbnail {
+        margin-bottom: var(--post-thumbnail-offset);
+        overflow: hidden;
+    }
+
+    .post-thumbnail a {
+        position: relative;
+        display: block;
+        width: 100%;
+    }
+
+    .post-thumbnail img {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 405 / 270;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .post-thumbnail a:hover img {
+            transform: scale(1.04);
+        }
+    }
+
+    .post-content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 8px;
+    }
+
+    .entry-post-title {
+        font-size: var(--post-title-mobile);
+        font-weight: var(--post-title-weight);
+        line-height: var(--post-title-line-height);
+        margin: 0 0 4px;
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .entry-post-title {
+            font-size: var(--post-title-desktop);
+        }
+    }
+
+    .entry-post-title a {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        color: var(--post-title-color);
+        text-decoration: none;
+        transition: color var(--theme-ease-time-fast) var(--theme-ease-in-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .entry-post-title a:hover {
+            color: var(--post-title-hover-color);
+            text-decoration: underline;
+            text-decoration-color: var(--post-title-hover-color);
+        }
+    }
+
+    .entry-excerpt {
+        flex: 1;
+    }
+
+    .entry-excerpt p {
+        font-size: 14px;
+        line-height: 1.6;
+        color: rgb(var(--colors-gray-500));
+        margin: 0;
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3;
+    }
+
+    .entry-post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--post-meta-gap);
+        font-size: var(--post-meta-size);
+        color: var(--post-meta-color);
+        margin-top: 4px;
+    }
+
+    .post-meta-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .post-meta-item.meta-category span {
+        font-weight: 600;
+        color: rgb(var(--colors-primary-background));
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    /* ── Responsive section padding ── */
+    @media screen and (max-width: 1199.98px) {
+        section.latest-blog-section {
+            padding-inline: var(--px-32);
+            padding-bottom: var(--px-80);
+        }
+    }
+
+    @media screen and (max-width: 767.98px) {
+        section.latest-blog-section {
+            padding-inline: var(--px-20);
+            padding-bottom: var(--px-64);
+        }
+    }
+</style>

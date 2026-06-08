@@ -1,237 +1,597 @@
 ---
+import { Image } from "astro:assets";
+import faqBannerImg from "/src/assets/images/sections/banner-03.png";
+
 const faqItems = [
     {
-        id: 1,
+        id: "faq-1",
         question: "¿Qué marcas distribuye AGL Legaspi?",
         answer:
             "Distribuimos productos TotalEnergies y ELF para aplicaciones automotrices, motocicletas, transporte, industria, transmisión y grasas.",
+        open: true,
     },
     {
-        id: 2,
+        id: "faq-2",
         question: "¿Me pueden ayudar a elegir el aceite correcto?",
         answer:
             "Sí. Revisamos el tipo de motor, equipo, aplicación y condiciones de trabajo para recomendar viscosidad, tecnología y presentación adecuada.",
     },
     {
-        id: 3,
+        id: "faq-3",
         question: "¿En qué zonas tienen cobertura?",
         answer:
             "Atendemos principalmente Ciudad de México, Estado de México, Morelos, Oaxaca y zonas cercanas desde nuestros centros de distribución.",
     },
     {
-        id: 4,
+        id: "faq-4",
         question: "¿Venden para talleres, flotillas e industria?",
         answer:
             "Sí. El portafolio está pensado para consumo profesional: talleres, refaccionarias, flotillas, servicio pesado, maquinaria e industria.",
     },
+    {
+        id: "faq-5",
+        question: "¿Cómo puedo solicitar una cotización?",
+        answer:
+            "Puede contactarnos por teléfono, correo o WhatsApp. Con gusto le orientamos sobre producto, disponibilidad y entrega según su ubicación.",
+    },
 ];
+
+const angleUpPath =
+    "M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z";
+const angleDownPath =
+    "M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z";
 ---
 
-<section id="faq" class="faq" aria-labelledby="faq-heading">
-  <div class="section-container faq-container">
-    <div class="faq-header">
-      <span class="section-tag">Preguntas frecuentes</span>
-      <h2 id="faq-heading" class="section-title">Resolvemos la compra técnica.</h2>
-      <p class="faq-lead">
-        La experiencia debe sentirse clara y confiable, como la referencia:
-        menos fricción, más orientación.
-      </p>
-    </div>
-
-    <div class="faq-content">
-      <div class="accordion">
-        {
-          faqItems.map(item => (
-            <div class="accordion-item">
-              <button class="accordion-button" aria-expanded="false">
-                <span class="button-text">{item.question}</span>
-                <svg
-                  class="button-icon"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
+<section id="faq" class="faq-section" aria-label="Preguntas frecuentes">
+    <div class="section-container">
+        <div class="faq-layout">
+            <!-- ignavo-banner-box2 (41.67%) -->
+            <div class="faq-banner-col">
+                <div
+                    class="site-banner overflow-hidden overlay-block flex-row rounded-base bg-custom"
+                    style="--bg-custom: rgb(var(--colors-gray-100))"
                 >
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </button>
-              <div class="accordion-content" aria-hidden="true">
-                <div class="content-wrapper">
-                  <p>{item.answer}</p>
+                    <div
+                        class="site-banner-content flex items-start flex-wrap p p-sm p-lg"
+                        style="--p: 20px; --p-sm: 30px; --p-lg: 40px"
+                    >
+                        <div
+                            class="site-banner-inner flex flex-col gap max-w max-w-sm max-w-lg"
+                            style="--max-w: 70%; --max-w-sm: 90%; --max-w-lg: 75%; --gap: 6px;"
+                        >
+                            <div class="site-banner-main">
+                                <h2
+                                    class="entry-title text-3xl lg-text-8xl font-extrabold tracking-tight leading-tight"
+                                >
+                                    Preguntas que quizá tengas.
+                                </h2>
+                                <div
+                                    class="entry-excerpt text-sm opacity-70 max-w"
+                                    style="--max-w: 280px"
+                                >
+                                    <p>
+                                        Productos en inventario. Los pedidos
+                                        confirmados se surten en tiempos
+                                        competitivos según disponibilidad.
+                                    </p>
+                                    <p>¿Necesitas más información?</p>
+                                </div>
+                            </div>
+                            <div class="site-banner-footer">
+                                <a
+                                    href="/contact"
+                                    class="button size-sm variant-primary rounded-full"
+                                >
+                                    Más información
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="site-banner-media relative h h-sm h-lg"
+                        style="--h: 320px; --h-sm: 300px; --h-lg: 510px"
+                    >
+                        <Image
+                            src={faqBannerImg}
+                            alt="Preguntas frecuentes AGL Legaspi"
+                            width={768}
+                            height={768}
+                            loading="lazy"
+                            decoding="async"
+                        />
+                    </div>
+                    <a href="/contact" class="wrap-link" aria-hidden="true"></a>
                 </div>
-              </div>
             </div>
-          ))
-        }
-      </div>
+
+            <!-- nested-accordion (58.33%) -->
+            <div class="faq-accordion-col">
+                <div class="elementor-widget-n-accordion faq-accordion-widget">
+                    <div class="e-n-accordion" id="faq-accordion">
+                        {
+                            faqItems.map((item, index) => (
+                                <details
+                                    id={item.id}
+                                    class="e-n-accordion-item"
+                                    open={item.open}
+                                    data-accordion-index={index + 1}
+                                >
+                                    <summary
+                                        class="e-n-accordion-item-title"
+                                        aria-controls={item.id}
+                                        aria-expanded={
+                                            item.open ? "true" : "false"
+                                        }
+                                    >
+                                        <span class="e-n-accordion-item-title-header">
+                                            <span class="e-n-accordion-item-title-text">
+                                                {item.question}
+                                            </span>
+                                        </span>
+                                        <span
+                                            class="e-n-accordion-item-title-icon"
+                                            aria-hidden="true"
+                                        >
+                                            <span class="e-opened">
+                                                <svg
+                                                    viewBox="0 0 320 512"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path d={angleUpPath} />
+                                                </svg>
+                                            </span>
+                                            <span class="e-closed">
+                                                <svg
+                                                    viewBox="0 0 320 512"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path d={angleDownPath} />
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </summary>
+                                    <div class="e-con">
+                                        <div class="e-n-accordion-item-content">
+                                            <p>{item.answer}</p>
+                                        </div>
+                                    </div>
+                                </details>
+                            ))
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
 <style>
-  .faq {
-    background: var(--color-background);
-  }
-
-  .faq-container {
-    display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
-    gap: var(--px-64);
-    align-items: start;
-  }
-
-  .faq-header {
-    position: sticky;
-    top: calc(var(--h-menu-bar) + var(--px-24));
-    max-width: 32rem;
-  }
-
-  .faq-lead {
-    margin-top: calc(var(--px-48) * -1);
-    color: var(--color-text-secondary);
-    font-size: var(--text-xl);
-  }
-
-  .accordion {
-    display: flex;
-    flex-direction: column;
-    border-radius: var(--px-20);
-    background: var(--color-white);
-    box-shadow: none;
-    border: 1px solid var(--color-border);
-    overflow: hidden;
-  }
-
-  .accordion-item {
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .accordion-item:last-child {
-    border-bottom: 0;
-  }
-
-  .accordion-button {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--px-16);
-    padding: var(--px-24);
-    background: none;
-    border: none;
-    color: var(--color-brand-navy);
-    cursor: pointer;
-    text-align: left;
-    transition: all var(--transition-long);
-  }
-
-  .button-text {
-    font-size: var(--text-xl);
-    font-weight: 700;
-    transition: all var(--transition-long);
-  }
-
-  .button-icon {
-    width: var(--px-20);
-    height: var(--px-20);
-    color: var(--color-brand-red);
-    transition: all var(--transition-long);
-    flex-shrink: 0;
-  }
-
-  .accordion-item.active .button-icon {
-    transform: rotate(45deg);
-  }
-
-  .accordion-content {
-    height: 0;
-    overflow: hidden;
-    transition: height var(--transition-long);
-  }
-
-  .content-wrapper {
-    padding: 0 var(--px-24) var(--px-24);
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all var(--transition-long);
-  }
-
-  .accordion-item.active .content-wrapper {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .accordion-button:hover {
-      color: var(--color-brand-blue);
-    }
-  }
-
-  @media (max-width: 64rem) {
-    .faq-container {
-      grid-template-columns: 1fr;
-      gap: var(--px-32);
+    section.faq-section {
+        --colors-primary-background: 3, 78, 162;
+        --colors-primary-foreground: 255, 255, 255;
+        --colors-gray-100: 241, 245, 249;
+        --colors-gray-200: 226, 232, 240;
+        --colors-gray-600: 71, 85, 105;
+        --colors-gray-900: 15, 23, 42;
+        --theme-radius: 8px;
+        --radius-full: 9999px;
+        --theme-ease-in-out: ease;
+        --theme-ease-time-fast: 0.18s;
+        --text-sm: 14px;
+        --text-3xl: 24px;
+        --text-8xl: 36px;
+        --form-button-font-size-sm: 12px;
+        --form-button-size-sm: 34px;
+        --form-button-font-weight: 600;
+        --form-button-letter-spacing: -0.02em;
+        background: var(--color-white);
+        padding: var(--px-40) var(--px-64) var(--px-96);
     }
 
-    .faq-header {
-      position: static;
-      max-width: none;
+    /* ── Two-column layout (post-188 / elementor-element-185d179) ── */
+    .faq-layout {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 15px;
+        margin-top: 40px;
     }
 
-    .faq-lead {
-      margin-top: 0;
+    .faq-banner-col {
+        flex: 0 0 41.66666667%;
+        max-width: 41.66666667%;
+        min-width: 0;
     }
-  }
+
+    .faq-accordion-col {
+        flex: 0 0 58.33333333%;
+        max-width: 58.33333333%;
+        min-width: 0;
+    }
+
+    /* ── banner-box2 (ignavo-banner-box2.php) ── */
+    .site-banner {
+        position: relative;
+        border-radius: var(--theme-radius);
+        overflow: hidden;
+        background-color: var(--bg-custom, rgb(var(--colors-gray-100)));
+    }
+
+    .site-banner * {
+        user-select: none;
+    }
+
+    .overlay-block {
+        display: grid;
+    }
+
+    .overlay-block > * {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .site-banner-content {
+        z-index: 1;
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        padding: var(--p, 20px);
+        align-self: center;
+    }
+
+    @media screen and (min-width: 576.02px) {
+        .site-banner-content {
+            padding: var(--p-sm, 30px);
+        }
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-banner-content {
+            padding: var(--p-lg, 40px);
+        }
+    }
+
+    .site-banner-inner {
+        display: flex;
+        flex-direction: column;
+        gap: var(--gap, 6px);
+        max-width: var(--max-w, 70%);
+    }
+
+    @media screen and (min-width: 576.02px) {
+        .site-banner-inner {
+            max-width: var(--max-w-sm, 90%);
+        }
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-banner-inner {
+            max-width: var(--max-w-lg, 75%);
+        }
+    }
+
+    .entry-title {
+        margin: 0;
+        color: #000000;
+    }
+
+    .text-3xl {
+        font-size: var(--text-3xl);
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .lg-text-8xl {
+            font-size: var(--text-8xl);
+        }
+    }
+
+    .font-extrabold {
+        font-weight: 800;
+    }
+
+    .tracking-tight {
+        letter-spacing: -0.025em;
+    }
+
+    .leading-tight {
+        line-height: 1.25;
+    }
+
+    .entry-excerpt.text-sm {
+        font-size: var(--text-sm);
+    }
+
+    .entry-excerpt.opacity-70 {
+        opacity: 0.7;
+    }
+
+    .entry-excerpt.max-w {
+        max-width: var(--max-w, 280px);
+    }
+
+    .entry-excerpt p {
+        margin: 0 0 0.4rem;
+        line-height: 1.6;
+        color: #000000;
+        opacity: 1;
+    }
+
+    .entry-excerpt p:last-child {
+        margin-bottom: 0;
+    }
+
+    .site-banner-footer {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        width: 100%;
+    }
+
+    .site-banner-media {
+        position: relative;
+        height: var(--h, 320px);
+        pointer-events: none;
+    }
+
+    @media screen and (min-width: 576.02px) {
+        .site-banner-media {
+            height: var(--h-sm, 300px);
+        }
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .site-banner-media {
+            height: var(--h-lg, 510px);
+        }
+    }
+
+    .site-banner-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .wrap-link {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+    }
+
+    .button.size-sm.variant-primary.rounded-full {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.375rem;
+        flex-shrink: 0;
+        height: var(--form-button-size-sm);
+        padding-inline: calc(var(--form-button-size-sm) / 2.3);
+        border-radius: var(--radius-full);
+        font-size: var(--form-button-font-size-sm);
+        font-weight: var(--form-button-font-weight);
+        letter-spacing: var(--form-button-letter-spacing);
+        line-height: 1;
+        text-decoration: none;
+        white-space: nowrap;
+        color: rgb(var(--colors-primary-foreground));
+        background-color: rgb(var(--colors-primary-background));
+        border: 1px solid transparent;
+        transition: background-color var(--theme-ease-time-fast)
+            var(--theme-ease-in-out);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .button.size-sm.variant-primary.rounded-full:hover {
+            background-color: rgba(var(--colors-primary-background), 0.87);
+        }
+    }
+
+    /* ── nested-accordion (post-188 / elementor-element-ae2ce6d) ── */
+    .faq-accordion-widget {
+        --n-accordion-title-font-size: 19px;
+        --n-accordion-title-justify-content: space-between;
+        --n-accordion-title-flex-grow: 1;
+        --n-accordion-item-title-space-between: 10px;
+        --n-accordion-item-title-distance-from-content: 0px;
+        --n-accordion-title-normal-color: #000000;
+        --n-accordion-icon-size: 15px;
+        --n-accordion-padding: 10px;
+        width: 100%;
+        padding: 10px 0 0 10px;
+    }
+
+    .e-n-accordion {
+        width: 100%;
+        overflow-anchor: none;
+    }
+
+    .e-n-accordion-item {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .e-n-accordion-item:not(:last-child) {
+        margin-block-end: var(--n-accordion-item-title-space-between);
+    }
+
+    .e-n-accordion-item summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .e-n-accordion-item-title {
+        align-items: center;
+        border-style: solid;
+        border-width: 0 0 1px 0;
+        border-color: #cbd5e1;
+        border-radius: 0;
+        color: var(--n-accordion-title-normal-color);
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        flex-grow: var(--n-accordion-title-flex-grow);
+        justify-content: var(--n-accordion-title-justify-content);
+        list-style: none;
+        padding: var(--n-accordion-padding);
+    }
+
+    .e-n-accordion-item[open] > .e-n-accordion-item-title {
+        border-color: #94a3b8;
+        margin-block-end: var(--n-accordion-item-title-distance-from-content);
+    }
+
+    .e-n-accordion-item-title-text {
+        font-size: var(--n-accordion-title-font-size);
+        font-weight: 600;
+    }
+
+    .e-n-accordion-item-title-icon {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        flex-shrink: 0;
+        position: relative;
+        width: fit-content;
+    }
+
+    .e-n-accordion-item-title-icon span {
+        align-items: center;
+        display: flex;
+        height: var(--n-accordion-icon-size);
+        width: auto;
+    }
+
+    .e-n-accordion-item-title-icon svg {
+        fill: currentColor;
+        height: var(--n-accordion-icon-size);
+        width: auto;
+    }
+
+    .e-n-accordion-item .e-n-accordion-item-title-icon .e-opened {
+        display: none;
+    }
+
+    .e-n-accordion-item .e-n-accordion-item-title-icon .e-closed {
+        display: flex;
+    }
+
+    .e-n-accordion-item[open] .e-n-accordion-item-title-icon .e-opened {
+        display: flex;
+    }
+
+    .e-n-accordion-item[open] .e-n-accordion-item-title-icon .e-closed {
+        display: none;
+    }
+
+    .e-con {
+        border: none;
+    }
+
+    .e-n-accordion-item-content {
+        padding: 20px 0;
+        font-size: 15px;
+        color: #475569;
+    }
+
+    .e-n-accordion-item-content p {
+        margin: 0;
+        line-height: 1.76;
+        opacity: 1;
+    }
+
+    /* ── Responsive ── */
+    @media screen and (max-width: 1023.98px) {
+        .faq-layout {
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .faq-banner-col,
+        .faq-accordion-col {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .faq-accordion-widget {
+            padding: 0;
+        }
+    }
+
+    @media screen and (max-width: 1199.98px) {
+        section.faq-section {
+            padding-inline: var(--px-32);
+            padding-bottom: var(--px-80);
+        }
+    }
+
+    @media screen and (max-width: 767.98px) {
+        section.faq-section {
+            padding-inline: var(--px-20);
+            padding-top: 0;
+            padding-bottom: var(--px-64);
+        }
+
+        .faq-layout {
+            margin-top: 0;
+        }
+    }
 </style>
 
 <script>
-  function initFAQAccordion() {
-    const accordionContainer = document.querySelector('.faq-container');
+    import { onPageReady } from "@utils/onPageReady";
 
-    if (!accordionContainer) return;
+    onPageReady(() => {
+        const accordion = document.getElementById("faq-accordion");
+        if (!accordion) return;
 
-    accordionContainer.addEventListener('click', e => {
-      const button = (e.target as HTMLElement).closest('.accordion-button');
+        const items = Array.from(
+            accordion.querySelectorAll<HTMLDetailsElement>(
+                ".e-n-accordion-item"
+            )
+        );
 
-      if (!button) return;
+        const syncAria = (details: HTMLDetailsElement) => {
+            const summary = details.querySelector("summary");
+            if (summary) {
+                summary.setAttribute(
+                    "aria-expanded",
+                    details.open ? "true" : "false"
+                );
+            }
+        };
 
-      const item = button.closest('.accordion-item');
-      const content = item?.querySelector<HTMLElement>('.accordion-content');
+        const handlers = items.map((details) => {
+            const summary = details.querySelector("summary");
+            if (!summary) return null;
 
-      if (!item || !content) return;
+            const onSummaryClick = (event: Event) => {
+                event.preventDefault();
 
-      const isActive = item.classList.contains('active');
+                const wasOpen = details.open;
 
-      document.querySelectorAll('.accordion-item.active').forEach(accItem => {
-        const accContent =
-          accItem.querySelector<HTMLElement>('.accordion-content');
-        const accButton = accItem.querySelector('.accordion-button');
+                for (const other of items) {
+                    if (other !== details) {
+                        other.open = false;
+                        syncAria(other);
+                    }
+                }
 
-        if (!accContent || !accButton) return;
+                details.open = !wasOpen;
+                syncAria(details);
+            };
 
-        if (accItem !== item) {
-          accItem.classList.remove('active');
-          accContent.style.height = '0';
-          accButton.setAttribute('aria-expanded', 'false');
-          accContent.setAttribute('aria-hidden', 'true');
-        }
-      });
+            summary.addEventListener("click", onSummaryClick);
+            syncAria(details);
 
-      if (!isActive) {
-        item.classList.add('active');
-        content.style.height = content.scrollHeight + 'px';
-        button.setAttribute('aria-expanded', 'true');
-        content.setAttribute('aria-hidden', 'false');
-      } else {
-        item.classList.remove('active');
-        content.style.height = '0';
-        button.setAttribute('aria-expanded', 'false');
-        content.setAttribute('aria-hidden', 'true');
-      }
-    });
-  }
+            return { summary, onSummaryClick };
+        });
 
-  initFAQAccordion();
-  document.addEventListener('astro:after-swap', initFAQAccordion);
+        return () => {
+            handlers.forEach((handler) => {
+                handler?.summary.removeEventListener(
+                    "click",
+                    handler.onSummaryClick
+                );
+            });
+        };
+    }, { root: "#faq-accordion" });
 </script>

@@ -1,0 +1,202 @@
+---
+// ignavo-text-banner2: franja CTA con título, teléfono y botón.
+import { SITE, toTelHref } from "@consts";
+---
+
+<section class="help-banner-section" aria-label="¿Necesitas ayuda?">
+    <div class="section-container">
+        <div
+            class="site-text-banner"
+            style="
+                --text-banner-background: rgb(var(--colors-primary-background));
+                --text-banner-foreground: rgb(var(--colors-primary-foreground));
+                --text-banner-muted: #bad1e2;
+            "
+        >
+            <div class="site-banner-inner">
+                <div class="column justify-center">
+                    <div class="entry-text text-center">
+                        <h3 class="entry-title">¿Necesitas ayuda para elegir el lubricante correcto?</h3>
+                        <p>Nuestros expertos te orientan. Llámanos para atención inmediata.</p>
+                    </div>
+                </div>
+                <div class="column justify-center">
+                    <a href="/contact" class="button size-lg variant-white">Contactar</a>
+                    <div class="custom-content">
+                        <div class="entry-phone">
+                            <a href={toTelHref(SITE.TELEPHONE)}>{SITE.TELEPHONE}</a>
+                            <span>Atención de lunes a viernes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="/contact" class="wrap-link" aria-hidden="true"></a>
+        </div>
+    </div>
+</section>
+
+<style>
+    section.help-banner-section {
+        --colors-primary-background: 3, 78, 162;
+        --colors-primary-foreground: 255, 255, 255;
+        background: var(--color-white);
+        padding: var(--px-64) var(--px-64) var(--px-32);
+    }
+
+    .site-text-banner {
+        --text-banner-padding-block: 22px;
+        --text-banner-padding-inner: 30px;
+        --text-banner-background: rgb(var(--colors-primary-background));
+        --text-banner-foreground: rgb(var(--colors-primary-foreground));
+        --text-banner-muted: #bad1e2;
+        background-color: var(--text-banner-background);
+        border-radius: 8px;
+        padding: var(--text-banner-padding-block) var(--text-banner-padding-inner);
+        position: relative;
+        overflow: hidden;
+        color: var(--text-banner-foreground);
+    }
+
+    .site-banner-inner {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        max-width: var(--theme-width, 1280px);
+        margin-inline: auto;
+        position: relative;
+        z-index: 1;
+    }
+
+    .site-banner-inner > .column {
+        display: inline-flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        width: 100%;
+    }
+
+    @media screen and (min-width: 768.02px) {
+        .site-banner-inner > .column {
+            width: auto;
+            flex: 1 0 0%;
+        }
+
+        .site-banner-inner > .column.justify-center {
+            justify-content: center;
+        }
+    }
+
+    .entry-text.text-center {
+        text-align: center;
+        width: 100%;
+    }
+
+    .entry-title {
+        font-size: clamp(1.1rem, 2vw, 1.75rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        color: var(--text-banner-foreground);
+        margin-bottom: 0.25rem;
+    }
+
+    .entry-text p {
+        font-size: 14px;
+        color: var(--text-banner-muted);
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    /* Button */
+    .button.size-lg.variant-white {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 48px;
+        padding: 0 2rem;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        background: white;
+        color: rgb(var(--colors-primary-background));
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.18s ease;
+        white-space: nowrap;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .button.size-lg.variant-white:hover {
+            opacity: 0.9;
+        }
+    }
+
+    /* Custom content: phone block */
+    .custom-content {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .entry-phone {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    @media screen and (min-width: 768.02px) {
+        .entry-phone {
+            align-items: center;
+        }
+    }
+
+    .entry-phone a {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-banner-foreground);
+        text-decoration: none;
+        transition: opacity 0.18s ease;
+    }
+
+    @media screen and (min-width: 1024.02px) {
+        .entry-phone a {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .entry-phone a:hover {
+            opacity: 0.85;
+        }
+    }
+
+    .entry-phone span {
+        font-size: 12px;
+        color: var(--text-banner-muted);
+    }
+
+    /* Wrap link */
+    .wrap-link {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+    }
+
+    /* ── Responsive ── */
+    @media screen and (max-width: 1199.98px) {
+        section.help-banner-section {
+            padding-inline: var(--px-32);
+            padding-top: var(--px-48);
+        }
+    }
+
+    @media screen and (max-width: 767.98px) {
+        section.help-banner-section {
+            padding-inline: var(--px-20);
+            padding-top: var(--px-40);
+            padding-bottom: var(--px-24);
+        }
+    }
+</style>
