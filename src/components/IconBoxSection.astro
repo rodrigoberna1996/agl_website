@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import cocheImage      from "/src/assets/images/categories/coche.png";
 import industriaImage  from "/src/assets/images/categories/industria.png";
 import motoImage       from "/src/assets/images/categories/moto.png";
@@ -91,11 +90,11 @@ const productCategories = [
                         <div class="site-category">
                             <div class="site-category-media">
                                 <a href="/products" aria-label={`Ver productos para ${category.title}`}>
-                                    <Image
-                                        src={category.image}
+                                    <img
+                                        src={category.image.src}
                                         alt={category.title}
-                                        width={300}
-                                        height={300}
+                                        width={category.image.width}
+                                        height={category.image.height}
                                         loading="lazy"
                                         decoding="async"
                                     />
@@ -310,8 +309,8 @@ const productCategories = [
         --category-muted-foreground: rgb(var(--colors-gray-500));
         --category-border-radius: var(--theme-radius);
         --category-shadow: none;
-        --category-media-padding: 8px;
-        --category-media-size: 102px;
+        --category-media-padding: 10px;
+        --category-media-size: 118px;
         --category-content-padding: 10px;
         --category-content-align: center;
         --categor-name-size: 15px;
@@ -337,23 +336,26 @@ const productCategories = [
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: var(--category-media-size);
+        height: var(--category-media-size);
         padding: var(--category-media-padding);
-        overflow: visible;
+        overflow: hidden;
         border-radius: var(--category-border-radius) var(--category-border-radius) 0 0;
     }
 
     .site-category .site-category-media a > * {
-        display: block;
-        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
     }
 
     :global(.site-category .site-category-media img) {
         display: block;
         width: auto !important;
         height: auto !important;
-        max-width: 100% !important;
-        max-height: var(--category-media-size) !important;
+        max-width: 92% !important;
+        max-height: 92% !important;
         object-fit: contain !important;
         object-position: center !important;
         margin: 0 auto !important;
@@ -424,8 +426,8 @@ const productCategories = [
         }
 
         .site-category {
-            --category-media-size: 84px;
-            --category-media-padding: 4px;
+            --category-media-size: 92px;
+            --category-media-padding: 8px;
             --category-content-padding: 8px;
         }
     }
