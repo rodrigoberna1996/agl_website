@@ -1,11 +1,9 @@
 ---
 import { Image } from "astro:assets";
-import motorImage from "/src/assets/images/catalog/agl_1.jpeg";
-import hydraulicImage from "/src/assets/images/catalog/agl_10.jpeg";
-import transmissionImage from "/src/assets/images/catalog/agl_20.jpeg";
-import greaseImage from "/src/assets/images/catalog/agl_30.jpeg";
-import coolantImage from "/src/assets/images/catalog/agl_40.jpeg";
-import brakeImage from "/src/assets/images/catalog/agl_41.jpeg";
+import cocheImage      from "/src/assets/images/categories/coche.png";
+import industriaImage  from "/src/assets/images/categories/industria.png";
+import motoImage       from "/src/assets/images/categories/moto.png";
+import transporteImage from "/src/assets/images/categories/transporte.png";
 
 const iconBoxes = [
     {
@@ -29,12 +27,10 @@ const iconBoxes = [
 ];
 
 const productCategories = [
-    { title: "Motor", count: "17", image: motorImage },
-    { title: "Hidraulicos", count: "6", image: hydraulicImage },
-    { title: "Transmision", count: "10", image: transmissionImage },
-    { title: "Grasas", count: "7", image: greaseImage },
-    { title: "Refrigerantes", count: "1", image: coolantImage },
-    { title: "Frenos", count: "1", image: brakeImage },
+    { title: "Coche",      image: cocheImage },
+    { title: "Moto",       image: motoImage },
+    { title: "Transporte", image: transporteImage },
+    { title: "Industria",  image: industriaImage },
 ];
 ---
 
@@ -87,31 +83,26 @@ const productCategories = [
 
         <div
             class="site-scroll-snap"
-            style="--scroll-grid-lg: 6; --scroll-grid-sm: 4; --scroll-grid-xs: 2; --scroll-gap: 10px; --scroll-gap-sm: 5px;"
+            style="--scroll-grid-lg: 4; --scroll-grid-sm: 2; --scroll-grid-xs: 2; --scroll-gap: 10px; --scroll-gap-sm: 8px;"
         >
             {
                 productCategories.map((category) => (
                     <div class="site-scroll-item">
                         <div class="site-category">
                             <div class="site-category-media">
-                                <a href="/products" aria-label={category.title}>
+                                <a href="/products" aria-label={`Ver productos para ${category.title}`}>
                                     <Image
                                         src={category.image}
                                         alt={category.title}
-                                        width={200}
-                                        height={200}
+                                        width={300}
+                                        height={300}
                                         loading="lazy"
                                         decoding="async"
                                     />
                                 </a>
                             </div>
                             <div class="site-category-content">
-                                <h4 class="entry-category-name">
-                                    {category.title}
-                                </h4>
-                                <span class="entry-category-count">
-                                    {category.count}
-                                </span>
+                                <h4 class="entry-category-name">{category.title}</h4>
                             </div>
                             <a
                                 href="/products"
@@ -319,9 +310,9 @@ const productCategories = [
         --category-muted-foreground: rgb(var(--colors-gray-500));
         --category-border-radius: var(--theme-radius);
         --category-shadow: none;
-        --category-media-padding: 20px;
-        --category-media-size: 120px;
-        --category-content-padding: 16px;
+        --category-media-padding: 8px;
+        --category-media-size: 102px;
+        --category-content-padding: 10px;
         --category-content-align: center;
         --categor-name-size: 15px;
         --category-name-weight: 600;
@@ -343,14 +334,29 @@ const productCategories = [
     }
 
     .site-category .site-category-media a {
-        display: block;
-        text-align: center;
-        padding: var(--category-media-padding) var(--category-media-padding) 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: var(--category-media-size);
+        padding: var(--category-media-padding);
+        overflow: visible;
+        border-radius: var(--category-border-radius) var(--category-border-radius) 0 0;
     }
 
     .site-category .site-category-media a > * {
-        width: auto;
-        max-height: var(--category-media-size);
+        display: block;
+        max-width: 100%;
+    }
+
+    :global(.site-category .site-category-media img) {
+        display: block;
+        width: auto !important;
+        height: auto !important;
+        max-width: 100% !important;
+        max-height: var(--category-media-size) !important;
+        object-fit: contain !important;
+        object-position: center !important;
+        margin: 0 auto !important;
     }
 
     .site-category .site-category-content {
@@ -418,9 +424,9 @@ const productCategories = [
         }
 
         .site-category {
-            --category-media-size: 96px;
-            --category-media-padding: 14px;
-            --category-content-padding: 12px;
+            --category-media-size: 84px;
+            --category-media-padding: 4px;
+            --category-content-padding: 8px;
         }
     }
 </style>

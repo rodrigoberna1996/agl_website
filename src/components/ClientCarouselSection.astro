@@ -1,11 +1,12 @@
 ---
-import totalLogo from "/src/assets/images/clients/total-energies.svg";
-import elfLogo from "/src/assets/images/clients/elf.svg";
-import talleresLogo from "/src/assets/images/clients/talleres.svg";
-import flotillasLogo from "/src/assets/images/clients/flotillas.svg";
-import industriaLogo from "/src/assets/images/clients/industria.svg";
-import transporteLogo from "/src/assets/images/clients/transporte.svg";
-import refaccionariasLogo from "/src/assets/images/clients/refaccionarias.svg";
+import totalLogo     from "/src/assets/images/clients/TOTAL.png";
+import elfLogo       from "/src/assets/images/clients/ELF.png";
+import rubiaLogo     from "/src/assets/images/clients/RUBIA.png";
+import wuartsLogo    from "/src/assets/images/clients/WUARTS.png";
+import logoImg       from "/src/assets/images/clients/logo.png";
+import manfilterLogo from "/src/assets/images/clients/MANFILTER.png";
+import purolatorLogo from "/src/assets/images/clients/purolator.png";
+import wixLogo       from "/src/assets/images/clients/wix-filters.png";
 
 type ClientLogo = {
     name: string;
@@ -14,13 +15,14 @@ type ClientLogo = {
 };
 
 const clients: ClientLogo[] = [
-    { name: "TotalEnergies", src: totalLogo.src, href: "/products" },
-    { name: "ELF", src: elfLogo.src, href: "/products" },
-    { name: "Talleres", src: talleresLogo.src },
-    { name: "Flotillas", src: flotillasLogo.src },
-    { name: "Transporte", src: transporteLogo.src },
-    { name: "Industria", src: industriaLogo.src },
-    { name: "Refaccionarias", src: refaccionariasLogo.src },
+    { name: "TotalEnergies", src: totalLogo.src,     href: "/products" },
+    { name: "ELF",           src: elfLogo.src,       href: "/products" },
+    { name: "Rubia",         src: rubiaLogo.src,     href: "/products" },
+    { name: "Quartz",        src: wuartsLogo.src,    href: "/products" },
+    { name: "AGL Legaspi",   src: logoImg.src },
+    { name: "Mann+Hummel",   src: manfilterLogo.src },
+    { name: "Purolator",     src: purolatorLogo.src },
+    { name: "WIX Filters",   src: wixLogo.src },
 ];
 
 const marqueeGroups = [1, 2];
@@ -47,9 +49,8 @@ const marqueeGroups = [1, 2];
                                         <div class="client-carousel__logo">
                                             <img
                                                 src={client.src}
-                                                alt=""
-                                                width="200"
-                                                height="40"
+                                                alt={client.name}
+                                                height="48"
                                                 loading="lazy"
                                                 decoding="async"
                                             />
