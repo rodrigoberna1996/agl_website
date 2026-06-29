@@ -1,243 +1,254 @@
 ---
 import { Image } from "astro:assets";
 import { getCatalogItems, CATEGORY_LABELS, getProductUrl } from "@lib/catalog";
-import type { ProductCategory } from "@lib/catalog";
+import type { ProductCategory, ProductBrand } from "@lib/catalog";
 
 const items = getCatalogItems();
+const total = items.length;
 
-const counts: Record<string, number> = { all: items.length };
+const counts: Record<string, number> = {};
+const brandCounts: Record<string, number> = {};
 for (const item of items) {
     counts[item.category] = (counts[item.category] ?? 0) + 1;
+    brandCounts[item.brand] = (brandCounts[item.brand] ?? 0) + 1;
 }
 
-const filters: { key: string; label: string; count: number }[] = [
-    { key: "all", label: "Todos", count: counts.all },
-    ...(Object.entries(CATEGORY_LABELS) as [ProductCategory, string][]).map(
-        ([key, label]) => ({ key, label, count: counts[key] ?? 0 }),
-    ),
+const categoryFilters = Object.entries(CATEGORY_LABELS) as [ProductCategory, string][];
+const brandFilters: { key: string; label: string }[] = [
+    { key: "Total", label: "TotalEnergies" },
+    { key: "ELF", label: "ELF" },
 ];
 ---
 
-<section class="product-list-section" aria-labelledby="product-list-heading">
+<section class="shop-section" aria-labelledby="shop-heading">
     <div class="section-container">
 
-        <!-- ─── Page header ─── -->
-        <header class="pl-header">
+        <!-- page heading -->
+        <header class="shop-page-header">
             <span class="section-tag">Catálogo</span>
-            <h1 id="product-list-heading" class="section-title pl-header__title">
-                Nuestros productos
-            </h1>
-            <p class="pl-header__desc">
-                Línea completa de aceites, lubricantes y grasas
-                <strong>TotalEnergies</strong> y <strong>ELF</strong> para motor, industrial,
-                transmisión y más. Cotiza con nosotros.
-            </p>
+            <h1 id="shop-heading" class="section-title">Nuestros productos</h1>
         </header>
 
-        <!-- ─── Toolbar: filtros + búsqueda ─── -->
-        <div class="pl-toolbar">
-            <nav class="pl-filters" aria-label="Filtrar por categoría" role="group">
-                {filters.map((f) => (
-                    <button
-                        class:list={["pl-filter-btn", { active: f.key === "all" }]}
-                        data-filter={f.key}
-                        type="button"
-                        aria-pressed={f.key === "all" ? "true" : "false"}
-                    >
-                        {f.label}
-                        <span class="pl-filter-count">{f.count}</span>
+        <!-- mobile filter toggle -->
+        <button class="shop-filter-toggle" id="shop-filter-toggle" type="button" aria-expanded="false" aria-controls="shop-sidebar">
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M3 5h14M6 10h8M9 15h2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            Filtros
+            <span class="filter-badge" id="filter-badge" hidden>0</span>
+        </button>
+
+        <div class="shop-layout">
+
+            <!-- ── Sidebar ── -->
+            <div class="shop-sidebar-overlay" id="shop-sidebar-overlay" aria-hidden="true"></div>
+            <aside class="shop-sidebar" id="shop-sidebar" aria-label="Filtros de productos">
+                <div class="sidebar-head">
+                    <span class="sidebar-head__title">Filtros</span>
+                    <button class="sidebar-close" id="sidebar-close" type="button" aria-label="Cerrar filtros">
+                        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                        </svg>
                     </button>
-                ))}
-            </nav>
-
-            <div class="pl-search">
-                <label class="sr-only" for="product-search">Buscar producto</label>
-                <div class="pl-search__field">
-                    <svg class="pl-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <circle cx="11" cy="11" r="8" />
-                        <path d="m21 21-4.3-4.3" />
-                    </svg>
-                    <input
-                        id="product-search"
-                        type="search"
-                        class="pl-search__input"
-                        placeholder="Buscar por nombre o descripción…"
-                        autocomplete="off"
-                    />
                 </div>
-            </div>
-        </div>
 
-        <!-- ─── Results count ─── -->
-        <p class="pl-results-count" id="pl-results-count" aria-live="polite">
-            <span id="pl-count-num">{items.length}</span> producto{items.length !== 1 ? "s" : ""}
-        </p>
-
-        <!-- ─── Grid ─── -->
-        {
-            items.length === 0 ? (
-                <div class="pl-empty">
-                    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                        <rect x="4" y="8" width="40" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
-                        <path d="M16 8v4M32 8v4M4 20h40" stroke="currentColor" stroke-width="2"/>
-                        <path d="M16 28h4M28 28h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <p>No hay productos en el catálogo por el momento.</p>
+                <div class="sidebar-widget">
+                    <h2 class="sidebar-widget__title">Categorías</h2>
+                    <ul class="sidebar-filter-list" role="group" aria-label="Filtrar por categoría">
+                        {categoryFilters.map(([key, label]) => (
+                            <li>
+                                <button
+                                    class="sidebar-filter-btn"
+                                    type="button"
+                                    data-filter-type="category"
+                                    data-filter-value={key}
+                                    aria-pressed="false"
+                                >
+                                    <span class="sidebar-filter-btn__check" aria-hidden="true">
+                                        <svg viewBox="0 0 12 12" fill="none">
+                                            <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                    <span class="sidebar-filter-btn__label">{label}</span>
+                                    <span class="sidebar-filter-btn__count">{counts[key] ?? 0}</span>
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-            ) : (
-                <ul class="pl-grid" id="product-grid" role="list">
-                    {items.map((item) => (
-                        <li
-                            class="pl-item"
-                            data-category={item.category}
-                            data-search={`${item.name} ${item.description} ${item.brand} ${item.sku}`.toLowerCase()}
-                        >
-                            <article class="pl-card">
-                                <a href={getProductUrl(item.slug)} class="pl-card__image-link" tabindex="-1" aria-hidden="true">
-                                    <div class="pl-card__media">
-                                        <span class:list={["pl-card__brand-badge", `badge--${item.brand.toLowerCase()}`]}>
+
+                <div class="sidebar-widget">
+                    <h2 class="sidebar-widget__title">Marcas</h2>
+                    <ul class="sidebar-filter-list" role="group" aria-label="Filtrar por marca">
+                        {brandFilters.map(({ key, label }) => (
+                            <li>
+                                <button
+                                    class="sidebar-filter-btn"
+                                    type="button"
+                                    data-filter-type="brand"
+                                    data-filter-value={key}
+                                    aria-pressed="false"
+                                >
+                                    <span class="sidebar-filter-btn__check" aria-hidden="true">
+                                        <svg viewBox="0 0 12 12" fill="none">
+                                            <path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                    <span class:list={["sidebar-filter-btn__label", `brand-label--${key.toLowerCase()}`]}>{label}</span>
+                                    <span class="sidebar-filter-btn__count">{brandCounts[key] ?? 0}</span>
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <button class="sidebar-clear-btn" id="sidebar-clear" type="button" hidden>
+                    Limpiar filtros
+                </button>
+            </aside>
+
+            <!-- ── Main ── -->
+            <div class="shop-main">
+
+                <!-- toolbar -->
+                <div class="shop-toolbar">
+                    <p class="shop-toolbar__results" id="shop-results" aria-live="polite">
+                        Mostrando <strong id="shop-visible-count">{total}</strong> de {total} productos
+                    </p>
+                    <div class="shop-toolbar__controls">
+                        <div class="shop-search">
+                            <label class="sr-only" for="shop-search-input">Buscar producto</label>
+                            <div class="shop-search__field">
+                                <svg class="shop-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <path d="m21 21-4.3-4.3"/>
+                                </svg>
+                                <input
+                                    id="shop-search-input"
+                                    type="search"
+                                    class="shop-search__input"
+                                    placeholder="Buscar…"
+                                    autocomplete="off"
+                                />
+                            </div>
+                        </div>
+                        <div class="view-toggle" role="group" aria-label="Vista">
+                            <button class="view-btn is-active" data-view="grid" type="button" aria-label="Vista cuadrícula" aria-pressed="true">
+                                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <rect x="2" y="2" width="7" height="7" rx="1"/>
+                                    <rect x="11" y="2" width="7" height="7" rx="1"/>
+                                    <rect x="2" y="11" width="7" height="7" rx="1"/>
+                                    <rect x="11" y="11" width="7" height="7" rx="1"/>
+                                </svg>
+                            </button>
+                            <button class="view-btn" data-view="list" type="button" aria-label="Vista lista" aria-pressed="false">
+                                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <rect x="2" y="3" width="16" height="3" rx="1"/>
+                                    <rect x="2" y="8.5" width="16" height="3" rx="1"/>
+                                    <rect x="2" y="14" width="16" height="3" rx="1"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- product grid -->
+                {items.length === 0 ? (
+                    <div class="shop-empty">
+                        <p>No hay productos en el catálogo por el momento.</p>
+                    </div>
+                ) : (
+                    <ul class="shop-grid" id="shop-grid" data-view="grid" role="list">
+                        {items.map((item) => (
+                            <li
+                                class="shop-item"
+                                data-category={item.category}
+                                data-brand={item.brand}
+                                data-search={`${item.name} ${item.description} ${item.brand} ${item.sku} ${CATEGORY_LABELS[item.category]}`.toLowerCase()}
+                            >
+                                <article class="product-card">
+                                    <div class="product-card__media">
+                                        <span class:list={["product-card__badge", `badge--${item.brand.toLowerCase()}`]}>
                                             {item.brand}
                                         </span>
-                                        <Image
-                                            class="pl-card__image"
-                                            src={item.image}
-                                            alt={item.name}
-                                            width={320}
-                                            height={320}
-                                            loading="lazy"
-                                            decoding="async"
-                                            sizes="(max-width: 42rem) 50vw, (max-width: 64rem) 33vw, 25vw"
-                                        />
-                                    </div>
-                                </a>
-
-                                <div class="pl-card__body">
-                                    <div class="pl-card__meta">
-                                        <span class="pl-card__category">
-                                            {CATEGORY_LABELS[item.category]}
-                                        </span>
-                                        <span class="pl-card__sku">#{item.sku}</span>
-                                    </div>
-
-                                    <h3 class="pl-card__name">
-                                        <a href={getProductUrl(item.slug)} class="pl-card__name-link">
-                                            {item.name}
-                                        </a>
-                                    </h3>
-
-                                    <p class="pl-card__desc">{item.description}</p>
-
-                                    <div class="pl-card__footer">
-                                        <span class="pl-card__quote">Cotizar precio</span>
-                                        <a href={getProductUrl(item.slug)} class="pl-card__cta">
-                                            Ver detalle
-                                            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                                                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
+                                        <a href={getProductUrl(item.slug)} class="product-card__img-link" tabindex="-1" aria-hidden="true">
+                                            <Image
+                                                src={item.image}
+                                                alt={item.name}
+                                                class="product-card__img"
+                                                width={300}
+                                                height={300}
+                                                loading="lazy"
+                                                decoding="async"
+                                                sizes="(max-width: 42rem) 50vw, (max-width: 64rem) 33vw, 22vw"
+                                            />
                                         </a>
                                     </div>
-                                </div>
-                            </article>
-                        </li>
-                    ))}
-                </ul>
-            )
-        }
+                                    <div class="product-card__body">
+                                        <span class="product-card__cat">{CATEGORY_LABELS[item.category]}</span>
+                                        <h3 class="product-card__name">
+                                            <a href={getProductUrl(item.slug)}>{item.name}</a>
+                                        </h3>
+                                        <p class="product-card__desc">{item.description}</p>
+                                        <div class="product-card__footer">
+                                            <span class="product-card__price">Cotizar precio</span>
+                                            <a href={getProductUrl(item.slug)} class="product-card__cta btn--shop">
+                                                Ver detalle
+                                            </a>
+                                        </div>
+                                    </div>
+                                </article>
+                            </li>
+                        ))}
+                    </ul>
+                )}
 
-        <!-- ─── Empty states ─── -->
-        <div class="pl-empty pl-filter-empty" id="pl-filter-empty" hidden>
-            <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="2"/>
-                <path d="M16 24h16M24 16v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <p>No hay productos en esta categoría.</p>
+                <!-- empty state -->
+                <div class="shop-empty" id="shop-empty" hidden>
+                    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+                        <circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="2"/>
+                        <path d="m30 30 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <p>No se encontraron productos con los filtros seleccionados.</p>
+                    <button type="button" id="empty-clear">Limpiar filtros</button>
+                </div>
+
+            </div>
         </div>
-
-        <div class="pl-empty pl-search-empty" id="pl-search-empty" hidden>
-            <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
-                <circle cx="20" cy="20" r="14" stroke="currentColor" stroke-width="2"/>
-                <path d="m30 30 8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-            <p>No se encontraron productos para su búsqueda.</p>
-        </div>
-
     </div>
 </section>
 
 <style>
-    /* ── Section shell ── */
-    section.product-list-section {
-        background: var(--color-background);
+    /* ── Section ── */
+    section.shop-section {
+        background: var(--color-white);
         padding-top: calc(var(--h-menu-bar) + var(--px-64));
         padding-bottom: var(--px-96);
     }
 
-    /* ── sr-only ── */
     .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
+        position: absolute; width: 1px; height: 1px; padding: 0;
+        margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
+        white-space: nowrap; border: 0;
     }
 
     /* ── Page header ── */
-    .pl-header {
-        max-width: 48rem;
-        margin-bottom: var(--px-48);
-    }
-
-    /* .section-tag is a global utility — no custom tag styles needed */
-
-    /* extends global .section-title, adds letter-spacing */
-    .pl-header__title {
-        letter-spacing: -0.02em;
-    }
-
-    .pl-header__desc {
-        margin: 0;
-        font-size: var(--text-sm);
-        line-height: 1.65;
-        color: var(--color-text-secondary);
-        opacity: 1;
-        max-width: 42rem;
-    }
-
-    .pl-header__desc strong {
-        color: var(--color-text-primary);
-        font-weight: 600;
-    }
-
-    /* ── Toolbar ── */
-    .pl-toolbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: var(--px-16) var(--px-24);
-        flex-wrap: wrap;
+    .shop-page-header {
+        max-width: 40rem;
         margin-bottom: var(--px-32);
     }
 
-    /* ── Filter pills — igual al patrón de PortfolioPage ── */
-    .pl-filters {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: var(--px-10);
-        flex: 1 1 auto;
-        min-width: 0;
+    .shop-page-header .section-title {
+        margin-bottom: 0;
     }
 
-    .pl-filter-btn {
-        display: inline-flex;
+    /* ── Mobile filter toggle ── */
+    .shop-filter-toggle {
+        display: none;
         align-items: center;
         gap: var(--px-8);
+        margin-bottom: var(--px-16);
         padding: var(--px-10) var(--px-20);
-        min-height: 2.75rem;
         border: 1px solid var(--color-border);
         border-radius: 999px;
         background: var(--color-white);
@@ -245,109 +256,341 @@ const filters: { key: string; label: string; count: number }[] = [
         font-size: var(--text-sm);
         font-weight: 600;
         cursor: pointer;
-        white-space: nowrap;
-        transition:
-            background var(--transition-short),
-            border-color var(--transition-short),
-            color var(--transition-short);
+        transition: border-color var(--transition-short), background var(--transition-short);
     }
 
-    .pl-filter-btn.active {
+    .shop-filter-toggle svg {
+        width: 1.125rem;
+        height: 1.125rem;
+        flex-shrink: 0;
+    }
+
+    .filter-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 1.25rem;
+        height: 1.25rem;
+        padding: 0 0.3rem;
+        border-radius: 999px;
+        background: var(--color-brand-blue);
+        color: var(--color-white);
+        font-size: 0.68rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    /* ── Layout ── */
+    .shop-layout {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--px-40);
+    }
+
+    /* ── Sidebar overlay (mobile) ── */
+    .shop-sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: var(--color-overlay);
+        z-index: calc(var(--z-max) - 1);
+        opacity: 0;
+        transition: opacity var(--transition-medium);
+    }
+
+    .shop-sidebar-overlay.is-open {
+        opacity: 1;
+    }
+
+    /* ── Sidebar ── */
+    .shop-sidebar {
+        flex-shrink: 0;
+        width: 15rem;
+        position: sticky;
+        top: calc(var(--h-menu-bar) + var(--px-24));
+    }
+
+    .sidebar-head {
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: var(--px-16);
+        border-bottom: 1px solid var(--color-border);
+        margin-bottom: var(--px-20);
+    }
+
+    .sidebar-head__title {
+        font-size: var(--text-sm);
+        font-weight: 700;
+        color: var(--color-text-primary);
+    }
+
+    .sidebar-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        color: var(--color-text-secondary);
+        padding: 0;
+    }
+
+    .sidebar-close svg {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .sidebar-widget {
+        margin-bottom: var(--px-32);
+    }
+
+    .sidebar-widget__title {
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-text-primary);
+        margin-bottom: var(--px-14);
+        padding-bottom: var(--px-10);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .sidebar-filter-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--px-2);
+    }
+
+    .sidebar-filter-btn {
+        display: flex;
+        align-items: center;
+        gap: var(--px-10);
+        width: 100%;
+        padding: var(--px-8) var(--px-10);
+        border: none;
+        background: transparent;
+        border-radius: var(--px-8);
+        font-size: var(--text-sm);
+        font-weight: 400;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        text-align: left;
+        transition: background var(--transition-short), color var(--transition-short);
+    }
+
+    .sidebar-filter-btn[aria-pressed="true"] {
+        color: var(--color-text-primary);
+        font-weight: 600;
+    }
+
+    .sidebar-filter-btn__check {
+        flex-shrink: 0;
+        width: 1.05rem;
+        height: 1.05rem;
+        border: 1.5px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        background: var(--color-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+            background var(--transition-short),
+            border-color var(--transition-short);
+    }
+
+    .sidebar-filter-btn__check svg {
+        width: 0.65rem;
+        height: 0.65rem;
+        stroke: var(--color-white);
+        opacity: 0;
+        transition: opacity var(--transition-short);
+    }
+
+    .sidebar-filter-btn[aria-pressed="true"] .sidebar-filter-btn__check {
         background: var(--color-brand-blue);
         border-color: var(--color-brand-blue);
-        color: var(--color-white);
     }
 
-    .pl-filter-count {
-        display: inline-block;
-        font-size: 0.68rem;
-        font-weight: 700;
-        background: rgba(0, 0, 0, 0.07);
-        border-radius: 999px;
-        padding: 0.1rem 0.42rem;
-        line-height: 1.7;
-        min-width: 1.3rem;
-        text-align: center;
-        transition:
-            background var(--transition-short),
-            color var(--transition-short);
+    .sidebar-filter-btn[aria-pressed="true"] .sidebar-filter-btn__check svg {
+        opacity: 1;
+    }
+
+    .sidebar-filter-btn__label {
+        flex: 1;
+    }
+
+    .brand-label--total { color: var(--color-brand-red); font-weight: 600; }
+    .brand-label--elf   { color: var(--color-brand-blue); font-weight: 600; }
+
+    .sidebar-filter-btn[aria-pressed="true"] .brand-label--total,
+    .sidebar-filter-btn[aria-pressed="true"] .brand-label--elf {
+        color: inherit;
+    }
+
+    .sidebar-filter-btn__count {
+        font-size: 0.72rem;
         color: var(--color-text-secondary);
+        opacity: 0.6;
+        margin-left: auto;
     }
 
-    .pl-filter-btn.active .pl-filter-count {
-        background: rgba(255, 255, 255, 0.22);
-        color: var(--color-white);
+    .sidebar-clear-btn {
+        display: flex;
+        align-items: center;
+        gap: var(--px-6);
+        padding: var(--px-8) var(--px-14);
+        border: 1px solid var(--color-border);
+        border-radius: 999px;
+        background: transparent;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        margin-top: var(--px-8);
+        transition: all var(--transition-short);
+    }
+
+    /* ── Main ── */
+    .shop-main {
+        flex: 1;
+        min-width: 0;
+    }
+
+    /* ── Toolbar ── */
+    .shop-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--px-12) var(--px-20);
+        padding-bottom: var(--px-20);
+        margin-bottom: var(--px-24);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .shop-toolbar__results {
+        margin: 0;
+        font-size: var(--text-sm);
+        color: var(--color-text-secondary);
+        opacity: 1;
+    }
+
+    .shop-toolbar__results strong {
+        color: var(--color-text-primary);
+        font-weight: 700;
+    }
+
+    .shop-toolbar__controls {
+        display: flex;
+        align-items: center;
+        gap: var(--px-12);
     }
 
     /* ── Search ── */
-    .pl-search {
-        flex: 0 1 18rem;
-        min-width: min(100%, 14rem);
-    }
-
-    .pl-search__field {
+    .shop-search__field {
         position: relative;
     }
 
-    .pl-search__icon {
+    .shop-search__icon {
         position: absolute;
-        left: var(--px-16);
+        left: var(--px-12);
         top: 50%;
         transform: translateY(-50%);
-        width: 1.125rem;
-        height: 1.125rem;
+        width: 1rem;
+        height: 1rem;
         color: var(--color-text-secondary);
         pointer-events: none;
     }
 
-    .pl-search__input {
-        width: 100%;
-        min-height: 2.75rem;
-        padding: var(--px-10) var(--px-16) var(--px-10) calc(var(--px-16) + 1.5rem);
-        background: var(--color-white);
+    .shop-search__input {
+        width: 13rem;
+        min-height: 2.5rem;
+        padding: 0 var(--px-12) 0 2.1rem;
         border: 1px solid var(--color-border);
         border-radius: var(--px-8);
-        font-size: var(--text-sm);
+        background: var(--color-white);
+        font-size: 0.875rem;
         color: var(--color-text-primary);
         transition: border-color var(--transition-short), box-shadow var(--transition-short);
         outline: none;
     }
 
-    .pl-search__input::placeholder {
+    .shop-search__input::placeholder {
         color: var(--color-text-secondary);
         opacity: 0.75;
     }
 
-    .pl-search__input:focus {
+    .shop-search__input:focus {
         border-color: var(--color-border-focus);
         box-shadow: 0 0 0 3px rgba(0, 193, 206, 0.16);
     }
 
-    /* ── Results count ── */
-    .pl-results-count {
-        margin: 0 0 var(--px-24);
-        font-size: 0.8rem;
-        color: var(--color-text-secondary);
-        opacity: 1;
+    /* ── View toggle ── */
+    .view-toggle {
+        display: flex;
+        align-items: center;
+        gap: var(--px-2);
+        padding: var(--px-4);
+        background: var(--color-background);
+        border: 1px solid var(--color-border);
+        border-radius: var(--px-8);
     }
 
-    /* ── Grid ── */
-    .pl-grid {
+    .view-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border: none;
+        background: transparent;
+        border-radius: var(--radius-sm);
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        transition: background var(--transition-short), color var(--transition-short);
+        padding: 0;
+    }
+
+    .view-btn svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .view-btn.is-active {
+        background: var(--color-white);
+        color: var(--color-brand-blue);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    /* ── Product grid ── */
+    .shop-grid {
         list-style: none;
         margin: 0;
         padding: 0;
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: var(--px-20);
     }
 
-    /* ── Card ── */
-    .pl-card {
+    /* list view */
+    .shop-grid[data-view="list"] {
+        grid-template-columns: 1fr;
+        gap: var(--px-14);
+    }
+
+    /* ── Product card ── */
+    .product-card {
         display: flex;
         flex-direction: column;
         background: var(--color-white);
         border: 1px solid var(--color-border);
-        border-radius: var(--px-16);
+        border-radius: var(--px-12);
         overflow: hidden;
         height: 100%;
         transition:
@@ -356,13 +599,13 @@ const filters: { key: string; label: string; count: number }[] = [
             border-color var(--transition-medium);
     }
 
-    /* image link wrapper */
-    .pl-card__image-link {
-        display: block;
-        text-decoration: none;
+    /* list view card */
+    .shop-grid[data-view="list"] .product-card {
+        flex-direction: row;
+        height: auto;
     }
 
-    .pl-card__media {
+    .product-card__media {
         position: relative;
         aspect-ratio: 1;
         overflow: hidden;
@@ -370,26 +613,23 @@ const filters: { key: string; label: string; count: number }[] = [
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
     }
 
-    .pl-card__image {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        display: block;
-        padding: var(--px-20);
-        transition: transform var(--transition-medium);
+    .shop-grid[data-view="list"] .product-card__media {
+        width: 9rem;
+        aspect-ratio: 1;
     }
 
     /* brand badge */
-    .pl-card__brand-badge {
+    .product-card__badge {
         position: absolute;
         top: var(--px-10);
         left: var(--px-10);
         z-index: 2;
-        font-size: 0.62rem;
+        font-size: 0.58rem;
         font-weight: 800;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.07em;
         text-transform: uppercase;
         padding: 0.2rem 0.5rem;
         border-radius: var(--radius-sm);
@@ -406,8 +646,26 @@ const filters: { key: string; label: string; count: number }[] = [
         color: var(--color-brand-blue);
     }
 
-    /* body */
-    .pl-card__body {
+    .product-card__img-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        text-decoration: none;
+        padding: var(--px-16);
+    }
+
+    .product-card__img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        transition: transform var(--transition-medium);
+    }
+
+    /* card body */
+    .product-card__body {
         display: flex;
         flex-direction: column;
         flex: 1;
@@ -416,52 +674,46 @@ const filters: { key: string; label: string; count: number }[] = [
         border-top: 1px solid rgba(3, 78, 162, 0.07);
     }
 
-    .pl-card__meta {
-        display: flex;
-        align-items: center;
-        gap: var(--px-6);
-        flex-wrap: wrap;
+    .shop-grid[data-view="list"] .product-card__body {
+        border-top: none;
+        border-left: 1px solid rgba(3, 78, 162, 0.07);
+        padding: var(--px-16) var(--px-20);
+        justify-content: center;
     }
 
-    .pl-card__category {
-        font-size: 0.66rem;
+    .product-card__cat {
+        font-size: 0.65rem;
         font-weight: 700;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
-        padding: 0.18rem 0.45rem;
-        border-radius: var(--radius-sm);
-        background: rgba(3, 78, 162, 0.07);
         color: var(--color-brand-blue);
-        line-height: 1.6;
+        opacity: 0.8;
     }
 
-    .pl-card__sku {
-        font-size: 0.66rem;
-        font-weight: 500;
-        color: var(--color-text-secondary);
-        opacity: 0.6;
-        letter-spacing: 0.02em;
-    }
-
-    .pl-card__name {
+    .product-card__name {
         margin: 0;
-        font-size: 0.9rem;
+        font-size: var(--text-sm);
         font-weight: 600;
         line-height: 1.35;
         color: var(--color-text-primary);
         letter-spacing: -0.01em;
     }
 
-    .pl-card__name-link {
+    .product-card__name a {
         color: inherit;
         text-decoration: none;
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        transition: color var(--transition-short);
     }
 
-    .pl-card__desc {
+    .shop-grid[data-view="list"] .product-card__name a {
+        -webkit-line-clamp: 1;
+    }
+
+    .product-card__desc {
         margin: 0;
         font-size: 0.78rem;
         line-height: 1.5;
@@ -473,186 +725,306 @@ const filters: { key: string; label: string; count: number }[] = [
         overflow: hidden;
     }
 
-    /* footer */
-    .pl-card__footer {
+    /* card footer */
+    .product-card__footer {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: var(--px-8);
+        flex-direction: column;
+        gap: var(--px-10);
         margin-top: auto;
         padding-top: var(--px-12);
         border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
 
-    .pl-card__quote {
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: #0f9f6e;
-        white-space: nowrap;
-    }
-
-    .pl-card__cta {
-        display: inline-flex;
+    .shop-grid[data-view="list"] .product-card__footer {
+        flex-direction: row;
         align-items: center;
-        gap: var(--px-4);
-        font-size: 0.75rem;
-        font-weight: 700;
-        color: var(--color-brand-blue);
-        text-decoration: none;
-        white-space: nowrap;
-        transition: gap var(--transition-short), color var(--transition-short);
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+        border-left: 1px solid rgba(0, 0, 0, 0.05);
+        padding-left: var(--px-16);
     }
 
-    .pl-card__cta svg {
-        width: 0.875rem;
-        height: 0.875rem;
-        flex-shrink: 0;
-        transition: transform var(--transition-short);
+    .product-card__price {
+        font-size: var(--text-lg);
+        font-weight: 900;
+        color: #0f9f6e;
+        line-height: 1;
+    }
+
+    .btn--shop {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 2.5rem;
+        padding: 0 var(--px-16);
+        border-radius: var(--px-8);
+        background: var(--color-brand-blue);
+        color: var(--color-white);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.03em;
+        text-decoration: none;
+        transition: background var(--transition-short);
+        white-space: nowrap;
+    }
+
+    .shop-grid[data-view="list"] .btn--shop {
+        width: auto;
     }
 
     /* ── Empty states ── */
-    .pl-empty {
+    .shop-empty {
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: var(--px-16);
         padding: var(--px-80) 0;
         color: var(--color-text-secondary);
-        opacity: 0.55;
+        opacity: 0.6;
     }
 
-    .pl-empty svg {
+    .shop-empty svg {
         width: 3rem;
         height: 3rem;
     }
 
-    .pl-empty p {
+    .shop-empty p {
         margin: 0;
         font-size: var(--text-sm);
         opacity: 1;
     }
 
+    .shop-empty button {
+        padding: var(--px-8) var(--px-20);
+        border: 1px solid var(--color-border);
+        border-radius: 999px;
+        background: transparent;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: var(--color-text-secondary);
+        transition: all var(--transition-short);
+    }
+
     /* ── Hover ── */
     @media (hover: hover) and (pointer: fine) {
-        .pl-filter-btn:not(.active):hover {
+        .shop-filter-toggle:hover {
+            border-color: var(--color-border-hover);
+            background: rgba(3, 78, 162, 0.04);
+        }
+
+        .sidebar-filter-btn:hover {
             background: rgba(3, 78, 162, 0.06);
+            color: var(--color-text-primary);
+        }
+
+        .sidebar-clear-btn:hover {
             border-color: var(--color-border-hover);
             color: var(--color-brand-blue);
         }
 
-        .pl-card:hover {
-            box-shadow: 0 8px 28px rgba(3, 78, 162, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
-            transform: translateY(-3px);
+        .view-btn:not(.is-active):hover {
+            background: rgba(3, 78, 162, 0.07);
+            color: var(--color-brand-blue);
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 28px rgba(3, 78, 162, 0.1), 0 2px 6px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
             border-color: var(--color-border-hover);
         }
 
-        .pl-card:hover .pl-card__image {
+        .shop-grid[data-view="list"] .product-card:hover {
+            transform: none;
+        }
+
+        .product-card:hover .product-card__img {
             transform: scale(1.04);
         }
 
-        .pl-card:hover .pl-card__name-link {
+        .product-card__name a:hover {
             color: var(--color-brand-blue);
         }
 
-        .pl-card__cta:hover {
-            color: var(--color-brand-red);
-            gap: var(--px-8);
+        .btn--shop:hover {
+            background: var(--color-brand-navy);
         }
 
-        .pl-card__cta:hover svg {
-            transform: translateX(2px);
+        .shop-empty button:hover {
+            border-color: var(--color-border-hover);
+            color: var(--color-brand-blue);
         }
     }
 
     /* ── Tablet ── */
     @media screen and (max-width: 64rem) {
-        section.product-list-section {
+        section.shop-section {
             padding-top: calc(var(--h-menu-bar) + var(--px-56));
             padding-bottom: var(--px-80);
         }
 
-        .pl-toolbar {
-            flex-direction: column;
-            align-items: stretch;
+        .shop-layout {
+            gap: var(--px-28);
         }
 
-        .pl-search {
-            flex: 1 1 auto;
-            max-width: none;
+        .shop-sidebar {
+            width: 13rem;
         }
 
-        .pl-grid {
-            grid-template-columns: repeat(3, 1fr);
+        .shop-grid {
+            grid-template-columns: repeat(2, 1fr);
             gap: var(--px-16);
         }
-    }
 
-    /* ── Small tablet ── */
-    @media screen and (max-width: 52rem) {
-        .pl-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: var(--px-14);
+        .shop-search__input {
+            width: 10rem;
         }
     }
 
     /* ── Mobile ── */
-    @media screen and (max-width: 42.188rem) {
-        section.product-list-section {
-            padding-top: calc(var(--h-menu-bar) + var(--px-40));
+    @media screen and (max-width: 52rem) {
+        section.shop-section {
+            padding-top: calc(var(--h-menu-bar) + var(--px-48));
             padding-bottom: var(--px-64);
         }
 
-        .pl-header {
-            margin-bottom: var(--px-32);
+        .shop-filter-toggle {
+            display: inline-flex;
         }
 
-        .pl-filter-btn {
-            font-size: 0.8rem;
-            padding: var(--px-6) var(--px-12);
+        /* sidebar becomes a drawer */
+        .shop-sidebar-overlay {
+            display: block;
+            pointer-events: none;
         }
 
-        .pl-grid {
+        .shop-sidebar-overlay.is-open {
+            pointer-events: auto;
+        }
+
+        .shop-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: min(18rem, 85vw);
+            background: var(--color-white);
+            z-index: var(--z-max);
+            overflow-y: auto;
+            padding: var(--px-24);
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
+            transform: translateX(-110%);
+            transition: transform var(--transition-medium);
+        }
+
+        .shop-sidebar.is-open {
+            transform: translateX(0);
+        }
+
+        .sidebar-head {
+            display: flex;
+        }
+
+        .shop-layout {
+            display: block;
+        }
+
+        .shop-grid {
             grid-template-columns: repeat(2, 1fr);
             gap: var(--px-12);
         }
 
-        .pl-card__body {
+        .shop-search__input {
+            width: 100%;
+        }
+
+        .shop-toolbar {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .shop-toolbar__controls {
+            width: 100%;
+        }
+
+        .shop-search {
+            flex: 1;
+        }
+
+        .shop-search__field {
+            width: 100%;
+        }
+
+        .product-card__desc {
+            display: none;
+        }
+
+        .shop-grid[data-view="list"] .product-card__media {
+            width: 7rem;
+        }
+
+        .shop-grid[data-view="list"] .product-card__footer {
+            display: none;
+        }
+
+        .shop-grid[data-view="list"] .product-card__desc {
+            display: -webkit-box;
+        }
+    }
+
+    @media screen and (max-width: 30rem) {
+        .shop-grid,
+        .shop-grid[data-view="grid"] {
+            grid-template-columns: 1fr 1fr;
+            gap: var(--px-10);
+        }
+
+        .product-card__body {
             padding: var(--px-10) var(--px-12) var(--px-12);
             gap: var(--px-4);
         }
 
-        .pl-card__desc {
-            display: none;
-        }
-
-        .pl-card__sku {
-            display: none;
+        .product-card__price {
+            font-size: var(--text-sm);
         }
     }
 </style>
 
 <script>
-    function initProductList() {
-        const filterBtns = document.querySelectorAll<HTMLButtonElement>(".pl-filter-btn");
-        const items = document.querySelectorAll<HTMLLIElement>(".pl-item");
-        const searchInput = document.getElementById("product-search") as HTMLInputElement | null;
-        const filterEmpty = document.getElementById("pl-filter-empty");
-        const searchEmpty = document.getElementById("pl-search-empty");
-        const countEl = document.getElementById("pl-count-num");
+    function initShop() {
+        const grid = document.getElementById("shop-grid") as HTMLElement | null;
+        const items = document.querySelectorAll<HTMLLIElement>(".shop-item");
+        const sidebarBtns = document.querySelectorAll<HTMLButtonElement>(".sidebar-filter-btn");
+        const searchInput = document.getElementById("shop-search-input") as HTMLInputElement | null;
+        const countEl = document.getElementById("shop-visible-count");
+        const emptyEl = document.getElementById("shop-empty");
+        const clearBtns = document.querySelectorAll<HTMLButtonElement>("#sidebar-clear, #empty-clear");
+        const filterBadge = document.getElementById("filter-badge");
+        const viewBtns = document.querySelectorAll<HTMLButtonElement>(".view-btn");
 
-        if (!filterBtns.length && !searchInput) return;
+        // sidebar (mobile)
+        const sidebar = document.getElementById("shop-sidebar");
+        const overlay = document.getElementById("shop-sidebar-overlay");
+        const toggleBtn = document.getElementById("shop-filter-toggle");
+        const closeBtn = document.getElementById("sidebar-close");
 
-        let activeFilter = "all";
+        if (!grid) return;
+
+        // state
+        const activeCategories = new Set<string>();
+        const activeBrands = new Set<string>();
         let searchQuery = "";
 
-        function updateVisibility() {
+        // ── filtering ──────────────────────────────────────────────────
+        function updateGrid() {
             let visible = 0;
-
             items.forEach((item) => {
-                const matchFilter = activeFilter === "all" || item.dataset.category === activeFilter;
+                const matchCat = activeCategories.size === 0 || activeCategories.has(item.dataset.category ?? "");
+                const matchBrand = activeBrands.size === 0 || activeBrands.has(item.dataset.brand ?? "");
                 const matchSearch = !searchQuery || (item.dataset.search ?? "").includes(searchQuery);
-                const show = matchFilter && matchSearch;
-
+                const show = matchCat && matchBrand && matchSearch;
                 if (show) {
                     item.removeAttribute("hidden");
                     visible++;
@@ -662,35 +1034,93 @@ const filters: { key: string; label: string; count: number }[] = [
             });
 
             if (countEl) countEl.textContent = String(visible);
+            if (emptyEl) emptyEl.hidden = visible > 0;
 
-            const isSearching = searchQuery.length > 0;
-            const isFiltering = activeFilter !== "all";
+            // update filter badge
+            const total = activeCategories.size + activeBrands.size;
+            if (filterBadge) {
+                filterBadge.textContent = String(total);
+                filterBadge.hidden = total === 0;
+            }
 
-            if (filterEmpty) filterEmpty.hidden = !(visible === 0 && isFiltering && !isSearching);
-            if (searchEmpty) searchEmpty.hidden = !(visible === 0 && isSearching);
+            // update clear buttons
+            clearBtns.forEach((btn) => {
+                btn.hidden = total === 0 && !searchQuery;
+            });
         }
 
-        filterBtns.forEach((btn) => {
+        sidebarBtns.forEach((btn) => {
             btn.addEventListener("click", () => {
-                activeFilter = btn.dataset.filter ?? "all";
+                const type = btn.dataset.filterType;
+                const value = btn.dataset.filterValue ?? "";
+                const isActive = btn.getAttribute("aria-pressed") === "true";
 
-                filterBtns.forEach((b) => {
-                    b.classList.toggle("active", b === btn);
-                    b.setAttribute("aria-pressed", b === btn ? "true" : "false");
-                });
+                btn.setAttribute("aria-pressed", isActive ? "false" : "true");
 
-                updateVisibility();
+                if (type === "category") {
+                    if (isActive) activeCategories.delete(value);
+                    else activeCategories.add(value);
+                } else if (type === "brand") {
+                    if (isActive) activeBrands.delete(value);
+                    else activeBrands.add(value);
+                }
+
+                updateGrid();
             });
         });
 
         if (searchInput) {
             searchInput.addEventListener("input", () => {
                 searchQuery = searchInput.value.trim().toLowerCase();
-                updateVisibility();
+                updateGrid();
             });
         }
+
+        clearBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                activeCategories.clear();
+                activeBrands.clear();
+                searchQuery = "";
+                if (searchInput) searchInput.value = "";
+                sidebarBtns.forEach((b) => b.setAttribute("aria-pressed", "false"));
+                updateGrid();
+            });
+        });
+
+        // ── view toggle ──────────────────────────────────────────────────
+        viewBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const view = btn.dataset.view ?? "grid";
+                viewBtns.forEach((b) => {
+                    b.classList.toggle("is-active", b === btn);
+                    b.setAttribute("aria-pressed", b === btn ? "true" : "false");
+                });
+                grid.dataset.view = view;
+            });
+        });
+
+        // ── mobile sidebar ──────────────────────────────────────────────
+        function openSidebar() {
+            sidebar?.classList.add("is-open");
+            overlay?.classList.add("is-open");
+            overlay && (overlay.ariaHidden = "false");
+            toggleBtn?.setAttribute("aria-expanded", "true");
+            document.body.classList.add("no-scroll");
+        }
+
+        function closeSidebar() {
+            sidebar?.classList.remove("is-open");
+            overlay?.classList.remove("is-open");
+            overlay && (overlay.ariaHidden = "true");
+            toggleBtn?.setAttribute("aria-expanded", "false");
+            document.body.classList.remove("no-scroll");
+        }
+
+        toggleBtn?.addEventListener("click", openSidebar);
+        closeBtn?.addEventListener("click", closeSidebar);
+        overlay?.addEventListener("click", closeSidebar);
     }
 
-    initProductList();
-    document.addEventListener("astro:after-swap", initProductList);
+    initShop();
+    document.addEventListener("astro:after-swap", initShop);
 </script>
