@@ -24,8 +24,6 @@ const products = featuredFileNames
             discount: [32, 28, 17, 24, 34][index],
             rating: ["4.83", "4.67", "4.33", "4.50", "4.75"][index],
             reviews: [3, 5, 3, 4, 6][index],
-            available: [10, 29, 38, 16, 12][index],
-            sold: [65, 54, 37, 42, 34][index],
         };
     })
     .filter(Boolean);
@@ -87,19 +85,8 @@ const products = featuredFileNames
                                             <a href={getProductUrl(product.slug)}>{product.name}</a>
                                         </h3>
                                         <p class="best-seller-card__quote">Cotizar</p>
-                                        <div class="best-seller-card__stock">
-                                            <div class="best-seller-card__stock-track">
-                                                <span
-                                                    style={`width: ${Math.min(100, Math.round((product.sold / (product.available + product.sold)) * 100))}%`}
-                                                />
-                                            </div>
-                                            <div class="best-seller-card__stock-meta">
-                                                <span>Available:{product.available}</span>
-                                                <span>Sold:{product.sold}</span>
-                                            </div>
-                                        </div>
                                         <a href="/contact" class="best-seller-card__cta">
-                                            Solicitar cotizacion
+                                            Contactar
                                         </a>
                                     </div>
                                 </article>
