@@ -22,7 +22,7 @@ import { TEAM_MEMBERS } from '@lib/team';
             <figure class="about-team__card">
               <Image
                 src={member.image}
-                alt={member.name}
+                alt={member.role}
                 class="about-team__photo"
                 width={480}
                 height={480}
@@ -30,7 +30,6 @@ import { TEAM_MEMBERS } from '@lib/team';
                 decoding="async"
               />
               <figcaption class="about-team__caption">
-                <span class="about-team__name">{member.name}</span>
                 <span class="about-team__role">{member.role}</span>
               </figcaption>
             </figure>
@@ -110,18 +109,12 @@ import { TEAM_MEMBERS } from '@lib/team';
     transition: opacity 0.3s ease;
   }
 
-  .about-team__name {
+  .about-team__role {
     display: block;
     font-size: var(--text-sm);
     font-weight: 700;
     letter-spacing: 0.02em;
-  }
-
-  .about-team__role {
-    display: block;
-    margin-top: var(--px-4);
-    font-size: var(--text-xs);
-    opacity: 0.9;
+    opacity: 0.95;
   }
 
   @media (hover: hover) and (pointer: fine) {

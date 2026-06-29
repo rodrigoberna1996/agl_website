@@ -1,10 +1,10 @@
 import type { ImageMetadata } from 'astro';
-import emma from '/src/assets/images/team/emma.jpg';
-import sarah from '/src/assets/images/team/sarah-johnson.jpg';
-import memberThree from '/src/assets/images/sections/consultation.jpg';
-import memberFour from '/src/assets/images/sections/design.jpg';
-import memberFive from '/src/assets/images/sections/two-women-sitting.png';
-import memberSix from '/src/assets/images/sections/transform.jpg';
+import memberOne from '/src/assets/images/team/AGL.jpg';
+import memberTwo from '/src/assets/images/team/AGL2.jpg';
+import memberThree from '/src/assets/images/team/AGL3.jpg';
+import memberFour from '/src/assets/images/team/AGL4.jpg';
+import memberFive from '/src/assets/images/team/AGL5.jpg';
+import memberSix from '/src/assets/images/team/AGL6.jpg';
 
 export type TeamMember = {
   id: string;
@@ -19,19 +19,19 @@ export const TEAM_MEMBERS: TeamMember[] = [
     id: '1',
     name: 'María González',
     role: 'Dirección comercial',
-    image: sarah,
+    image: memberOne,
   },
   {
     id: '2',
     name: 'Carlos Mendoza',
     role: 'Asesoría técnica',
-    image: memberThree,
+    image: memberTwo,
   },
   {
     id: '3',
     name: 'Ana Legaspi',
     role: 'Atención a clientes',
-    image: emma,
+    image: memberThree,
   },
   {
     id: '4',
